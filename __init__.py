@@ -13,5 +13,6 @@ from . import rzio
 from . import index
 from . import imageprocess
 from . import stats
-from . import workefficiency
+from . import system
 from . import math
+from . import array

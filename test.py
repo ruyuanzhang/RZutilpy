@@ -5,13 +5,18 @@ Created on Thu Aug  3 17:18:16 2017
 
 @author: ruyuan
 """
-import numpy as np
-import scipy as sp
-import scipy.io as io
-import matplotlib as mpl
-import matplotlib.pyplot as plt
-import RZutilpy as rz
+# import numpy as np
+# import scipy as sp
+# import scipy.io as io
+# import matplotlib as mpl
+# import matplotlib.pyplot as plt
+# import RZutilpy as rz
+
+
+def add(a, b):
+    return a + b
 
 
 
-run '2+3'
+
+

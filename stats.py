@@ -100,6 +100,10 @@ def bootresamplemulti(x, nBoot=1000, rtrnum=1):
 def sem(x, axis=0):
     '''
     compute standard error of a numpy array
+
+
+    Note, we automatically deal with nans
+
     '''
 
     # check input
@@ -107,5 +111,10 @@ def sem(x, axis=0):
     if not isinstance(x, np.ndarray):
         raise ValueError('Please input a np.ndarray')
     num = x.shape[axis]
-    return np.std(x, axis=axis) / np.sqrt(num)
+
+    # deal with nan value
+    nanidx = np.isnan(x)
+    num = num - np.sum(nanidx, axis=axis)
+    return np.nanstd(x, axis=axis) / np.sqrt(num)
+
 
