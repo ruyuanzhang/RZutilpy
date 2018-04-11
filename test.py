@@ -13,8 +13,13 @@ Created on Thu Aug  3 17:18:16 2017
 # import RZutilpy as rz
 
 
-def add(a, b):
-    return a + b
+from .testutils import add
+add = add.add
+
+
+#def add(a, b):
+#    from .test import add
+#    return add.add(a, b)
 
 
 

@@ -29,7 +29,8 @@ concatenate array into the new axis, use np.stack, not np.concatenate
 * squeeze = np.squeeze or a.squeeze() 
 * matlab find = np.where
 * np.sum can directly input boolean data type and count how many true
-* sprintf 
+* sprintf = %
+* cell2mat = np.block
 
 ```
 'xxxx%02dxxx' % a
@@ -40,6 +41,20 @@ concatenate array into the new axis, use np.stack, not np.concatenate
 ```
 a.argmax()
 a.argmin()
+```
+* some useful path tool
+
+```
+# get current path
+a = os.path.getcwd()
+# get obsolute path of a file
+a = os.path.get
+# split path to base and the file
+'xx/xx/name.mat' to ('xx/xx', 'name.mat')
+a = os.path.split(filename)
+# split path file and extension
+'xx/xx/name.mat' to ('xx/xx/name', 'mat')
+a = os.path.splitext(filename)
 ```
 
 * (A==B).all()
@@ -56,16 +71,15 @@ a.argmin()
     e.g., (np.arange(5)+1) ** (-3) report error
     e.g., (np.arange(5.0) + 1) ** (-3) is OK
 ```
-* more efficient zip
 
-```Python
-list(zip(x, y)) for y in ys
+y in ys
 ```
 
 * change data type, a.astype('uint8')
 
 * add a new axis
     ys = x[:50, np.newaxis]
+    ys = x[:50, None, None]
 
 * np.stack can pack multiple arrays in a list along the new axis
 ```
@@ -124,6 +138,7 @@ https://matplotlib.org/gallery/statistics/hist.html#sphx-glr-gallery-statistics-
 
 * use plt.setp to set propertie to multiple axes
 
+* axes.set_visible(False) can hide an axes. This is useful n x n subplots grid cannot be fully filled.
 
 # String manipulation 
 1. strcmp can use ==
@@ -186,3 +201,7 @@ a = df.loc[2]  # return the second row
 ```
 df2 = df.copy()
 ```
+
+# Sublime text 使用技巧
+* 选中多个相同变量编辑
+ctrl + command + G

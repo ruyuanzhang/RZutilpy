@@ -7,7 +7,6 @@ Created on 4/6/17
 """
 
 # import modules
-from . import functest
 from . import figure
 from . import rzio
 from . import index
