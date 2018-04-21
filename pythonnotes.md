@@ -8,11 +8,42 @@ nano scientific_startup.py
 * in ipython_config.py, we set the scientific_startup.py as the startup running file for ipython
 
 # python command summary
-2. sys.path to show all path
-3. subprocess.run(['ls', '-al'])
-4. glob is the module that unix style pathname pattern expansion
+* sys.path to show all path
+* subprocess.run(['ls', '-al'])
+* some useful path function
+
 ```
-glob.glob('./*py')
+# get absolute path
+os.path.abspath
+# get foldername
+os.path.dirname
+# split the path
+header, base = os.path.split(path)
+# split the file and extension
+file, extension = os.path.splittext(path)
+# replace '~' with home directory, replace environment variable
+os.path.expanduser(path)
+os.path.expandvars
+
+# check time
+os.path.getatime
+os.path.getctime
+os.path.getmtime
+```
+
+* operate system 
+
+```
+# check environment variable
+os.environ['PATH']
+```
+
+* convert hexadecimal numbers to decimal
+
+```
+s = '0061'
+d = int(s, 16)
+% this is useful when extracting dicom information
 ```
 
 # Numpy specific 
@@ -173,6 +204,7 @@ plt.get_cmap('Set1', 20)
 ```
 
 # Pandas
+
 * delete a column or a
 ```
 del data['aa']
@@ -193,7 +225,9 @@ a = df[(df.BoolCol == 3) & (df.attr == 22)]
 ```
 a = df.xs(2)  # return the row index 2
 help(df.xs)
-# can also use
+
+can also use
+
 a = df.loc[2]  # return the second row
 ```
 
@@ -202,6 +236,16 @@ a = df.loc[2]  # return the second row
 df2 = df.copy()
 ```
 
+* datafrom to ndarray
+
+```
+```
 # Sublime text 使用技巧
 * 选中多个相同变量编辑
 ctrl + command + G
+* 查找上一个
+ctrl + d c
+* 统一编辑下一个
+ctrl + d
+* 多选时跳过选择这个
+ctrl + k, ctrl + d

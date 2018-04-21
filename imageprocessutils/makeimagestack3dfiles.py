@@ -1,4 +1,4 @@
-def makeimagestack3dfiles(m, outputprefix=None, skips=[1, 1, 1], rots=[(0, 1), (0, 1), (0, 1)], \
+def makeimagestack3dfiles(m, outputprefix=None, skips=[1, 1, 1], k=[(), (), ()], \
     cmap=None, **kwargs):
     '''
     makeimagestack3dfiles(m, outputprefix, skips=[1, 1, 1], rots=[0,0,0]\
@@ -11,8 +11,8 @@ def makeimagestack3dfiles(m, outputprefix=None, skips=[1, 1, 1], rots=[(0, 1), (
         <outputprefix> is a path to a file prefix, default:None, pwd
         <skips> (optional) is number of slices to skip in each of the 3 dimensions.
           Default: [1 1 1].
-        <rots> (optional) is a 3-vector with axis rotations. See np.rot90
-          Default: [(0,1), (0,1), (0,1)].
+        <k> (optional) is a list with numbers containing the times to CCW rotate matrix
+            rotation info. See np.rot90. Default: [(0,1), (0,1), (0,1)].
         <cmap> (optional) is colormap to use. Default: gray(256).
         <kwargs>: kwargs for makeimagestack,include <wantnorm>, <addborder>
             <csize>,<bordersize>
@@ -36,9 +36,9 @@ def makeimagestack3dfiles(m, outputprefix=None, skips=[1, 1, 1], rots=[(0, 1), (
     To do:
         implement mkdirquite
     '''
-    import matplotlib.pyplot as plt
+    from matplotlib.pyplot import imsave
     from nibabel.nifti1 import Nifti1Image as nifti
-    import RZutilpy as rz
+    from RZutilpy import imageprocess, figure, system
     import numpy as np
     import os
 
@@ -46,8 +46,11 @@ def makeimagestack3dfiles(m, outputprefix=None, skips=[1, 1, 1], rots=[(0, 1), (
         m = m.get_data()
     if outputprefix is None:
         outputprefix = os.getcwd()  # the current directory
-    if not os.path.exists(outputprefix):
-        os.makedir(os.path.split(outputprefix)[0])
+        outputprefix = outputprefix + os.sep
+    (folerpath, header) = os.path.split(outputprefix)
+
+    # create the folder if not exist.
+    system.makedir(folerpath)
 
     # define permutes
     permutes = np.array([[0, 1, 2], [0, 2, 1], [1, 2, 0]])
@@ -55,16 +58,16 @@ def makeimagestack3dfiles(m, outputprefix=None, skips=[1, 1, 1], rots=[(0, 1), (
         temp = m
         if dim == 0:
             temp = temp[:, :, ::skips[dim]].transpose(permutes[dim, :])
-            temp = np.rot90(temp, axes=rots[dim])
         elif dim == 1:
             temp = temp[:, ::skips[dim], :].transpose(permutes[dim, :])
-            temp = np.rot90(temp, axes=rots[dim])
         elif dim == 2:
             temp = temp[::skips[dim], :, :].transpose(permutes[dim, :])
-            temp = np.rot90(temp, axes=rots[dim])
+        # rotate image
+        if k[dim]:
+            temp = np.rot90(temp, k=k[dim], axes=(0, 1))  # CCW rotate
 
         # write the image
-        fname = '%s_view%d.png' % (outputprefix, dim)
+        fname = '%s/%s_view%d.png' % (folerpath, header, dim)
         # note that plt.imsave can automatically recognize the vmin and vmax, no
         # need to convert it to uint8 like in matlab
-        plt.imsave(fname, rz.imageprocess.makeimagestack(temp, **kwargs), cmap=rz.figure.colormap('gray', 256))
+        imsave(fname, imageprocess.makeimagestack(temp, **kwargs), cmap=figure.colormap('gray', 256))

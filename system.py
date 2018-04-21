@@ -6,3 +6,6 @@ restart = restart.restart
 
 from .systemutils import unix_wrapper
 unix_wrapper = unix_wrapper.unix_wrapper
+
+from .systemutils import makedirs
+makedirs = makedirs.makedirs

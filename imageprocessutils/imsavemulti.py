@@ -9,31 +9,34 @@ def imsavemulti(images, pattern, N=None):
         (2) a list of 2d array image, in this case. Different images can have different size
     <pattern> is a filename pattern, e.g., 'images%02d.png'
     <N> image number index, can be like [3, 4, 5, 6]. Default: use images.shape[-1] or len(images)
+        Note that this vector start from 1 if it is None
     '''
-    import matplotlib.pyplot as plt
+
     import numpy as np
     from RZutilpy.rzio import multifilename
+    from RZutilpy.array import split
     from PIL import Image
 
     if isinstance(images, np.ndarray):
         # split image arrays into a list
-        images = rz.array.split(images)
+        images = split(images)
     elif isinstance(images, list):
         pass
     else:
         raise ValueError('Image should be an array or a list !!')
+
     if N is None:
-        N = np.arange(len(image)) + 1  # default 1:N
-    if ~isinstance(N, np.ndarray):
+        N = np.arange(len(images)) + 1  # default 1:N
+    if not isinstance(N, np.ndarray):
         raise ValueError('Input image number index is wrong!')
 
-    # change all images in list to uin8.
+    # change all images in list to int8.
     images = [ele.astype('uint8') for ele in images]
     # convert all images into a PIL.Image object
     images = [Image.fromarray(ele) for ele in images]
 
     nImg = len(images)
     filename = multifilename(pattern, N)
-    for i, ele in enumerate(images):
-        ele.save(filename[i])
+    for i in N:
+        images[i - 1].save(filename[i])
         print(filename[i])
