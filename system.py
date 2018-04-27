@@ -9,3 +9,6 @@ unix_wrapper = unix_wrapper.unix_wrapper
 
 from .systemutils import makedirs
 makedirs = makedirs.makedirs
+
+from .systemutils import gettimestr
+gettimestr = gettimestr.gettimestr

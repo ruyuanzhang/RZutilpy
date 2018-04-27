@@ -4,9 +4,10 @@ def graytorgb(image):
     <image> is:
         (1) a 2d array
         (2) a 3d array with the 3rd dimension as the image number
-        (3) a list of 2d array
+        (3) a list of 2d image
 
-    we output a list if input is a list or multidimensional array if it is an array
+    We output a list if input is a list or multidimensional array if it is an array
+    Note that we keep the dtype of they array. It can be float,uint8 or anything
     '''
     from numpy import ndarray, stack, all
     from RZutilpy.array import split

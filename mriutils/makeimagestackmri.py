@@ -1,21 +1,22 @@
-def makeimagestack3dfiles(m, outputprefix=None, skips=[1, 1, 1], k=[(), (), ()], \
-    cmap=None, **kwargs):
+def makeimagestackmri(m, outputprefix=None, skips=[1, 1, 1], k=[0, 0, 0], \
+    cmap='gray', **kwargs):
     '''
-    makeimagestack3dfiles(m, outputprefix, skips=[1, 1, 1], rots=[0,0,0]\
+    makeimagestackmri(m, outputprefix, skips=[1, 1, 1], rots=[0,0,0]\
         cmap=None, *kwargs):
 
     Input:
         <m>: is a 3D matrix or a nibabel image file
-        <outputprefix>: is a output prefix
-        <m> is a 3D matrix or a NIFTI file
-        <outputprefix> is a path to a file prefix, default:None, pwd
+        <outputprefix>: is a output prefix,if it is NONE, then no write
         <skips> (optional) is number of slices to skip in each of the 3 dimensions.
           Default: [1 1 1].
         <k> (optional) is a list with numbers containing the times to CCW rotate matrix
-            rotation info. See np.rot90. Default: [(0,1), (0,1), (0,1)].
+            rotation info. See np.rot90. Default: [(), (), ()].
         <cmap> (optional) is colormap to use. Default: gray(256).
-        <kwargs>: kwargs for makeimagestack,include <wantnorm>, <addborder>
+        <kwargs>: kwargs for makeimagestack, include <wantnorm>, <addborder>
             <csize>,<bordersize>
+    Output:
+        <imglist>: a 1x3 list containing the image matrix for 0-2 dimensions. Each
+            image is within range 0~1 float 64
 
     We take <m> and write out three .png files, one for each slicing:
       <outputprefix>_view1.png
@@ -29,12 +30,17 @@ def makeimagestack3dfiles(m, outputprefix=None, skips=[1, 1, 1], k=[(), (), ()],
     After slicing, rotation (if supplied) is applied within the first
     two dimensions using rotatematrix.m.
 
-    example:
-    vol = makegaussian3d([100 100 100],[.7 .3 .5],[.1 .4 .1]);
-    makeimagestack3dfiles(vol,'test',[10 10 10],[],[],[0 1])
+    Example:
+        vol = makegaussian3d([100 100 100],[.7 .3 .5],[.1 .4 .1]);
+        makeimagestackmri(vol,'test',[10 10 10],[],[],[0 1])
+
+    History
+        20180412 RZ change the default cmap to 'gray'
+        20180419 RZ change the functionality of outputprefix, not saving images if None..
+
 
     To do:
-        implement mkdirquite
+
     '''
     from matplotlib.pyplot import imsave
     from nibabel.nifti1 import Nifti1Image as nifti
@@ -44,15 +50,18 @@ def makeimagestack3dfiles(m, outputprefix=None, skips=[1, 1, 1], k=[(), (), ()],
 
     if isinstance(m, nifti):
         m = m.get_data()
+    is_writeimage = True
     if outputprefix is None:
         outputprefix = os.getcwd()  # the current directory
         outputprefix = outputprefix + os.sep
+        is_writeimage = False
     (folerpath, header) = os.path.split(outputprefix)
 
     # create the folder if not exist.
-    system.makedir(folerpath)
+    system.makedirs(folerpath)
 
     # define permutes
+    imglist = []
     permutes = np.array([[0, 1, 2], [0, 2, 1], [1, 2, 0]])
     for dim in range(3):
         temp = m
@@ -66,8 +75,13 @@ def makeimagestack3dfiles(m, outputprefix=None, skips=[1, 1, 1], k=[(), (), ()],
         if k[dim]:
             temp = np.rot90(temp, k=k[dim], axes=(0, 1))  # CCW rotate
 
+        f = imageprocess.makeimagestack(temp, **kwargs)
+        imglist.append(f)
         # write the image
         fname = '%s/%s_view%d.png' % (folerpath, header, dim)
         # note that plt.imsave can automatically recognize the vmin and vmax, no
         # need to convert it to uint8 like in matlab
-        imsave(fname, imageprocess.makeimagestack(temp, **kwargs), cmap=figure.colormap('gray', 256))
+        if is_writeimage:  # if not, only return the images of three views
+            imsave(fname, f, cmap=cmap)
+    imglist.reverse()
+    return imglist  # reverse list to keep compatible the original axis

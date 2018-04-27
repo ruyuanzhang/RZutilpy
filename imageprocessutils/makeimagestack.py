@@ -44,9 +44,7 @@ def makeimagestack(m, wantnorm=0, addborder=2, csize=None, bordersize=1):
            addborder is not None.  default: 1.
 
     Return:
-        we combine and return all return values from plt.errorbar with three
-        ndarray of artist collections, with line object, cap object and line
-        collections
+        output the gigantic image stack with range 0~1, float 64
 
     Example:
 
@@ -55,6 +53,9 @@ def makeimagestack(m, wantnorm=0, addborder=2, csize=None, bordersize=1):
          plt.imshow(rz.imageprocess.makeimagestack(a,-1, nan))
 
     Note:
+
+    History:
+      20180421 RZ change it
     '''
     import numpy as np
     import RZutilpy as rz

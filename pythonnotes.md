@@ -20,7 +20,7 @@ os.path.dirname
 # split the path
 header, base = os.path.split(path)
 # split the file and extension
-file, extension = os.path.splittext(path)
+file, extension = os.path.splitext(path)
 # replace '~' with home directory, replace environment variable
 os.path.expanduser(path)
 os.path.expandvars
@@ -44,6 +44,12 @@ os.environ['PATH']
 s = '0061'
 d = int(s, 16)
 % this is useful when extracting dicom information
+```
+
+* merge two dicts
+
+```
+z = {**x, **y}
 ```
 
 # Numpy specific 

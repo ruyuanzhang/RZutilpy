@@ -7,7 +7,7 @@ def normalizerange(m, targetmin, targetmax, sourcemin=None, sourcemax=None, chop
     and values above <targetmax>.
 
     Args:
-        m: is a np.ndaray.
+        m: is a ndaray.
         targetmin: is the minimum desired value.  can be a scalar or an array the same size as <m>.
         targetmax: is the maximum desired value.  can be a scalar or an array the same size as <m>.
         sourcemin: (optional) sets the min value of <m>.  can be a scalar or a matrix the same size as <m>.
@@ -28,15 +28,16 @@ def normalizerange(m, targetmin, targetmax, sourcemin=None, sourcemax=None, chop
         normalized m
 
     Example:
-        normalizerange([1 2 3],0,1) = np.array([0, 1/2, 1])
-        normalizerange([1 2 3],0,1,2,3,1) == [0 0 1])
-        normalizerange([1 2 NaN],0,1,0,4)== [1/4 2/4 NaN]
+        normalizerange(np.array([1, 2, 3]),0,1) = np.array([0, 1/2, 1])
+        normalizerange(np.array([1, 2, 3]),0,1,2,3,1) == [0 0 1])
+        normalizerange(np.array([1, 2, NaN]),0,1,0,4)== [1/4 2/4 NaN]
 
     Note:
         1. note that if <sourcemin> is ever equal to <sourcemax>, then we die with an error.
         2. note that <chop> has no effect if <sourcemin> and <sourcemax> aren't specified.
         3. we deal with NaNs in <m> gracefully.
         4. if <fast>, skip stuff for speed
+        5. Note that m cannot be a number, please arrayfy it
     '''
 
     import numpy as np
@@ -50,9 +51,9 @@ def normalizerange(m, targetmin, targetmax, sourcemin=None, sourcemax=None, chop
     skipchop = (mode == 0 and (sourcemin is None) and (sourcemax is None)) | (mode == 0 and rz.math.isnan(sourcemin) and rz.math.isnan(sourcemax))
 
     if mode == 0:
-        if not sourcemin:
+        if sourcemin is None:
             sourcemin = np.nanmin(m)
-        if not sourcemax:
+        if sourcemax is None:
             sourcemax = np.nanmax(m)
         if rz.math.isnan(sourcemin) | rz.math.isnan(sourcemax):
             temp = np.nanmax(np.abs(m))
@@ -61,9 +62,9 @@ def normalizerange(m, targetmin, targetmax, sourcemin=None, sourcemax=None, chop
             if rz.math.isnan(sourcemax):
                 sourcemax = -temp
     elif mode == 1:
-        if not sourcemin:
+        if sourcemin is None:
             sourcemin = -3
-        if not sourcemax:
+        if sourcemax is None:
             sourcemax = 3
         mn = np.mean(m)
         sd = np.std(m)

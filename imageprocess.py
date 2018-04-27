@@ -15,6 +15,9 @@ processmulti(fun, *args):
 from .imageprocessutils import makegaussian2d
 makegaussian2d = makegaussian2d.makegaussian2d
 
+from .imageprocessutils import makegaussian3d
+makegaussian3d = makegaussian3d.makegaussian3d
+
 # ==============================================================================
 # read/save/process multiple images
 # ==============================================================================
@@ -36,9 +39,6 @@ calcunitcoordinates = calcunitcoordinates.calcunitcoordinates
 from .imageprocessutils import makeimagestack
 makeimagestack = makeimagestack.makeimagestack
 
-from .imageprocessutils import makeimagestack3dfiles
-makeimagestack3dfiles = makeimagestack3dfiles.makeimagestack3dfiles
-
 from .imageprocessutils import imagesequencetovideo
 imagesequencetovideo = imagesequencetovideo.imagesequencetovideo
 
@@ -47,3 +47,12 @@ videotoimagesequence = videotoimagesequence.videotoimagesequence
 
 from .imageprocessutils import graytorgb
 graytorgb = graytorgb.graytorgb
+
+from .imageprocessutils import touint8
+touint8 = touint8.touint8
+
+# ==============================================================================
+# coordinate
+# ==============================================================================
+from .imageprocessutils import defineellipse3d
+defineellipse3d = defineellipse3d.defineellipse3d

@@ -15,3 +15,5 @@ from . import stats
 from . import system
 from . import math
 from . import array
+from . import mri
+from . import program
