@@ -1,6 +1,8 @@
 def default_img_set():
     import matplotlib as mpl
 
+    mpl.rcParams['interactive'] = True
+
     # figure
     mpl.rcParams['figure.frameon'] = False
     mpl.rcParams['figure.titleweight'] = 'regular'

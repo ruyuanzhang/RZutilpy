@@ -1,3 +1,10 @@
+# Some notes for python programming on neuroimaging 
+* sklearn.neighbors.NearestNeighbors is a good class that can calculate nearestNeighbors in a ndimage. This might be useful to implement surface mapping to volume
+* tkinter can be used for implementing the
+* Many cost functions metrics have been provided by sklearn.metrics
+
+
+
 # configure python and ipython
 * Once Anoconda is properly installed, go to user home directory 
 ```
@@ -246,12 +253,3 @@ df2 = df.copy()
 
 ```
 ```
-# Sublime text 使用技巧
-* 选中多个相同变量编辑
-ctrl + command + G
-* 查找上一个
-ctrl + d c
-* 统一编辑下一个
-ctrl + d
-* 多选时跳过选择这个
-ctrl + k, ctrl + d

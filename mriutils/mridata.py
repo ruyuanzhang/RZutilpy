@@ -20,6 +20,16 @@ class mridata:
         loaddata:
         alignvolumes:
 
+
+    History:
+
+        20180426 RZ fix the import bug (not fix the meanvols bug)
+        20180423 RZ created it
+
+    Todo:
+        1. fix the mean volume bug
+        2. multi volume alignment
+
     '''
 
     def __init__(self, filenames):
@@ -40,24 +50,24 @@ class mridata:
         # initialize attributes
         self.subjectname = None
         self.filenames = filenames
-        self.format = None
+        self.fileformat = None
         self.sameshape = None
         self.vols = []
         self.shapes = []
-        self.fileobjlist = []
-        self.meanvol = None
+        self.fileobjlist = []  # see loaddata function
+        self.meanvol = []
         self.transform_matrix_tofirstvol = []
         self.vols_aligned = []
 
         from os.path import splitext
-        # get the self.format, get ext
+        # get the self.fileformat, get ext
         ext = [splitext(i)[1] for i in filenames]
         if all([i == '' for i in ext]):
-            self.fileformat == 'folder'
+            self.fileformat = 'folder'
         elif all([i == 'dcm' for i in ext]):
-            self.fileformat == 'dicom'
+            self.fileformat = 'dicom'
         elif all([i[-7:] == '.nii.gz' or i[-4] == '.nii' for i in filenames]):
-            self.fileformat == 'nifti'
+            self.fileformat = 'nifti'
         else:
             raise ValueError('Input file name is wrong, check filenames!')
 
@@ -79,6 +89,7 @@ class mridata:
 
         from numpy import all
 
+        print('Loading the data, might take a while ...')
         if self.fileformat == 'folder':   # load a folder of dicom file
             self.vols, self.fileobjlist = dicomloaddir(self.filenames, **kwargs)
         elif self.fileformat == 'dicom':
@@ -86,9 +97,10 @@ class mridata:
             self.vols = [i.pixel_array for i in self.fileobjlist]
         elif self.fileformat == 'nifti':
             self.vols, self.fileobjlist = loadniftimulti(self.filenames)
+        print('Done !')
 
         # Some sanity check
-        if all([all(i.shape = self.vols[0].shape) for i in self.vols]):
+        if all([all(i.shape == self.vols[0].shape) for i in self.vols]):
             self.sameshape = True
         else:
             self.sameshape = False
@@ -119,7 +131,7 @@ class mridata:
         '''
 
         This function is useful after you align multiple volumes to the first one
-        and write out some image to check the goodness of the alignment. This
+        and write out some images to check the goodness of the alignment. This
         usually happens in anatomical proprocessing.
 
         We use rz.mri.makeimagestack3d function to write image
@@ -159,12 +171,23 @@ class mridata:
         if self.sameshape is True:
             return stack(self.vols[volstouse], axis=-1).mean(axis=-1)
         else:
-            raise ValueError('Can not average vols with different shapes')
+            raise ValueError('Can not average volumes with different shapes')
 
 
-    def writemeanvolume(self, outputprefix, format=''):
+    def writemeanvolume(self, volidx, **kwargs):
         '''
-        writevolume
-        '''
+        writevolume, we use imagesequencetovideo.py function
 
-    def collectT1T2s(self)
+        <volidx> integer, the we write self.vols[<volidx>]
+
+        <kwargs> are input variables for imagesequencetovideo.py
+            among which, <videoname> is the positional input variable
+        '''
+        from RZutilpy.imageprocess import imagesequencetovideo
+
+        imagesequencetovideo(self.vols[volidx], **kwargs)
+
+
+
+    def collectT1T2s(self):
+        pass

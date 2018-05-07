@@ -34,6 +34,9 @@ def imagesequencetovideo(images, videoname, imagepercnt=1, videocodec=None, fps=
         images = np.random.rand(100,100,20)
         rz.imageprocess.imagesequencetovideo(images, 'video.mp4')
 
+    History:
+    20180430 RZ fixed the fps and videocodec input bug
+
     '''
     from RZutilpy.imageprocess import imreadmulti, touint8
     from RZutilpy.array import split
@@ -47,7 +50,7 @@ def imagesequencetovideo(images, videoname, imagepercnt=1, videocodec=None, fps=
         ndim = images.ndim
         if ndim == 3:
             images = stack((images, images, images), axis=2)
-            return imagesequencetovideo(images, videoname, videocodec, fps)
+            return imagesequencetovideo(images, videoname, videocodec=videocodec, fps=fps)
         elif ndim == 4:
             assert images.shape[2] == 3, 'wrong RGB images input!'
         else:
@@ -55,8 +58,10 @@ def imagesequencetovideo(images, videoname, imagepercnt=1, videocodec=None, fps=
         # split to image list
         images = split(images)
     elif isinstance(images, str):  # glob wildcard pattern
+        print('load the images...')
         images = imreadmulti(images)
-        return imagesequencetovideo(images, videoname, videocodec, fps)
+        print('done!')
+        return imagesequencetovideo(images, videoname, videocodec=videocodec, fps=fps)
     elif isinstance(images, list):
         # ensure all element is rgb images
         assert all([i.ndim == 3 and i.shape[2]==3 for i in images]), \

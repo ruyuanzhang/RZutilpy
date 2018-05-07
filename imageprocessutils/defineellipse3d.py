@@ -1,9 +1,9 @@
-def defineellipse3d(arr, autocontrast=True, wantfit=False, mn=(0.5, 0.5, 0.5), sd=(0.2, 0.2, 0.2)):
+def defineellipse3d(arr, wantnorm=True, wantfit=False, mn=(0.5, 0.5, 0.5), sd=(0.2, 0.2, 0.2)):
     '''
-    defineellipse3d(arr, autocontrast, wantfit, mn, sd)
+    defineellipse3d(arr, wantnorm, wantfit, mn, sd)
     Input:
         <m> is a 3D volume
-        <autocontrast> (optional) is whether to contrast-normalize
+        <wantnorm> (optional) is whether to contrast-normalize
             <m> for display purposes.  default: True.
         <wantfit> (optional) is whether to obtain an initial position
             and size by fitting a 3D Gaussian to <m>.  default: False.
@@ -24,6 +24,7 @@ def defineellipse3d(arr, autocontrast=True, wantfit=False, mn=(0.5, 0.5, 0.5), s
     from RZutilpy.math import normalizerange
     from RZutilpy.imageprocess import makegaussian3d, makeimagestack
     import matplotlib.pyplot as plt
+    import tkinter as tk
 
     # check input
 
@@ -41,7 +42,7 @@ def defineellipse3d(arr, autocontrast=True, wantfit=False, mn=(0.5, 0.5, 0.5), s
     maxslices = 25  # maximum number of slices to show
 
     # normalize volume range
-    if autocontrast:
+    if wantnorm:
         rng = percentile(arr.flatten(), [pct, 100-pct])
         arr = normalizerange(arr,0, 1, rng[0], rng[1])
 

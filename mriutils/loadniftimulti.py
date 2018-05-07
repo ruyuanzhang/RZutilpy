@@ -3,7 +3,8 @@ def loadniftimulti(files):
     load multiple nifti file and return a list of the nifti object and a list
     of vols.
 
-    <files> a list of string specifying the filenames
+    <files> a list of string specifying the filenames,we return a list of vols
+    <vols> and a list of nifti object <niftiobj>
 
     To do:
         1. what type of information we want to extract from nifti files?

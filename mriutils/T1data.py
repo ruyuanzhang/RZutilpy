@@ -1,4 +1,4 @@
-from mridata import mridata
+from .mridata import mridata
 
 class T1data(mridata):
     '''
@@ -26,7 +26,6 @@ class T1data(mridata):
             1. add T2 flag?? not sure if it is useful
         '''
         import os
-        import
 
         assert self.meanvol is not None, 'You might need to first calculate meanvol'
         assert os.path.exist(dataloc), 'The T1 nifti file does not exist! Consider save\
@@ -38,6 +37,10 @@ class T1data(mridata):
 
         completeprocess = subprocess.run(comand, stdout=subprocess.PIPE)
         assert (completeprocess.returncode == 0), 'recon-all failed, check'
+
+
+if __name__ == "__main__":
+    pass
 
 
 

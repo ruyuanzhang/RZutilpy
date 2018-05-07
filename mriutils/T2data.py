@@ -1,4 +1,4 @@
-from mridata import mridata
+from .mridata import mridata
 
 class T2data(mridata):
     '''

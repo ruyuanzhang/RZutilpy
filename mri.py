@@ -9,3 +9,18 @@ makeimagestackmri = makeimagestackmri.makeimagestackmri
 
 from .mriutils import writevideomri
 writevideomri = writevideomri.writevideomri
+
+from .mriutils import loadniftimulti
+loadniftimulti = loadniftimulti.loadniftimulti
+
+from .mriutils import mridata
+mridata = mridata.mridata
+
+from .mriutils import epidata
+epidata = epidata.epidata
+
+from .mriutils import T1data
+T1data = T1data.T1data
+
+from .mriutils import T2data
+T2data = T2data.T2data
