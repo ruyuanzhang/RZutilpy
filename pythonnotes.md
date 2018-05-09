@@ -249,7 +249,7 @@ a = df.loc[2]  # return the second row
 df2 = df.copy()
 ```
 
-* datafrom to ndarray
+* datafrom to ndarrayw
 
 ```
 ```

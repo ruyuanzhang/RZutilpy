@@ -67,17 +67,16 @@ def writevideomri(mriarr, videoname, axis=2, k=0, stackkwargs={'wantnorm':1}, vi
         imglist = graytorgb(imglist)  # expand each image to 3d rgb image
 
     elif ndim == 4:
-        imglist = split(mriarr)  # split time dimension, now each ele is a 3d file
+        imglist = split(mriarr)  # split time dimension, now each element is a 3d file
         # deal with k
         tmpk = [(),(),()]
         tmpk[axis] = k
         k = tmpk
-        import ipdb;ipdb.set_trace()
         # do it
         print('This is a 4d array, we make image stack ......')
         # make imagestack for every 3d mri file
         # note that imagestack is normalized to 0~1 with dtype float64
-        imglist = [makeimagestackmri(i, k=k, **stackkwargs)[2 - axis] for i in pbar(imglist)]
+        imglist = [makeimagestackmri(i, k=k, **stackkwargs)[axis] for i in pbar(imglist)]
         # note that makeimagestackmri.py output a image list with imagestacks
         # following the order of 2,1,0 dimensions of input 3d array. So the
         # output dimension should be 2-axis

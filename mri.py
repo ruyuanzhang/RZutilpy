@@ -1,3 +1,4 @@
+# ====== data io ==========
 from .mriutils import getcanonicalhrf
 getcanonicalhrf = getcanonicalhrf.getcanonicalhrf
 
@@ -13,6 +14,8 @@ writevideomri = writevideomri.writevideomri
 from .mriutils import loadniftimulti
 loadniftimulti = loadniftimulti.loadniftimulti
 
+
+## ====== data class =========
 from .mriutils import mridata
 mridata = mridata.mridata
 
@@ -24,3 +27,7 @@ T1data = T1data.T1data
 
 from .mriutils import T2data
 T2data = T2data.T2data
+
+# ===================
+from .mriutils import getfilenamenii
+getfilenamenii = getfilenamenii.getfilenamenii

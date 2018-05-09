@@ -11,17 +11,26 @@ def unix_wrapper(cmd, wantreport=True, wantassert=True):
     finally, return the result.
 
     Args:
-        cmd: a string as a list
+        cmd: a list of str as command
         wantreport: is weather to report to command window, default:True
         wantassert: is weather to assert that status==0, default:True
     output:
         result:
+
+    History:
+        20180508 RZ add list input option
     '''
     import subprocess
 
     # split the cmd into a word list so that subprocess module can run it
     # split by space
-    cmd_torun = cmd.split(' ')
+    if isinstance(cmd, str):
+        cmd_torun = cmd.split(' ')
+    elif isinstance(cmd, list):
+        cmd_torun = cmd
+    else:
+        raise ValueError('Wrong input!')
+
 
     if wantreport:
         print('\ncalling unix:\n{}\n'.format(cmd))
@@ -33,4 +42,4 @@ def unix_wrapper(cmd, wantreport=True, wantassert=True):
     if wantassert:
         if completeprocess.returncode != 0:  # command fails
             print('unix command failed. here was the result:\n{}\n', completeprocess.stdout)
-        assert (completeprocess.returncode == 0)
+        assert completeprocess.returncode == 0

@@ -25,9 +25,9 @@ def makeimagestackmri(m, outputprefix=None, skips=[5, 5, 5], k=[0, 0, 0], \
       <outputprefix>_view2.png
       <outputprefix>_view3.png
 
-    The first slicing is through the third dimension with ordering [1 2 3].
+    The first slicing is through the first dimension with ordering [1 2 3].
     The second slicing is through the second dimension with ordering [1 3 2].
-    The third slicing is through the first dimension with ordering [2 3 1].
+    The third slicing is through the third dimension with ordering [2 3 1].
 
     After slicing, rotation (if supplied) is applied within the first
     two dimensions using np.rot90
@@ -68,19 +68,20 @@ def makeimagestackmri(m, outputprefix=None, skips=[5, 5, 5], k=[0, 0, 0], \
 
     # define permutes
     imglist = []
-    permutes = np.array([[0, 1, 2], [0, 2, 1], [1, 2, 0]])
+    # we make the dimension to slice to the last one
+    permutes = np.array([[1, 2, 0], [0, 2, 1], [0, 1, 2]])
     for dim in range(3):
         temp = m
         if dim == 0:
             # note that the first element in the output image is along 1st dimension
-            temp = temp[:, :, ::skips[dim]].transpose(permutes[dim, :])
+            temp = temp[::skips[dim], :, :].transpose(permutes[dim, :])
         elif dim == 1:
             temp = temp[:, ::skips[dim], :].transpose(permutes[dim, :])
         elif dim == 2:
-            temp = temp[::skips[dim], :, :].transpose(permutes[dim, :])
+            temp = temp[:, :, ::skips[dim]].transpose(permutes[dim, :])
         # rotate image
-        if k[2 - dim]:  # note
-            temp = np.rot90(temp, k=k[2 - dim], axes=(0, 1))  # CCW rotate
+        if k[dim]:  # note
+            temp = np.rot90(temp, k=k[dim], axes=(0, 1))  # CCW rotate
 
         f = imageprocess.makeimagestack(temp, **kwargs)
         imglist.append(f)
@@ -90,5 +91,4 @@ def makeimagestackmri(m, outputprefix=None, skips=[5, 5, 5], k=[0, 0, 0], \
         # need to convert it to uint8 like in matlab
         if is_writeimage:  # if not, only return the images of three views
             imsave(fname, f, cmap=cmap)
-    imglist.reverse()
     return imglist  # reverse list to keep compatible the original axis

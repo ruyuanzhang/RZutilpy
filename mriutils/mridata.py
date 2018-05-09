@@ -158,7 +158,8 @@ class mridata:
 
     def makemeanvolume(self, volstouse=None):
         '''
-        average vols and make a mean volume.
+        average vols and make a mean volume. This is useful for 4D epi data, we
+        average across time dimension to make a mean volume.
 
         volstouse is a list indicate the indices of runs to make the meanvol.
         e.p. [1, 2, 3, 4 ,7, 8]. Sometimes we want to remove bad runs
@@ -174,18 +175,21 @@ class mridata:
             raise ValueError('Can not average volumes with different shapes')
 
 
-    def writemeanvolume(self, volidx, **kwargs):
+    def writevideomri(self, volsidx=None, **kwargs):
         '''
-        writevolume, we use imagesequencetovideo.py function
+        writevolumemri, we use imagesequencetovideo.py function
 
-        <volidx> integer, the we write self.vols[<volidx>]
+        <volsidx> integer, the we write self.vols[<volidx>], default is all
 
         <kwargs> are input variables for imagesequencetovideo.py
             among which, <videoname> is the positional input variable
         '''
         from RZutilpy.imageprocess import imagesequencetovideo
-
-        imagesequencetovideo(self.vols[volidx], **kwargs)
+        if ininstance(volsidx, list):
+            return [imagesequencetovideo(self.vols[i], self.files[i], **kwargs) \
+            for i in volsidx]
+        elif ininstance(volsidx, int):
+            return imagesequencetovideo(self.vols[volsidx], self.files[volsidx], **kwargs)
 
 
 
