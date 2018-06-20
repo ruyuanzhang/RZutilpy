@@ -33,7 +33,7 @@ def unix_wrapper(cmd, wantreport=True, wantassert=True):
 
 
     if wantreport:
-        print('\ncalling unix:\n{}\n'.format(cmd))
+        print('\ncalling unix:\n{}\n'.format(cmd_torun))
     # run the command
     completeprocess = subprocess.run(cmd_torun, stdout=subprocess.PIPE)
     if wantreport:
