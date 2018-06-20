@@ -1,34 +1,43 @@
 def getcanonicalhrf(duration=0.1, tr=2):
-    # function hrf = getcanonicalhrf(duration, tr)
-    #
-    # <duration> is the duration of the stimulus in seconds.
-    #   should be a multiple of 0.1 (if not,  we round to the nearest 0.1).
-    #   0 is automatically treated as 0.1.
-    # <tr> is the TR in seconds.
-    # generate a predicted HRF to a stimulus of duration <duration>,
-    # with data sampled at a TR of <tr>.
-    #
-    # the resulting HRF is a row vector whose first point is
-    # coincident with stimulus onset.  the HRF is normalized such
-    # that the maximum value is one.
-    #
-    # the predicted HRF is generated based on experimentally observed
-    # HRFs from various datasets.
-    #
-    # history:
-    # 2013/11/18 - use a smoother HRF (derived from fitting spm_hrf to
-    #               empirically measured HRFs).  this ensures that the
-    #               HRFs returned by this function are smooth even at short
-    #               stimulus durations.  note that this change does，change
-    #               previous behavior of this function!  we also round
-    #               <duration>，to the nearest 0.1 to keep things simple.
-    #
-    # example:
-    # hrf = getcanonicalhrf(4, 1),
-    # figure,  plot(0:length(hrf)-1, hrf, 'ro-'),
+    '''
+    getcanonicalhrf(duration=0.1, tr=2):
+
+    Input:
+        <duration> is the duration of the stimulus in seconds.
+        should be a multiple of 0.1 (if not,  we round to the nearest 0.1).
+        0 is automatically treated as 0.1.
+        <tr> is the TR in seconds.
+        generate a predicted HRF to a stimulus of duration <duration>,
+        with data sampled at a TR of <tr>.
+
+    the resulting <hrf> is a 1d array whose first point is
+    coincident with stimulus onset.  the <hrf> is normalized such
+    that the maximum value is one.
+
+    the predicted <hrf> is generated based on experimentally observed
+    HRFs from various datasets.
+
+    history:
+    2013/11/18 (by KK) - use a smoother HRF (derived from fitting spm_hrf to
+               empirically measured HRFs).  this ensures that the
+               HRFs returned by this function are smooth even at short
+               stimulus durations.  note that this change does，change
+               previous behavior of this function!  we also round
+               <duration>，to the nearest 0.1 to keep things simple.
+
+    example:
+        hrf = getcanonicalhrf(4, 1),
+        figure,  plot(0:length(hrf)-1, hrf, 'ro-')
+
+    Note:
+        1. how to resample the HRF?
+        2.
+    '''
 
     # inputs
-    import numpy as np
+    from numpy import convolve, ones, max, round, arange
+    from scipy.interpolate import interp1d
+
     if duration == 0:
         duration = 0.1
 
@@ -36,24 +45,23 @@ def getcanonicalhrf(duration=0.1, tr=2):
     hrf = hrfhelperfunction()
 
     # convolve to get the predicted response to the desired stimulus duration
+    import matplotlib.pyplot as plt;import ipdb;ipdb.set_trace();
     trold = 0.1
-    hrf = np.convolve(
-        hrf, np.ones(1, np.max(1, np.round(duration / trold))))
+    hrf = convolve(hrf, ones(int(max((1, round(duration / trold))))))
 
     # resample to desired TR
-    # hrf = np.interp((0:np.length(hrf) - 1) * trold, hrf,
-    #                0: (np.length(hrf) - 1) * trold: tr,
-    #                'pchip')
+    #interpfun = interp1d(arange(hrf.size) * trold, hrf, kind='cubic')
+    #hrf = interpfun(arange(round(duration / tr)) * tr)
 
     # make the peak equal to one
-    hrf = hrf / np.max(hrf)
+    hrf = hrf / max(hrf)
     return hrf
 
 
 # hrfhelper function
 def hrfhelperfunction():
-    import numpy as np
-    hrf = np.array([
+    from numpy import array
+    hrf = array([
         0, 5.34e-06, 3.55e-05, 0.000104, 0.00022, 0.000388,
         0.00061, 0.000886, 0.00122, 0.00159, 0.00202, 0.00249, 0.003, 0.00354,
         0.00411, 0.00471, 0.00533, 0.00596, 0.0066, 0.00725, 0.0079, 0.00855,

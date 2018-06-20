@@ -1,4 +1,10 @@
 def restart():
+    '''
+    restart()
+
+    restart ipython to default state, will clean all variables in workspace
+
+    '''
     from IPython import get_ipython
     ipython = get_ipython()
     ipython.magic("reset")

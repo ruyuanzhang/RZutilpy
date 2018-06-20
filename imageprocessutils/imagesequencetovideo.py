@@ -2,30 +2,32 @@ def imagesequencetovideo(images, videoname, imagepercnt=1, videocodec=None, fps=
     '''
     imagesequencetovideo(images, videoname, imagepercnt=1, videocodec=None, fps=15):
 
-    write a image sequence to video. We use utility from moviepy module. We normalize
-    all images and convert it to uint8
+    write a image sequence to video. We use utility from moviepy module.
+    We first convert input to a list, then convert all images to uint8 format.
+    Then we create the video based on the image list
 
     Input:
         <images>: can be:
-            (1), a 3d or 4d array. Assume the last dimension is time. We convert
+            (1). a 3d or 4d array. Assume the last dimension is time. We convert
                 the array to uint8 type.
-                if 3d, assuming it is gray scale, we will convert it to RGB format
+                if 3d, assuming it is gray scale, we convert it to 4d
                 if 4d, assume the 3rd dimension is RGB.
                 Also, for 3d and 4d, we split them to imagelist
-            (2), a wildcard pattern for glob module, we use rz.rzio.matchfiles
-                to read it.
-            (3), a list of images, in this case each element must 3d (RGBimage)
+            (2). a wildcard pattern for glob module, we use rz.rzio.matchfiles
+                to read in all images.
+            (3). a list of images, in this case each element must 3d (RGBimage)
                 image. Note that all images should have equal size.
-        <videoname>: output pathname, need to specify the type. If the filename
-            is has extension ‘.mp4’, ‘.ogv’, ‘.webm’, the codec will be set accordingly,
+        <videoname>: output pathname, need to specify the type with the extension.
+            If the filename has an extension ‘.mp4’, ‘.ogv’, ‘.webm’, the codec will be set accordingly,
             but you can still set it if you don’t like the default.
             For other extensions, the output filename must be set accordingly.
         <imagepercnt>: int, intensities most lower and upper percent will be clipped
             default: 1
-        <code>: video code, check, write_videofile method of moviepy Clip object
-        <fps>: # of frames per second
+        <code>: video code, check, write_videofile method of moviepy Clip object to
+            know all allowed video code
+        <fps>: # of frames per second,default:15
     Output:
-        a clip object from moviepy module
+        <clip>: a clip object from moviepy module
 
     To do:
         1. input a frame function
@@ -55,6 +57,7 @@ def imagesequencetovideo(images, videoname, imagepercnt=1, videocodec=None, fps=
             assert images.shape[2] == 3, 'wrong RGB images input!'
         else:
             raise ValueError('image dimension is wrong !')
+
         # split to image list
         images = split(images)
     elif isinstance(images, str):  # glob wildcard pattern
@@ -63,7 +66,7 @@ def imagesequencetovideo(images, videoname, imagepercnt=1, videocodec=None, fps=
         print('done!')
         return imagesequencetovideo(images, videoname, videocodec=videocodec, fps=fps)
     elif isinstance(images, list):
-        # ensure all element is rgb images
+        # ensure all element is rgb images, note that we cannot accept rgba images
         assert all([i.ndim == 3 and i.shape[2]==3 for i in images]), \
         'make sure all images are RGB images'
     else:

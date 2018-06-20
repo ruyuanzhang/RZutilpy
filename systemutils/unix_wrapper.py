@@ -11,13 +11,18 @@ def unix_wrapper(cmd, wantreport=True, wantassert=True):
     finally, return the result.
 
     Args:
-        cmd: a list of str as command
-        wantreport: is weather to report to command window, default:True
-        wantassert: is weather to assert that status==0, default:True
+        <cmd>: can be two cases:
+            1. a string, contains the full unix command, like
+                'flirt -in input.nii.gz -ref output.nii.gz'
+            2. a list of strings that decomposite individual parts of the unix
+                command, such as ['firt', '-in', 'input.nii.gz', '-ref', 'output.nii.gz']
+        <wantreport>: is weather to report to command window, default:True
+        <wantassert>: is weather to assert that status==0, default:True
     output:
-        result:
+        result: the output result of the unix command
 
     History:
+        20180620 add return the unix result
         20180508 RZ add list input option
     '''
     import subprocess
@@ -31,15 +36,19 @@ def unix_wrapper(cmd, wantreport=True, wantassert=True):
     else:
         raise ValueError('Wrong input!')
 
-
     if wantreport:
-        print('\ncalling unix:\n{}\n'.format(cmd_torun))
+        print('\ncalling unix:\n{}\n'.format(' '.join(cmd_torun)))
+
     # run the command
     completeprocess = subprocess.run(cmd_torun, stdout=subprocess.PIPE)
+
     if wantreport:
         print('status of unix command:\n{}\n'.format(completeprocess.returncode))
         print('result of unix command:\n' + completeprocess.stdout.decode("utf-8") + '\n')
+
     if wantassert:
         if completeprocess.returncode != 0:  # command fails
             print('unix command failed. here was the result:\n{}\n', completeprocess.stdout)
         assert completeprocess.returncode == 0
+   return completeprocess.stdout.decode("utf-8")
+

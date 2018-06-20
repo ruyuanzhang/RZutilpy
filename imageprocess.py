@@ -45,14 +45,14 @@ imagesequencetovideo = imagesequencetovideo.imagesequencetovideo
 from .imageprocessutils import videotoimagesequence
 videotoimagesequence = videotoimagesequence.videotoimagesequence
 
-from .imageprocessutils import graytorgb
-graytorgb = graytorgb.graytorgb
+from .imageprocessutils import gray2rgb
+gray2rgb = gray2rgb.gray2rgb
 
 from .imageprocessutils import touint8
 touint8 = touint8.touint8
 
 # ==============================================================================
-# coordinate
+# gui manipulateion
 # ==============================================================================
 from .imageprocessutils import defineellipse3d
 defineellipse3d = defineellipse3d.defineellipse3d

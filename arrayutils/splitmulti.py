@@ -2,12 +2,12 @@ def splitmulti(a, targetndim):
     '''
     splitmulti(a, targetndim)
 
-    Reshape a list when the elements in the list have the same shape.a
+    Reshape a list when the elements in the list have the same shape.
 
-    List can be reshaped by np.reshape function. However, if the elements in the
+    A List can be reshaped by np.reshape function. However, if the elements in the
     list are all ndarrays, and share the same dimension. Using np.reshape will
     automatically concatenate all elements.
-    i.e.,
+    e.g.,
     a = [[1,2], [1,2], [1,2], [1,2]]
 
     To avoid that, we use some hack here.

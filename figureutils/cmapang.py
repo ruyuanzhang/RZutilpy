@@ -2,9 +2,10 @@ def cmapang():
     '''
     cmapang():
 
-    same as cmapang in knkutil/colormap. we make a circular colormap but force it only has 64 entries. will retun a m x 4 color matrix
+    same as cmapang in knkutil/colormap. we make a colormap of angle data but force
+    it only has 64 entries.
 
-    TODO: consider return an colormap object
+    will return <cmapobj> object based on LinearSegmentedColormap class
 
     '''
     import numpy as np

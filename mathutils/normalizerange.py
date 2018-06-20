@@ -1,9 +1,9 @@
-def normalizerange(m, targetmin, targetmax, sourcemin=None, sourcemax=None, chop=1, mode=0):
+def normalizerange(m, targetmin, targetmax, sourcemin=None, sourcemax=None, chop=True, mode=0):
     '''
     normalizerange(m, targetmin, targetmax, sourcemin=None, sourcemax=None, chop=1, mode=0)
 
-    return <m> scaled and translated such that [<sourcemin>,<sourcemax>] maps to
-    [<targetmin>,<targetmax>].  if <chop>, we also threshold values below <targetmin>
+    return <m> scaled and translated such that (<sourcemin>,<sourcemax>) maps to
+    (<targetmin>,<targetmax>).  if <chop>, we also threshold values below <targetmin>
     and values above <targetmax>.
 
     Args:
@@ -14,14 +14,14 @@ def normalizerange(m, targetmin, targetmax, sourcemin=None, sourcemax=None, chop
             default is [], which means to find the actual minimum.  special case is NaN which means -nanmax(abs(m(:))).
         sourcemax: sets the max value of <m>.  can be a scalar or a matrix the same size as <m>.
             default is [], which means to find the actual maximum.  special case is NaN which means nanmax(abs(m(:))).
-        chop:is whether to chop off the ends such that there are no values below <targetmin> nor above <targetmax>.  default: 1.
+        chop: boolean, whether to chop off the ends such that there are no values below <targetmin> nor above <targetmax>.  default: True.
         mode: is
-            0 means normal operation
+            0 (default) means normal operation
             1 means interpret <sourcemin> and <sourcemax> as multipliers for the std of m(:).
             in this mode, the default for <sourcemin> and <sourcemax> is -3 and 3, respectively,
             which means to use mn-3*sd and mn+3*sd for the min and max value of <m>, respectively.
             note that in this mode, <sourcemin> and <sourcemax> cannot be NaN.
-            default: 0.
+
         # fast: means we have a guarantee that all inputs are fully specified and <m> is not empty.
 
     Return:
@@ -43,10 +43,8 @@ def normalizerange(m, targetmin, targetmax, sourcemin=None, sourcemax=None, chop
     import numpy as np
     import RZutilpy as rz
 
-    # check empty case
-    if rz.math.isempty(m):
-        return m
-    rz.array.checkarray(m)
+    # check input
+    assert isinstance(m, np.ndaray), 'Input should be a ndarray'
 
     skipchop = (mode == 0 and (sourcemin is None) and (sourcemax is None)) | (mode == 0 and rz.math.isnan(sourcemin) and rz.math.isnan(sourcemax))
 

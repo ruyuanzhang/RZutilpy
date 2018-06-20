@@ -1,6 +1,9 @@
 def defineellipse3d(arr, wantnorm=True, wantfit=False, mn=(0.5, 0.5, 0.5), sd=(0.2, 0.2, 0.2)):
     '''
-    defineellipse3d(arr, wantnorm, wantfit, mn, sd)
+    defineellipse3d(arr, wantnorm=True, wantfit=False, mn=(0.5, 0.5, 0.5), sd=(0.2, 0.2, 0.2)):
+
+    define an ellipse in 3d space
+
     Input:
         <m> is a 3D volume
         <wantnorm> (optional) is whether to contrast-normalize
@@ -11,13 +14,11 @@ def defineellipse3d(arr, wantnorm=True, wantfit=False, mn=(0.5, 0.5, 0.5), sd=(0
             if supplied, then we ignore <wantfit>.  if not supplied
             and not <wantfit>, then we use a default position and size.
 
-    No that
-
     To do:
         1. complete the wantfit function
 
     History:
-        20180424 RZ creates it, didnot implement wantfit function
+        20180424 RZ created it, did not implement wantfit function
 
     '''
     from numpy import percentile, min, linspace, round

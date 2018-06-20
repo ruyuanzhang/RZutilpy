@@ -1,4 +1,4 @@
-def writevideomri(mriarr, videoname, axis=2, k=0, stackkwargs={'wantnorm':1}, videokwargs={}):
+def writevideomri(mriarr, videoname, axis=2, k=0, stackkwargs={'wantnorm': 1}, videokwargs={}):
     '''
     writevideomri(mriarr, videoname, axis=2, k=0, stackkwargs={'wantnorm':1}, videokwargs={}):
 
@@ -41,7 +41,7 @@ def writevideomri(mriarr, videoname, axis=2, k=0, stackkwargs={'wantnorm':1}, vi
 
     from nibabel.nifti1 import Nifti1Image as nifti
     from numpy import ndarray, rot90
-    from RZutilpy.imageprocess import imagesequencetovideo, graytorgb
+    from RZutilpy.imageprocess import imagesequencetovideo, gray2rgb
     from RZutilpy.mri import makeimagestackmri
     from RZutilpy.array import split
     import progressbar

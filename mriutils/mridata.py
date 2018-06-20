@@ -22,7 +22,6 @@ class mridata:
 
 
     History:
-
         20180426 RZ fix the import bug (not fix the meanvols bug)
         20180423 RZ created it
 
@@ -156,42 +155,59 @@ class mridata:
             makeimagestackmri(self.meanvol, outputprefix + 'mean', skips=[5,5,5])
 
 
-    def makemeanvolume(self, volstouse=None):
+    def makemeanvolume(self, mode='separate'):
         '''
         average vols and make a mean volume. This is useful for 4D epi data, we
         average across time dimension to make a mean volume.
 
-        volstouse is a list indicate the indices of runs to make the meanvol.
-        e.p. [1, 2, 3, 4 ,7, 8]. Sometimes we want to remove bad runs
+        <mode> can be 'separate' or 'all'
+            'separate': We create a mean volume for each volumes self.vols. In
+                this case we take the mean along the last dimension. This is useful
+                for 4D epi data. (default)
+            'all': We create a mean volume for all self.vols. This is useful for
+                T1,T2 and epi runs.
+
+        History:
+            20180517 RZ added <mode input> and fix bugs
         '''
-        from numpy import stack
+        from numpy import concatenate
 
-        if volstouse is None:
-            volstouse = range(len(self.vols))
+        if mode == 'separate':
+            self.meanvols = [self.vols[i].mean(axis=-1) for i in range(len(self.vols))]
+        if mode == 'all':
+            assert self.sameshape is False,\
+             ValueError("Can not average volumes with different shapes, please set the mode='separate'!")
+            self.meanvols = concatenate(self.vols, axis=-1).mean(axis=-1)
 
-        if self.sameshape is True:
-            return stack(self.vols[volstouse], axis=-1).mean(axis=-1)
-        else:
-            raise ValueError('Can not average volumes with different shapes')
 
 
-    def writevideomri(self, volsidx=None, **kwargs):
+
+    def writevideomrimulti(self, volsidx=None, **kwargs):
         '''
-        writevolumemri, we use imagesequencetovideo.py function
+        writevolumemrimulti, we use rz.mri.writevideomri.py function
 
-        <volsidx> integer, the we write self.vols[<volidx>], default is all
+        <volsidx>: an integer or a list, the we write self.vols[<volidx>], default is all
 
-        <kwargs> are input variables for imagesequencetovideo.py
-            among which, <videoname> is the positional input variable
+        <kwargs> are input variables for rz.mri.writevideomri.py
+            among which, note that we use the folder name as the video filename
+
+        We return the MovieClip object or a cell of it
+
+        History:
+            20180517 RZ fixed the bug of input name, and use writevideomri.py as the
+                default function
+        To do:
+            1. input different names??
         '''
-        from RZutilpy.imageprocess import imagesequencetovideo
+        from RZutilpy.mri import writevideomri
+
+        if volsidx is None:
+            volsidx = list(range(len(self.vols)))
+
         if ininstance(volsidx, list):
-            return [imagesequencetovideo(self.vols[i], self.files[i], **kwargs) \
-            for i in volsidx]
+            return [writevideomri(self.vols[i], self.files[i]+'.mp4', **kwargs) for i in volsidx]
         elif ininstance(volsidx, int):
-            return imagesequencetovideo(self.vols[volsidx], self.files[volsidx], **kwargs)
-
-
+            return writevideomri(self.vols[volsidx], self.files[volsidx]+'.mp4', **kwargs)
 
     def collectT1T2s(self):
         pass

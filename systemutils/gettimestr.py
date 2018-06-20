@@ -12,6 +12,7 @@ def gettimestr(structtime=None):
 
     '''
     from time import localtime, strftime, struct_time
+
     if isinstance(structtime, struct_time):
         return strftime('%Y%m%d%H%M%S', structtime)
     elif structtime is None:

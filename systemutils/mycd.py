@@ -1,27 +1,18 @@
 def mycd(dir='util'):
     """
-    funname(a,b,*c,**d)
+    mycd(dir='util')
+
     quickly switch working directory
 
     a wrapper for quickly switching to directory of utility functions
 
-    Args:
-        dir: target dir. currently supprt
-            'util': utility folder in RZ's laptop
-
-
-    Return:
-
-
-    Notes:
-
+    <dir>: a str, target dir. currently supprt
+        'util': utility folder in RZ's laptop
+        'main': go to user home directory
 
     Example:
-        import rzutilpy as rzpy
-        rzpy.mycd('util')
-
-    History:
-        4/6/17   RZ created it
+        rz.system.mycd()
+        rz.system.mycd('util')
 
     """
     import os

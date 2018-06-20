@@ -6,7 +6,7 @@ def getfilenamenii(path):
     filename, ext = splitext(path)
     if ext == '.gz':
         filename, ext2 = splitext(filename)
-        return filename, ext + ext2
+        return filename, ext2 + ext
     elif ext == '.nii':
         return filename, ext
     else:
