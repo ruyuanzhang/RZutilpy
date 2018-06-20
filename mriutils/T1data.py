@@ -2,8 +2,7 @@ from .mridata import mridata
 
 class T1data(mridata):
     '''
-    T1data is a subclass of mridata. It inherits the mridata attributes and
-    methods.
+    T1data inherents the mridata class.
 
 
     Methods:
@@ -17,7 +16,7 @@ class T1data(mridata):
         '''
         push T1 data to freesurfer. Similar to cvnrunfreesurfer.m in cvncode
 
-        We use subprocess
+        We use subprocess module to run unix command
 
         <dataloc>: a NIFTI T1 .nii.gz file like '/home/stone-ext1/fmridata/AurelieData/Austin_3D.nii.gz'
         <extraflags>: a list of extra flags for recon-all. e.g.,[]

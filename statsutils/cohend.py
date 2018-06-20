@@ -15,6 +15,9 @@ def cohend(x, y):
 
     s1square = 1/(n1-1) * sum(x-mean(x)) ** 2
 
+    Note:
+        1. we assume no nan values
+
     '''
 
     # check input

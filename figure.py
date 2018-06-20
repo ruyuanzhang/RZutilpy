@@ -52,6 +52,9 @@ cmapang2 = cmapang2.cmapang2
 from .figureutils import drawcolorbarcircular
 drawcolorbarcircular = drawcolorbarcircular.drawcolorbarcircular
 
+from .figureutils import drawcolorbarhalfcircular
+drawcolorbarhalfcircular = drawcolorbarhalfcircular.drawcolorbarhalfcircular
+
 # show_images
 from .figureutils import show_images
 show_images = show_images.show_images

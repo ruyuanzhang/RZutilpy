@@ -1,5 +1,14 @@
 def processmulti(fun, imgs, *args):
-    ''' processing multiple image
+    '''
+
+    processmulti(fun, imgs, *args)
+
+
+    #==========================
+    deprecated from 20180616
+    #==========================
+
+    processing multiple image
     process multiple images, input images should be 3D ndarray
 
     Args:

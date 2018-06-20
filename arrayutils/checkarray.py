@@ -1,4 +1,10 @@
 def checkarray(m):
-    # check whether m is a ndarray
-    import numpy as np
-    assert isinstance(m, np.ndarray), 'Please input a ndarray'
+    '''
+    #=======================
+    deprecated since 20180616
+    #=======================
+    '''
+
+    # check whether m is a np.ndarray
+    from numpy import ndarray
+    assert isinstance(m, ndarray), 'Please input a ndarray'

@@ -1,34 +1,49 @@
-def booterrorbar(
-    x, metric='mean', errorFormat='single', prcntage=68, nBoot=1000, rtrnum=1,
-):
+def booterrorbar(x, metric='mean', errorFormat='single', prcnt=68, nBoot=1000):
     '''
-    Use bootstrap to estimate errorbar
+    booterrorbar(x, metric='mean', errorFormat='single', prcnt=68, nBoot=1000)
+
+    Use bootstrap to estimate errorbar. We detect nan values and if input contains nan values
+    we use np.nanmean or np.nanmedian
+
     Args:
-        x: a vector, we will flatten it a 1d vector
+        x: a 1d array. If not, we will flatten it a 1d vector
        metric(opt): a string, specify 'mean'(default),
             'median','nanmean','nanmedian'
        errorFormat: a string:
            'single': (default) return a single number,half of the range between
-               low/up range.
+               lower/upper bound.
            'bound': return two number, upper and lower bound
-            prcntage: e.g. 95, 95% confidence interval, default:68
+            prcnt: e.g. 95, 95% confidence interval, default:68
        nBoot: number of bootstrap samples, default:1000
        returnnum: index in return turple to return. e.g., return rtrtupler[:rtrnum]
     return
-        er: a scalar, if errorFormat == 'single'
-            a two element vector,if errorFormat = 'bound'. represent the lower
+        <er>:
+            1. a scalar, if errorFormat == 'single'
+            2. a two element vector,if errorFormat = 'bound'. represent the lower
             and uppder offset
-        samples: bootstrap samples, can be a list or a nd.array
+
+        <samples>: bootstrap samples, can be a list or a nd.array
+
+    Examples:
+
     '''
+
     import numpy as np
-    x = np.array(x).flatten()  # convert it to flattend array;
+
+    assert isinstance(x,np.ndarray), 'Input should be a ndarray'
+
+    x = x.flatten()  # convert it to flattend array;
+
+    # deal with nan
     if any(np.isnan(x)):
         print('detect nan value, use nanmean or nanmedian')
         if metric == 'mean':
             metric = 'nanmean'
         elif metric == 'median':
             metric = 'nanmedian'
-    samples = bootresamplemulti(x, nBoot)  # get bootstrap samples
+
+    samples, _ = bootresamplemulti(x, nBoot)  # get bootstrap samples
+
     if metric == 'mean':
         tmp = np.mean(samples, axis=0)
         tmp2 = np.mean(x, axis=0)
@@ -41,16 +56,16 @@ def booterrorbar(
     elif metric == 'nanmedian':
         tmp = np.nanmedian(samples, axis=0)
         tmp2 = np.nanmedian(x, axis=0)
-    # compute target prcntage
-    prcntage = np.array([(100 - prcntage) / 2, 100 - (100 - prcntage) / 2])
+
+    # compute target prcnt
+    prcnt = np.array([(100 - prcnt) / 2, 100 - (100 - prcnt) / 2])
+
     # get bound
-    er = np.percentile(tmp, prcntage)
+    er = np.percentile(tmp, prcnt)
+
     if errorFormat == 'single':
         er = (np.diff(er) / 2)[0]
     elif errorFormat == 'bound':
         er = np.array([tmp2 - er[0], er[1] - tmp2])
 
-    if rtrnum == 1:
-        return er
-    elif rtrnum == 2:
-        return er, samples
+    return er, samples

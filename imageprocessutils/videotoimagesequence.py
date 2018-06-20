@@ -1,8 +1,8 @@
 def videotoimagesequence(videofile, filenamepattern, fps=None):
     '''
-    videotoimagesequence(videofile, fps=None):
+    videotoimagesequence(videofile, filenamepattern, fps=None):
 
-    Read a video file and write it as a image sequence
+    Read a video file and write it as a image sequence.
 
     Input:
         <videofile>: a str, the videofilename

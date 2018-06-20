@@ -1,18 +1,19 @@
 def split2d(arr, nrows, ncols):
     """
-    split2d(a, nrow, ncols):
+    split2d(arr, nrows, ncols):
+
+    Input:
+        <arr>: must be a 2d array
+        <nrows>,<ncols>: rows and cols of subbricks
 
     Return an array of shape (nrows, ncols, n) where
-    n * nrows * ncols = arr.size
+    n * nrows * ncols = arr.size. We assume that arr.size can be exactly divided
+    by nrows * ncols
 
     If arr is a 2D array, the returned array should look like n subblocks with
     each subblock preserving the "physical" layout of arr.
 
-    <arr>: must be a 2d array
-    <nrows>,<ncols>: rows and cols of subbricks
-
-
-    This function is useful to decomposite mosaic image read from dicom files
+    This function is useful to decompose mosaic image read from dicom files
     """
     from numpy import ndarray
     assert isinstance(arr, ndarray) and arr.ndim == 2, 'Please input a 2d array'

@@ -1,9 +1,12 @@
-# Some notes for python programming on neuroimaging 
-* sklearn.neighbors.NearestNeighbors is a good class that can calculate nearestNeighbors in a ndimage. This might be useful to implement surface mapping to volume
-* tkinter can be used for implementing the
-* Many cost functions metrics have been provided by sklearn.metrics
+# other notes
+* A good explanation of decorator in python
+[decorator in python](https://www.zhihu.com/question/26930016)
+* [explanation](https://www.liaoxuefeng.com/wiki/001374738125095c955c1e6d8bb493182103fac9270762a000/001386820023084e5263fe54fde4e4e8616597058cc4ba1000) for
 
-
+```
+from __future__ import
+```
+* generator explanation?
 
 # configure python and ipython
 * Once Anoconda is properly installed, go to user home directory 
@@ -59,15 +62,39 @@ d = int(s, 16)
 z = {**x, **y}
 ```
 
+* boolean and bitwise operateion
+
+```
+If you are not dealing with arrays and are not performing math manipulations of integers, you probably want and.
+
+If you have vectors of truth values that you wish to combine, use numpy with  &
+```
+
+# conda skills
+* save conda environment file
+
+```
+# on mac and linux
+source activate envname
+conda env export -n base --no-builds> rzutilpy.yml
+
+```
+But based on what I tried (i.e., try to immigrate the whole python enviroment setting from Macpro to linux), this functionality is not that useful. It only works from within-platform immigration of an conda environment....
+
+* update the conda envrioment file
+
+```
+# on mac and linux
+conda env update -f rzutilpy.yml
+```
+
+
+
 # Numpy specific 
 * Some times use map/zip/list together
-* np.split, np.reshape, np.vstack, np.hstack, np.dstack, np.concatenate, np.stack
 * Note the difference between np.stack and np.concatenate
-	- concatenate cannot create a new axis,
+	- concatenate cannot create a new axis, but faster than stack
 	- stack always create a new axis
-	
-concatenate array into the new axis, use np.stack, not np.concatenate
-
 * repmat = np.tile
 * permute = np.transpose
 * squeeze = np.squeeze or a.squeeze() 
@@ -75,16 +102,13 @@ concatenate array into the new axis, use np.stack, not np.concatenate
 * np.sum can directly input boolean data type and count how many true
 * sprintf = %
 * cell2mat = np.block
+* sort = np.sort (return sorted arr), np.argsort (return index)
+* sprintf in matlab = '%' in python
 
 ```
 'xxxx%02dxxx' % a
 'xxxx%02dxxx%s' % (a, b) 
 
-```
-* get the index of the max value
-```
-a.argmax()
-a.argmin()
 ```
 * some useful path tool
 
@@ -116,7 +140,7 @@ a = os.path.splitext(filename)
     e.g., (np.arange(5.0) + 1) ** (-3) is OK
 ```
 
-y in ys
+* y in ys
 ```
 
 * change data type, a.astype('uint8')
@@ -126,6 +150,7 @@ y in ys
     ys = x[:50, None, None]
 
 * np.stack can pack multiple arrays in a list along the new axis
+
 ```
 a = list( np.random.randn(3,3) for _ in range(3))
 b = np.stack(a)
@@ -133,13 +158,38 @@ b.shape
 c = np.stack(a)
 c.shape
 ```
+
 * note below
+
 ```
 None == None
 True
 np.nan == np.nan
 false
 ```
+
+* sort
+
+* 返回view的情况
+
+```
+# 最主要是numpy
+b = a.reshape
+b = a.T
+# list append一个view也不行
+a = np.arange(10)
+b = []
+b.append(a)
+a[1] = 1000
+print(b)  # 这时候b也会改变，因为append的是一个view
+
+# 不用担心view
+b = a  # when a is a scalar
+a = a.reshape  # 自己改变自己
+a = a.T  #自己改变自己
+b = a.max() # 计算一个值
+```
+
 
 
 # Figure related (matplotlib)
@@ -253,3 +303,12 @@ df2 = df.copy()
 
 ```
 ```
+
+#  compatibility, debug
+* (last updated 20180618) Mayavi2 is released on May 27, 2018. This new mayavi toolkit fully support python3. The current release includes mayavi 4.6, vtk 8.1
+* (last updated 20180618) Psychpy 1.9.0 is now released and this is a major release aiming for supporting python 3. Be careful, current version requires pyglet 1.3.0. It will report error suin pyglet 1.3.2 ()
+
+
+* Pysurfer. Pysurfer requires support from mayavi. Since the new version mayavi was just released, it might take some time for pysurfer people to catch up.
+* afni, brainvoyager, current afni only support python 2, not python 3.
+* Pycortex, not sure how it uses, crappy software...
