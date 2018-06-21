@@ -26,10 +26,15 @@ def makedirs(name, mode=None, exist_ok=True):
     The user homedir sign '~' is fine.
 
     Example:
+        # make a folder name 'here'
         makedirs('~/here/')
+        # make a folder name 'home'
         makedirs('/home/')
+        # make a folder name 'home'
+        makedirs('/home/heihei.png')
 
         # this is useful when saving a file but not sure whether the folder exists
+        # if not, we create the folder, the usage is below
         makedirs('/home/heihei.png')
 
     '''
@@ -37,9 +42,8 @@ def makedirs(name, mode=None, exist_ok=True):
     from os.path import dirname, expanduser
 
     name = dirname(expanduser(name))
-    print(name)
 
-    if name is '':  # we are in the current folder
+    if name is '':  # we are in the current folder, no need to make the dir
         return
 
     # we cannot set the default in the func, so using this...
@@ -48,12 +52,12 @@ def makedirs(name, mode=None, exist_ok=True):
             makedirs(name, exist_ok=exist_ok)
             return True
         except:
-            print('Failed to make the dir!')
+            print('Failed to make the dir %s!' % name)
             return False
     else:
         try:
             makedirs(name, mode=mode, exist_ok=exist_ok)
             return True
         except:
-            print('Failed to make the dir!')
+            print('Failed to make the dir %s!' % name)
             return False
