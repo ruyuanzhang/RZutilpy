@@ -50,5 +50,7 @@ def unix_wrapper(cmd, wantreport=True, wantassert=True):
         if completeprocess.returncode != 0:  # command fails
             print('unix command failed. here was the result:\n{}\n', completeprocess.stdout)
         assert completeprocess.returncode == 0
-   return completeprocess.stdout.decode("utf-8")
+    return completeprocess.stdout.decode("utf-8")
+
+
 

@@ -10,10 +10,10 @@ cvnpath.m
 
 
 '''
-from .cvnpy import calctransferfunctions
+from .cvnutils import calctransferfunctions
 calctransferfunctions = calctransferfunctions.calctransferfunctions
 
-from .cvnpy import path
+from .cvnutils import path
 path = path.path
 
 
