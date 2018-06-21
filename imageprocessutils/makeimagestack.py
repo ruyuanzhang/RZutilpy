@@ -17,7 +17,7 @@ def makeimagestack(m, wantnorm=0, addborder=2, csize=None, bordersize=1):
           dim is number of images.
       <wantnorm>: is
          0 means no normalization
-         [A, B], an 2-elem list, means normalize and threshold values such that A and B map to 0 and 1.
+         (A, B), an 2-elem tuple, means normalize and threshold values such that A and B map to 0 and 1.
          X means normalize and threshold values such that X percentile
            from lower and upper end map to 0 and 1.  if the X percentile
            from the two ends are the same, then map everything to 0.
@@ -60,6 +60,7 @@ def makeimagestack(m, wantnorm=0, addborder=2, csize=None, bordersize=1):
          plt.imshow(rz.imageprocess.makeimagestack(a, -1, np.nan))
 
     History:
+      20180621 RZ fix the bug when wantnorm is (x,y) format
       20180616 RZ remove checkarray function, change <csize> to tuple
       20180523 RZ fix addborder bug, now addbode=0 means no border. addborder
         =2 and bordersize=0 has bug.
@@ -74,14 +75,13 @@ def makeimagestack(m, wantnorm=0, addborder=2, csize=None, bordersize=1):
 
     # make it double
     m.astype('float')  # make it float
-    wantnorm = float(wantnorm)
 
-    if isinstance(wantnorm, np.ndarray):
-        assert wantnorm.ndim == 2, 'Please input correct wantnorm values'
-        m = rz.math.normalizerange(m, 0, 1, wantnorm[0], wantnorm[1])
+    if isinstance(wantnorm, tuple):
+        assert len(wantnorm) == 2, 'Please input correct wantnorm values'
+        m = rz.math.normalizerange(m, 0, 1, float(wantnorm[0]), float(wantnorm[1]))
         mn = 0
         mx = 1
-    else:
+    elif isinstance(wantnorm, int):
         if wantnorm == 0:
             mn = np.nanmin(m)
             mx = np.nanmax(m)
@@ -105,6 +105,9 @@ def makeimagestack(m, wantnorm=0, addborder=2, csize=None, bordersize=1):
                 m = rz.math.normalizerange(m, 0, 1, rng[0], rng[1])
             mn = 0
             mx = 1
+    else:
+      raise ValueError('check the input for <wantnorm> !')
+
     md = (mn + mx) / 2
 
     # mn, md and mx are min, middle, max pixel intensities

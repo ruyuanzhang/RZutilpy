@@ -44,7 +44,7 @@ def normalizerange(m, targetmin, targetmax, sourcemin=None, sourcemax=None, chop
     import RZutilpy as rz
 
     # check input
-    assert isinstance(m, np.ndaray), 'Input should be a ndarray'
+    assert isinstance(m, np.ndarray), 'Input should be a ndarray'
 
     skipchop = (mode == 0 and (sourcemin is None) and (sourcemax is None)) | (mode == 0 and rz.math.isnan(sourcemin) and rz.math.isnan(sourcemax))
 

@@ -40,7 +40,7 @@ def makeimagestack3dfiles(m, outputprefix=None, skips=[5, 5, 5], k=[0, 0, 0], \
         1. Fix the filepath problem
 
     History
-        20180502 RZ fix the k rotation bug, now should be more clear.
+        20180502 RZ fix the k rotdaion bug, now should be more clear.
         20180412 RZ change the default cmap to 'gray'
         20180419 RZ change the functionality of outputprefix, not saving images if None..
 
@@ -59,10 +59,10 @@ def makeimagestack3dfiles(m, outputprefix=None, skips=[5, 5, 5], k=[0, 0, 0], \
         outputprefix = os.getcwd()  # the current directory
         outputprefix = outputprefix + os.sep
         _is_writeimage = False
-    (folerpath, header) = os.path.split(outputprefix)
+    folderpath, header = os.path.split(outputprefix)
 
     # create the folder if not exist.
-    assert system.makedirs(folerpath)
+    assert system.makedirs(folderpath+os.sep) # note that we need to add a os.sep here
 
     # define permutes
     imglist = []
@@ -84,9 +84,9 @@ def makeimagestack3dfiles(m, outputprefix=None, skips=[5, 5, 5], k=[0, 0, 0], \
         f = imageprocess.makeimagestack(temp, **kwargs)
         imglist.append(f)
         # write the image
-        fname = '%s/%s_view%d.png' % (folerpath, header, dim)
+        fname = '%s/%s_view%d.png' % (folderpath, header, dim)
         # note that plt.imsave can automatically recognize the vmin and vmax, no
         # need to convert it to uint8 like in matlab
-        if is_writeimage:  # if not, only return the images of three views
+        if _is_writeimage:  # if not, only return the images of three views
             imsave(fname, f, cmap=cmap)
     return imglist  # reverse list to keep compatible the original axis
