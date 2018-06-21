@@ -285,6 +285,7 @@ a = df[(df.BoolCol == 3) & (df.attr == 22)]
 ```
 
 * return a row or column if know index
+
 ```
 a = df.xs(2)  # return the row index 2
 help(df.xs)
@@ -295,14 +296,34 @@ a = df.loc[2]  # return the second row
 ```
 
 * use == just make a inference to original dataframe. to make a new copy, use 
+
 ```
 df2 = df.copy()
 ```
 
 * datafrom to ndarrayw
 
+
+#  regular expression
+
+* for escape sequences(转义字符), like '\d+', we should use a r prefix
+
 ```
+p = re.compile(r'\d+')
+m = p.match('heihei123')
 ```
+
+* use () to add token
+
+```
+text = 'FOV 140*320'
+p = re.compile(r'^(\d{1,4})p\*(\d{1,4})s$')
+matchgroup = p.match(text)
+plines = int(matchgroup.group(1))  # step in phase encoding direction
+flines = int(matchgroup.group(2))  # step in frequency encoding direction
+= [plines, flines]
+```
+
 
 #  compatibility, debug
 * (last updated 20180618) Mayavi2 is released on May 27, 2018. This new mayavi toolkit fully support python3. The current release includes mayavi 4.6, vtk 8.1

@@ -16,5 +16,8 @@ calctransferfunctions = calctransferfunctions.calctransferfunctions
 from .cvnutils import path
 path = path.path
 
+from .cvnutils import collectT1s
+collectT1s = collectT1s.collectT1s
+
 
 

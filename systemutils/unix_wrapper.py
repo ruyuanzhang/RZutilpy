@@ -53,4 +53,3 @@ def unix_wrapper(cmd, wantreport=True, wantassert=True):
     return completeprocess.stdout.decode("utf-8")
 
 
-
