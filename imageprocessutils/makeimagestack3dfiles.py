@@ -62,7 +62,7 @@ def makeimagestack3dfiles(m, outputprefix=None, skips=[5, 5, 5], k=[0, 0, 0], \
     folderpath, header = os.path.split(outputprefix)
 
     # create the folder if not exist.
-    assert system.makedirs(folderpath+os.sep) # note that we need to add a os.sep here
+    assert system.makedirs(folderpath+os.sep)  # note that we should add a os.sep to create the folder
 
     # define permutes
     imglist = []
