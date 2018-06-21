@@ -95,8 +95,6 @@ def defineellipse3d(arr, wantnorm=True, wantfit=False, mn=(0.5, 0.5, 0.5), sd=(0
                 axesimg.set_data(makeimagestack(wvol[:, :, slice_toshow]))
                 plt.draw()
 
-
-
             # wait for response
             key = input()
             doupdate = 1

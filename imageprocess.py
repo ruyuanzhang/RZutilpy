@@ -39,6 +39,9 @@ calcunitcoordinates = calcunitcoordinates.calcunitcoordinates
 from .imageprocessutils import makeimagestack
 makeimagestack = makeimagestack.makeimagestack
 
+from .imageprocessutils import makeimagestack3dfiles
+makeimagestack3dfiles = makeimagestack3dfiles.makeimagestack3dfiles
+
 from .imageprocessutils import imagesequencetovideo
 imagesequencetovideo = imagesequencetovideo.imagesequencetovideo
 
