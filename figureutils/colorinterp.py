@@ -19,7 +19,7 @@ def colorinterp(cmap, nColor=256):
         return cmap
 
     # linearly interpolate these colors
-    newcmap = np.zeros((nColor, 4))
+    newcmap = zeros((nColor, 4))
     newcmap[:, 3] = 1  # default alpha value is 1
     for i in arange(cmap.shape[1]):
         fun = interpolate.interp1d(arange(cmap.shape[0]), cmap[:, i])
