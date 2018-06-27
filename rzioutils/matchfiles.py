@@ -22,7 +22,12 @@ def matchfiles(pattern, wantsort='name'):
     If multiple match patterns are supplied, we output a list of cases of output
     for one match pattern
 
+    Note that we first convert the pattern to absolute path to ensure the output is
+    also absolute path
+
     History:
+        20180626 always output absolute path
+        20180624 support relative path, like '../test.py'
         20180621 implement multiple input patterns as a string list
         20180517 add reminder when no matchfiled files
         20180430 RZ adds sort arg. Original filenames returned by glob.glob
@@ -36,10 +41,10 @@ def matchfiles(pattern, wantsort='name'):
         pattern = [pattern]
 
     # do it
-    filelist = [glob(path.expanduser(p)) for p in pattern]
+    filelist = [glob(path.abspath(path.expanduser(p))) for p in pattern]
 
     #
-    if not filelist:   # no match
+    if not filelist[0]:   # no match
         print('No matched files for this pattern!')
 
     if wantsort == 'name':

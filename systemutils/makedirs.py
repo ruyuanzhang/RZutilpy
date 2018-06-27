@@ -10,53 +10,62 @@ def makedirs(name, mode=None, exist_ok=True):
         1. if name is a dir, please add file sep in the end (i.e., '/home/folder/')
         2. The user homedir sign '~' is fine.
 
-    <name> can be either a folder name or a filename. If a filename, we create
-        a folder for this file. This is useful when saving the file to an unknown path.
-    <mode>:
+    <name> can be either
+        (1) a folder name, like '/User/ruyuan/testpath'
+        (2) a filename. like '/User/ruyuan/testpath/test.py'. in this case, we create
+            the folder '/User/ruyuan/testpath/'
+        '~/testpath' is OK
+        only a filename 'test.py' is also ok, in this case we do not create any folder
+        since we are already in this folder
+    <mode>: folder permission, default:None
     <exist_ok>: whether OK if it is exist, if the folder exists, we do nothing
 
-    We use os.path.dirname to extract the folder name from <name>.
+    We use name.suffix=='' to judge foldername of filename
 
-    So, if name is a dir, please add file sep in the end (i.e., '/home/folder/'),
 
-    A file name is fine.  We also check whether dirname is empty,
     which means we want to save something in the current folder. Then we choose
     to do nothing special.
 
     The user homedir sign '~' is fine.
 
     Example:
-        # make a folder name 'here'
-        makedirs('~/here/')
-        # make a folder name 'home'
-        makedirs('/home/')
-        # make a folder name 'home'
+        # make a folder name 'here' if it does not exist
+        makedirs('~/here')
+        # make a folder name 'home' if it does not exist
+        makedirs('/home')
+        # make a folder name 'home' if it does not exist
         makedirs('/home/heihei.png')
 
         # this is useful when saving a file but not sure whether the folder exists
-        # if not, we create the folder, the usage is below
+        # if not, we create the folder for this file, the usage is below
         makedirs('/home/heihei.png')
 
+    20180622 switch to use pathlib module
+
     '''
-    from os import makedirs
-    from os.path import dirname, expanduser
+    from pathlib import Path
 
-    name = dirname(expanduser(name))
+    name = Path(name)
+    # replace home directory
+    name = name.expanduser()
 
-    if name is '':  # we are in the current folder, no need to make the dir
+    if str(name.parent) == '.':  # make a file in the current, no need to make the dir
         return
+    if name.suffix != '':  # the input is a file, we strip the filename and only keep the folder name
+        name = name.parent
 
     # we cannot set the default in the func, so using this...
+    # note that we make all parent folder if they do not exist
     if mode is None:
         try:
-            makedirs(name, exist_ok=exist_ok)
-            return True
+            name.mkdir(parents=True, exist_ok=exist_ok)
+            return True  # this is helpful for assert
         except:
             print('Failed to make the dir %s!' % name)
             return False
     else:
         try:
-            makedirs(name, mode=mode, exist_ok=exist_ok)
+            name.mkdir(mode=mode, parents=True, exist_ok=exist_ok)
             return True
         except:
             print('Failed to make the dir %s!' % name)

@@ -1,7 +1,7 @@
-def path(whichpath):
+def cvnpath(whichpath):
 
     '''
-    path(whichpath):
+    cvnpath(whichpath):
 
     Return the path specified in 'whichpath'
     Hardcode common paths here, then call this function elsewhere to maximize

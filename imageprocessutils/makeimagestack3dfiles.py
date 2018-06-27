@@ -1,5 +1,5 @@
 def makeimagestack3dfiles(m, outputprefix=None, skips=[5, 5, 5], k=[0, 0, 0], \
-    cmap='gray', **kwargs):
+    cmap='gray', returnstack=False, **kwargs):
     '''
     makeimagestack3dfiles(m, outputprefix=None, skips=[5, 5, 5], k=[0, 0, 0], \
         cmap='gray', **kwargs):
@@ -12,7 +12,9 @@ def makeimagestack3dfiles(m, outputprefix=None, skips=[5, 5, 5], k=[0, 0, 0], \
         <k> (optional) is a list with numbers containing the times to CCW rotate matrix
             rotation info. See np.rot90. Default: [(), (), ()]. <k[i]> indicates
             rotate the image when writing image stack along ith dimension
-        <cmap> (optional) is colormap to use. Default: gray(256).
+        <cmap> is the colormap to use. Default: gray(256), any matplotlib colormap input is fine
+        <returnstack>: boolean, whether to return the 3 imagestack. Useful to visualize
+            and can help adjust <skips> and <k>. Default:False
         <kwargs>: kwargs for makeimagestack, include <wantnorm>, <addborder>
             <csize>,<bordersize>
     Output:
@@ -28,21 +30,23 @@ def makeimagestack3dfiles(m, outputprefix=None, skips=[5, 5, 5], k=[0, 0, 0], \
     The first slicing is through the first dimension with ordering [0 1 2].
     The second slicing is through the second dimension with ordering [1 3 2].
     The third slicing is through the third dimension with ordering [2 3 1].
+    Note that this is different from KK's makeimagestack3dfiles.m
 
     After slicing, rotation (if supplied) is applied within the first
     two dimensions using np.rot90
 
     Example:
         vol = makegaussian3d([100 100 100],[.7 .3 .5],[.1 .4 .1]);
-        makeimagestack3dfiles(vol,'test',[10 10 10],[],[],[0 1])
+        makeimagestack3dfiles(vol,'test',(10, 10, 10),k=(5,5,5),wantnorm=(0, 1))
 
     To do:
         1. Fix the filepath problem
 
     History
-        20180502 RZ fix the k rotdaion bug, now should be more clear.
-        20180412 RZ change the default cmap to 'gray'
-        20180419 RZ change the functionality of outputprefix, not saving images if None..
+        20180621 RZ added <returnstack> input
+        20180502 RZ fixed the k rotdaion bug, now should be more clear.
+        20180412 RZ changed the default cmap to 'gray'
+        20180419 RZ changed the functionality of outputprefix, not saving images if None..
 
     '''
     from matplotlib.pyplot import imsave
@@ -89,4 +93,7 @@ def makeimagestack3dfiles(m, outputprefix=None, skips=[5, 5, 5], k=[0, 0, 0], \
         # need to convert it to uint8 like in matlab
         if _is_writeimage:  # if not, only return the images of three views
             imsave(fname, f, cmap=cmap)
-    return imglist  # reverse list to keep compatible the original axis
+
+    # return the imagestacks for visualization and debugging
+    if returnstack:
+        return imglist  # reverse list to keep compatible the original axis

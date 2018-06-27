@@ -33,13 +33,14 @@ def collectT1s(subjectid,dataloc, gradfile=None, str0='T1w', wantskip=True):
     history:
         - 20180620 RZ created it based on cvncollectT1s.m
     '''
-    import RZutilpy.cvnpy as cvnpy
+    from RZutilpy.cvnpy import cvnpath
     from RZutilpy.system import makedirs, unix_wrapper
     from RZutilpy.rzio import matchfiles
     import re
     from multiprocessing import Pool  # note 1st letter uppercase
+    from os.path import join
 
-    dir0 = '%s/%s' % cvnpy.path('anatomicals'), subjectid
+    dir0 = join(cvnpath('anatomicals'), subjectid)
 
     # make subject anatomical directory
     assert makedirs(dir0)
@@ -51,7 +52,7 @@ def collectT1s(subjectid,dataloc, gradfile=None, str0='T1w', wantskip=True):
     # figure out T1 DICOM directories [ASSUME THAT THERE ARE AN EVEN NUMBER OF DIRECTORIES IN EACH SCAN SESSION]
     t1files = []
     for p in dataloc:
-        t1files0 = matchfiles('%s/dicom/*%s*' % (p, str0))
+        t1files0 = matchfiles(join(p, 'dicom','*%s*' % str0))
         if wantskip:
             assert len(t1files0) % 2 == 0
             t1files0 = t1files0[1::2]
