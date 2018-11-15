@@ -5,7 +5,7 @@ def polyfit1d(x, y, deg=1):
     Fit a polynomial function to y based on 1d data x, with order <deg>
 
     Input:
-        <x>: 1d arrays
+        <x>: 1d array
         <y>: target data value, should be 1d
         <deg>: int, the highest polynomial order to use, default:1
 
@@ -13,7 +13,8 @@ def polyfit1d(x, y, deg=1):
         <coef>: 1d array, derived coefficients. See Note note below for the order
                     of coef
         <predy>: 1d array = y.size.
-        <residual>: residual of the model fitting
+        <residual>: a scaler residual of the model fitting
+        <weight>: 1d array = y.size
 
     This function is basically a wrapper of the numpy.polynomial.polynomial.polyfit
 
@@ -26,7 +27,11 @@ def polyfit1d(x, y, deg=1):
 
 
     History:
+        20180629 RZ added <weight> func input
         20180616 RZ created it
+
+    To do:
+        - implement multiple x data point?
 
     '''
     from numpy import isfinite, ndarray
@@ -35,12 +40,14 @@ def polyfit1d(x, y, deg=1):
     # check input
     assert isinstance(x, ndarray) and x.ndim == 1, 'x should be 1d ndarray!'
     assert isinstance(y, ndarray) and y.ndim == 1, 'y should be 1d ndarray!'
+    if weight is None:
+        weight = ones()
 
     # isfinite can check both nan and inf values
     valid = isfinite(x) & isfinite(y)
 
     # now solve the equation
-    coef, result = polyfit(x, y, deg=deg, full=True)
+    coef, result = polyfit(x, y, deg=deg, full=True, w=weight)
     # result is a list [residuals, rank, singular_values, rcond]
     residual = result[0]
 

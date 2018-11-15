@@ -14,10 +14,10 @@ def getmultifilename(pattern, N):
         files = rz.rzio.getmultifilename('image%02d', N=10)
 
     '''
-    from RZutilpy.rzio import replacehomepath
+    from RZutilpy.system import Path
     from numpy import arange, ndarray
 
-    pattern = replacehomepath(pattern)  # replace '~' to home directory
+    pattern = Path(pattern).str  # replace '~' to home directory
 
     if isinstance(N, int):
         N = arange(N) + 1

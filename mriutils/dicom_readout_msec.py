@@ -27,6 +27,9 @@ def dicom_readout_msec(ds, mode='CVN'):
             dicom header bpppe, so don't separately account for that
         3. Chris said the regular expression approach might fail in some dataset.
             consider to use other one
+
+    To do:
+        * more rigourous testing??
     '''
     from pydicom import dcmread
     from pydicom.dataset import FileDataset

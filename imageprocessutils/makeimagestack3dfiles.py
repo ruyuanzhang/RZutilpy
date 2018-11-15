@@ -1,5 +1,6 @@
-def makeimagestack3dfiles(m, outputprefix=None, skips=[5, 5, 5], k=[0, 0, 0], \
-    cmap='gray', returnstack=False, **kwargs):
+
+def makeimagestack3dfiles(m, outputprefix=None, skips=(5, 5, 5), k=(0, 0, 0), \
+    cmap='gray', returnstack=False, **stack_kw):
     '''
     makeimagestack3dfiles(m, outputprefix=None, skips=[5, 5, 5], k=[0, 0, 0], \
         cmap='gray', **kwargs):
@@ -7,15 +8,15 @@ def makeimagestack3dfiles(m, outputprefix=None, skips=[5, 5, 5], k=[0, 0, 0], \
     Input:
         <m>: is a 3D matrix or a nibabel image object
         <outputprefix>: is a output prefix,if it is NONE, then do not write images
-        <skips> (optional) is number of slices to skip in each of the 3 dimensions.
-          Default: [1 1 1].
-        <k> (optional) is a list with numbers containing the times to CCW rotate matrix
-            rotation info. See np.rot90. Default: [(), (), ()]. <k[i]> indicates
+        <skips> (optional) is a sequence of numbers of slices to skip in each of the 3 dimensions.
+          Default: [5, 5, 5].
+        <k> (optional) is a sequence with numbers containing the times to CCW rotate matrix
+            rotation info. See np.rot90. Default: [0, 0, 0]. <k[i]> indicates
             rotate the image when writing image stack along ith dimension
         <cmap> is the colormap to use. Default: gray(256), any matplotlib colormap input is fine
         <returnstack>: boolean, whether to return the 3 imagestack. Useful to visualize
             and can help adjust <skips> and <k>. Default:False
-        <kwargs>: kwargs for makeimagestack, include <wantnorm>, <addborder>
+        <stack_kw>: kwargs for makeimagestack, include <wantnorm>, <addborder>
             <csize>,<bordersize>
     Output:
         <imglist>: a 1x3 list containing the image matrix for 2,1,0 dimensions.
@@ -51,22 +52,22 @@ def makeimagestack3dfiles(m, outputprefix=None, skips=[5, 5, 5], k=[0, 0, 0], \
     '''
     from matplotlib.pyplot import imsave
     from nibabel.nifti1 import Nifti1Image as nifti
-    from RZutilpy import imageprocess, figure, system
+    from RZutilpy.imageprocess import makeimagestack
+    from RZutilpy.system import Path, makedirs
     import numpy as np
     import os
+
 
     if isinstance(m, nifti):
         m = m.get_data()
 
     _is_writeimage = True
     if outputprefix is None:
-        outputprefix = os.getcwd()  # the current directory
-        outputprefix = outputprefix + os.sep
+        outputprefix = Path.cwd()
         _is_writeimage = False
-    folderpath, header = os.path.split(outputprefix)
 
     # create the folder if not exist.
-    assert system.makedirs(folderpath+os.sep)  # note that we should add a os.sep to create the folder
+    assert makedirs(Path(outputprefix).parent)
 
     # define permutes
     imglist = []
@@ -85,14 +86,14 @@ def makeimagestack3dfiles(m, outputprefix=None, skips=[5, 5, 5], k=[0, 0, 0], \
         if k[dim]:  # note
             temp = np.rot90(temp, k=k[dim], axes=(0, 1))  # CCW rotate
 
-        f = imageprocess.makeimagestack(temp, **kwargs)
+        f = makeimagestack(temp, **stack_kw)
         imglist.append(f)
         # write the image
-        fname = '%s/%s_view%d.png' % (folderpath, header, dim)
+        fname = Path(outputprefix).parent / f'{Path(outputprefix).pstem}_view{dim}.png'
         # note that plt.imsave can automatically recognize the vmin and vmax, no
         # need to convert it to uint8 like in matlab
         if _is_writeimage:  # if not, only return the images of three views
-            imsave(fname, f, cmap=cmap)
+            imsave(fname.str, f, cmap=cmap)
 
     # return the imagestacks for visualization and debugging
     if returnstack:

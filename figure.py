@@ -23,6 +23,11 @@ default_img_set = default_img_set.default_img_set
 # plot
 from .figureutils import plot
 plot = plot.plot
+#import matplotlib.pyplot as plt
+#plt.plot = plot.plot
+
+from .figureutils import bar
+bar = bar.bar
 
 # regplot
 from .figureutils import regplot

@@ -7,8 +7,11 @@ def dicomloaddir(files, filenamepattern='*.dcm', maxtoread=None, phasemode=None,
     load multiple dicom files in one or multi directories
 
     Input:
-        <files>: a str or a list of str,
-            directory or a list of directories to read dicom
+        <files>: can be:
+            (1) a string of a directory
+            (2) a list of (2)
+            (3) a rzpath object
+            (4) a list of (3) object
         <filenamepattern>: str, the wildcard for the dicom file in a directory
         <maxtoread>: int, maximum number of dicom files to read
         <phasemodel>: ...implement later, ignore for now...
@@ -56,8 +59,10 @@ def dicomloaddir(files, filenamepattern='*.dcm', maxtoread=None, phasemode=None,
         1. figure out how to add read phase data
         2. check if some of the fields do no exist
         3. resize image to accommodate desired inplane size
+        4. save all metafile using pickel
 
     History:
+        20180720 <files> now can accept path-like objects
         20180626 RZ fixed the bug for reading the anatomical files
         20180605 RZ use nibabel.nicom.csareader.get_csa_header() function to read
             csa file and get the [BandWidthPerPixelPhaseEncode]
@@ -66,12 +71,12 @@ def dicomloaddir(files, filenamepattern='*.dcm', maxtoread=None, phasemode=None,
         20180420 RZ created this function
 
     '''
-    from os.path import join
-    from pydicom import dcmread
+
     from pydicom import dcmread
     from RZutilpy.rzio import matchfiles
     from RZutilpy.array import split2d
     from RZutilpy.mri import dicom_readout_msec
+    from RZutilpy.system import rzpath
     from numpy import stack
     from progressbar import progressbar as pbar
     import re
@@ -79,29 +84,28 @@ def dicomloaddir(files, filenamepattern='*.dcm', maxtoread=None, phasemode=None,
 
 
     # deal with input
-    if isinstance(files, str):
-        files = [files]  # single dicom, convert it to list
-    elif isinstance(files, list):
-        pass
-    else:
-        raise ValueError('Wrong file directories !')
+    files = [files] if not isinstance(files, list) else files
+    # convert it to path-like object
+    files = [rzpath(p) if not isinstance(p, rzpath) else p for p in files]
+
 
     # start to load
     dicominfolist = []
     vollist = []
     for iDir, filedir in enumerate(files):   # loop directory
-        filepattern = join(filedir, filenamepattern)
-        dcmnames = matchfiles(filepattern)
+        filepattern = filedir / filenamepattern
+        dcmnames = matchfiles(filepattern.str)
         if len(dcmnames) == 0:
-            print('This {} does not appear to be a directory containing DICOM files, so skipping.\n'.format(filedir))
+            print('This {} does not appear to be a directory containing {} files, so skipping.\n'.format(filedir,filenamepattern))
             break
         else:
-            print('This {} appear to be a directory containing DICOM files, so loading.\n'.format(filedir))
+            print('This {} appear to be a directory containing {} files, so loading.\n'.format(filedir, filenamepattern))
 
         dcmnames = dcmnames[:maxtoread]  # remove last couple of dcm files
 
         # ====== deal with dicom info, save a customized dicominfo dict =======
-        ds = dcmread(dcmnames[0])  # read 1st vol for info purpose
+        import matplotlib.pyplot as plt;import ipdb;ipdb.set_trace();
+        ds = dcmread(dcmnames[0].str)  # read 1st vol for info purpose
         # note current we assume this dicom have all fields below!! And we save
         # the very raw dicom info here
         dcminfothisrun= dict()
@@ -135,7 +139,6 @@ def dicomloaddir(files, filenamepattern='*.dcm', maxtoread=None, phasemode=None,
         # figure out inplane matrix, not that we assume
         # note this regular expression might fail in normal resolution imaging
 
-        import matplotlib.pyplot as plt;import ipdb;ipdb.set_trace();
         p = re.compile(r'^(\d{1,4}).?\*(\d{1,4}).?$')
         matchgroup = p.match(dcminfothisrun['AcquisitionMatrixText'])
         if matchgroup:
@@ -160,7 +163,7 @@ def dicomloaddir(files, filenamepattern='*.dcm', maxtoread=None, phasemode=None,
 
         # ================  deal with the volumes ====================
         print('\nReading in dicoms ......')
-        vol = [dcmread(i).pixel_array for i in pbar(dcmnames)]   # read pixel data
+        vol = [dcmread(i.str).pixel_array for i in pbar(dcmnames)]   # read pixel data
         # split mosaic images
         if dcminfothisrun['ismosaic']:
             # Note that we assume plines and flines will be exact divided by the image

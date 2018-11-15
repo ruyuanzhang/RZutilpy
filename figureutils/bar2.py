@@ -1,4 +1,9 @@
-def plot(x, y, yerr=None, xerr=None, axes=None, **kwargs):
+def bar2(x, height, errfmt='line', **kwargs):
+    '''
+    bar function deal with multiple input height
+    '''
+
+
     '''
     Plot multiple lines and errrobars together.
     Combine plt.plot and plt.errorbar, to make the plot and errorbar whithin
@@ -10,12 +15,9 @@ def plot(x, y, yerr=None, xerr=None, axes=None, **kwargs):
     Args:
         We keep all args in plt.errorbar, except that:
         x: a 1D array or 2D array. if 1D, the size should be same as column
-            size of y, x.shape[0]= y.shape[0]; if x is 2D, x.shape = y.shape
-        y: a 2D array, with each column is a line e.g., y[:,0] is a line
-        xerr, yerr: should be dot x line or, dot x line x 2 errorbar. the 3rd
-            dimension represent the lower [0] and upper [1] errorbar. when
-            x, y is a single line, xerr and yerr can be 1D array
-        axes: axes to plot
+            size of height, x.shape[0]= height.shape[0]; if x is 2D, x.shape = height.shape
+        height: a 2D array, with each column is a line e.g., height[:,0] is a line
+    errfmt:
 
     Return:
         we combine and return all return values from plt.errorbar with three
@@ -24,44 +26,31 @@ def plot(x, y, yerr=None, xerr=None, axes=None, **kwargs):
 
     Example:
 
-    plt.close('all')
-    x = np.arange(10)
-    y = np.random.rand(10)
-    yerr = np.random.rand(10,1,2) / 10
-    a = rz.figure.plot(x,y,yerr=yerr, fmt='-o')
-
-    plt.close('all')
-    x = np.arange(10)
-    y = np.random.rand(10, 3)
-    yerr = np.random.rand(10,3,2) / 10
-    a = rz.figure.plot(x,y,yerr=yerr, fmt='-o')
-
-    Note:
-    1. how to check single input data type. Single number should
-        still be an array
 
     History
-    20180928 now accept a list for all kwargs for individual lines
-    2017/12/05 rz add color list function to multiple lines.a
-
-    To do: 1. tease apart line properties
+        20180928 now accept a list for all kwargs for individual lines
+        20171205 rz add color list function to multiple lines.a
 
     '''
     import numpy as np
     import matplotlib.pyplot as plt
 
     # check input, if a single number ,we convert it to array
-    # deal with y
-    y = np.array(y) if not isinstance(y, np.ndarray) else y
-    y = np.array([y]) if y.ndim == 0 else y
+    # deal with height
+    height = np.array(height) if not isinstance(height, np.ndarray) else height
+    height = np.array([height]) if height.ndim == 0 else height
 
     # deal with x
     if x is None:
-        x = np.arange(y.shape[0])
+        x = np.arange(height.shape[0])
     else:
         x = np.array(x) if not isinstance(x, np.ndarray) else x
         x = np.array([x]) if x.ndim == 0 else x
+
     # deal with yerr
+    xerr=kwargs['xerr'] if 'xerr' in kwargs else None
+    yerr=kwargs['yerr'] if 'yerr' in kwargs else None
+
     if yerr is not None:
         yerr = np.array(yerr) if not isinstance(yerr, np.ndarray) else yerr
         yerr = np.array([yerr]) if yerr.ndim == 0 else yerr
@@ -71,13 +60,13 @@ def plot(x, y, yerr=None, xerr=None, axes=None, **kwargs):
         xerr = np.array([xerr]) if xerr.ndim == 0 else xerr
 
     # derive axes
-    axes = plt.gca() if axes is None else axes
+    axes = plt.gca() if 'axes' not in kwargs else kwargs['axes']
 
-    # format x, y, yerr, xerr dimension.
-    # We want x,y are dot x lines arrays
-    # We want yerr, xerr are dot x lines x 2 arrays
-    if y.ndim == 1:  # we only have one line
-        y = y[:, np.newaxis]
+    # format x, height, yerr dimension.
+    # We want x,height are dot x lines arrays
+    # We want yerr are dot x lines x 2 arrays
+    if height.ndim == 1:  # we only have one line
+        height = height[:, np.newaxis]
         x = x[:, np.newaxis]
         if yerr is not None:
             if yerr.ndim == 1:
@@ -90,60 +79,67 @@ def plot(x, y, yerr=None, xerr=None, axes=None, **kwargs):
                 xerr = np.concatenate((xerr, xerr), 2)
             assert xerr.ndim == 3, ValueError('might check xerr dimension')
     else:  # we have multiple lines
-        x = np.tile(x, (y.shape[1], 1)).T if x.ndim==1 else x
+        x = np.tile(x, (height.shape[1], 1)).T if x.ndim==1 else x
         if yerr is not None:
             if yerr.ndim == 2:
                 yerr = yerr[:, :, np.newaxis]
                 yerr = np.concatenate((yerr, yerr), 2)
                 # now yerror is a dotxlinex2 matrix
             assert yerr.ndim == 3, ValueError('might check yerr dimension')
-        if xerr is not None:
-            if xerr.ndim == 2:
-                xerr = xerr[:, :, np.newaxis]
-                xerr = np.concatenate((xerr, xerr), 2)
-            assert xerr.ndim == 3, ValueError('might check xerr dimension')
 
-    nline = y.shape[1]
+    nBars = height.shape[1]
+    # deal with the x position and height
+    groupWidth = min(0.8, nBars/(nBars+1.5));
+    barWidth = groupWidth / nBars
+    xLoc_tmp = np.arange(-groupWidth / 2 + barWidth / 2, groupWidth / 2, barWidth)
+    xLoc_tmp = np.tile(xLoc_tmp[np.newaxis, :],(height.shape[0],1))
+    x = x + xLoc_tmp;
+    barWidth = barWidth * 0.8
 
-    # now check the x, y shape
-    assert x.shape == y.shape, ValueError('incompatible dimension of x,y')
+    # now check the x, height shape
+    assert x.shape == height.shape, ValueError('incompatible dimension of x,height')
     # check errorbar size
-    if yerr is not None and yerr.shape[1] != nline:
-        raise ValueError('incompatible dimension of yerr,y')
-    if xerr is not None and xerr.shape[1] != nline:
-        raise ValueError('incompatible dimension of xerr,y')
+    if yerr is not None and yerr.shape[1] != nBars:
+        raise ValueError('incompatible dimension of yerr,height')
+    if xerr is not None and xerr.shape[1] != nBars:
+        raise ValueError('incompatible dimension of xerr,height')
 
     # deal with other *kwarges
     for k,v in kwargs.items():
         if not isinstance(v, list):
-            kwargs[k] = [v] * nline
+            kwargs[k] = [v] * nBars
         else:
             errmsg = '{}, Number of input should be consistent with lines'.format(k)
-            assert len(v)==nline, errmsg
+            assert len(v)==nBars, errmsg
 
-    #ecolor = [ecolor] * nline if not isinstance(ecolor, list) else ecolor
+    #ecolor = [ecolor] * nBars if not isinstance(ecolor, list) else ecolor
 
     # initialize lists of return
-    line_object = []
-    cap_object = []
-    linecollection_object = []
+    patch_list = []
+    errorbar_list = []
     # do it
-    for i in range(nline):
+    for i in range(nBars):
 
         yerrtmp = None if yerr is None else np.transpose(yerr[:, i, :])  # yerr input should be 2xN
         xerrtmp = None if xerr is None else np.transpose(xerr[:, i, :])  # xerr input should be 2xN
 
+        # deal with kwargs
         kwargs_tmp = dict()
         for k,v in kwargs.items():
                 kwargs_tmp[k] = kwargs[k][i]
+        kwargs_tmp['width'] = barWidth
+        kwargs_tmp['xerr'] = xerrtmp
+        kwargs_tmp['yerr'] = yerrtmp
+        kwargs_tmp['axes'] = axes
 
         # some keyward variables can receive a list as input to specify individual lines
-        errout = axes.errorbar(
-            x[:, i], y[:, i], yerr=yerrtmp, xerr=xerrtmp, axes=axes, **kwargs_tmp
-        )
+        bar_container = axes.bar(x[:, i], height[:, i], **kwargs_tmp)
 
-        line_object.append(errout[0])
-        cap_object.append(errout[1])
-        linecollection_object.append(errout[2])
+        # set errorbar color
+        bar_container.errorbar[2][0].set_color([i.get_edgecolor() for i in bar_container.patches]) if 'ecolor' not in kwargs_tmp else bar_container
 
-    return np.array(line_object), np.array(cap_object), np.array(linecollection_object)
+
+        patch_list.append(bar_container.patches)
+        errorbar_list.append(bar_container.errorbar)
+
+    return patch_list, errorbar_list

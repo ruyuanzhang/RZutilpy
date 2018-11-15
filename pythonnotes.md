@@ -17,6 +17,9 @@ nano scientific_startup.py
 * all relevant configration will be in ~/.ipython/profile_default/ipython_config.py
 * in ipython_config.py, we set the scientific_startup.py as the startup running file for ipython
 
+# path
+
+
 # python command summary
 * sys.path to show all path
 * subprocess.run(['ls', '-al'])
@@ -40,6 +43,34 @@ os.path.getatime
 os.path.getctime
 os.path.getmtime
 ```
+
+* the use of pathlib.path object
+
+```
+from pathlib import Path
+
+print(Path.home())  # 用户目录
+cwd = Path.cwd()    # 当前目录
+print(cwd)
+
+full_name = Path(__file__)   # 当前文件名
+print(full_name)
+print(full_name.suffix)     # 文件后缀
+print(full_name.stem)   # 文件名不带后缀
+print(full_name.name)   # 带后缀的完整文件名
+print(full_name.parent)     # 路径的上级目录
+print(full_name.is_dir())   # 判断是否是目录
+print(full_name.resolve())  # 返回绝对路径
+print(full_name.exists())       # 路径是否存在
+print(full_name.root)       # 返回路径的根目录
+print(full_name.parts)  # 分割路径 类似os.path.split(), 不过返回元组
+print(full_name.stat())     # 返回路径信息, 同os.stat()
+
+# note that for any input str, please first do expanduser() then do resolve() to covert it to an obsoluate path, otherwise will be problem
+
+b = Path('pathtofile').expanduser().resolve()
+```
+
 
 * operate system 
 
@@ -70,6 +101,22 @@ If you are not dealing with arrays and are not performing math manipulations of 
 If you have vectors of truth values that you wish to combine, use numpy with  &
 ```
 
+# Object-related proproraming
+
+* 实例方法只能被实例对象调用，静态方法(由@staticmethod装饰的方法)、类方法(由@classmethod装饰的方法)，可以被类或类的实例对象调用。
+	* 实例方法，第一个参数必须要默认传实例对象，一般习惯用self。
+	* 静态方法，参数没有要求。
+	* 类方法，第一个参数必须要默认传类，一般习惯用cls。
+* given a object, get its parent class
+
+```
+import inspect
+a = Path('~')
+parent = inspect.getmro(type(a)) # will return a tuple
+# you can directly use it 
+b = parent[1]('~')
+```
+
 # conda skills
 * save conda environment file
 
@@ -88,6 +135,21 @@ But based on what I tried (i.e., try to immigrate the whole python enviroment se
 conda env update -f rzutilpy.yml
 ```
 
+* python parallel computer is disappoting, now we have
+
+```
+# multipocessing
+# this is good and I think efficient but this module use pickle and many functions cannot be pickled
+
+# pathos
+# which is a branch of pathos and follows the same logic, but I cannot make it work on my computer
+
+# ipyparrallel
+# which is new and avoids the pickle problem, but it requires the configuration profile. Not sure how to set it up
+
+``` 
+
+
 
 
 # Numpy specific 
@@ -100,7 +162,7 @@ conda env update -f rzutilpy.yml
 * squeeze = np.squeeze or a.squeeze() 
 * matlab find = np.where
 * np.sum can directly input boolean data type and count how many true
-* sprintf = %
+* sprintf = % but use format or f"" instead
 * cell2mat = np.block
 * sort = np.sort (return sorted arr), np.argsort (return index)
 * sprintf in matlab = '%' in python
@@ -190,6 +252,19 @@ a = a.T  #自己改变自己
 b = a.max() # 计算一个值
 ```
 
+* numpy 100题
+
+```
+# note here
+print(sum(range(5),-1))
+from numpy import *
+print(sum(range(5),-1))
+
+#
+print(0.3 == 3 * 0.1)  # False
+
+```
+
 
 
 # Figure related (matplotlib)
@@ -234,6 +309,20 @@ https://matplotlib.org/gallery/statistics/hist.html#sphx-glr-gallery-statistics-
 
 * axes.set_visible(False) can hide an axes. This is useful n x n subplots grid cannot be fully filled.
 
+* modify properties of LineCollection, can use functions like
+get_color, get_color, set_color, get_linestyle
+
+* fix, ax = plt.subplots(3, 2, figsize=(12, 4))
+* plt.colorbar(pad=0.05, shrink=0.8)
+* get default colormap
+
+```
+plt.rcParams['axes.prop_cycle'].by_key()['color']
+can get other cmap
+plt.get_cmap('Set1', 20)
+```
+
+
 # String manipulation 
 1. strcmp can use ==
 
@@ -253,17 +342,8 @@ b'abcde'.decode("utf-8")
 'abcde'
 ```
 
-# Matlibplot notes 
-* fix, ax = plt.subplots(3, 2, figsize=(12, 4))
-* plt.colorbar(pad=0.05, shrink=0.8)
-* remove extra axes,
-     ``` fig.delaxes(ax[-1])```
+* ''.replace(old,new)
 
-* get default colormap
-```
-plt.rcParams['axes.prop_cycle'].by_key()['color']
-can get other cmap
-plt.get_cmap('Set1', 20)
 ```
 
 # Pandas
@@ -327,9 +407,12 @@ flines = int(matchgroup.group(2))  # step in frequency encoding direction
 
 #  compatibility, debug
 * (last updated 20180618) Mayavi2 is released on May 27, 2018. This new mayavi toolkit fully support python3. The current release includes mayavi 4.6, vtk 8.1
+
 * (last updated 20180618) Psychpy 1.9.0 is now released and this is a major release aiming for supporting python 3. Be careful, current version requires pyglet 1.3.0. It will report error suin pyglet 1.3.2 ()
 
 
 * Pysurfer. Pysurfer requires support from mayavi. Since the new version mayavi was just released, it might take some time for pysurfer people to catch up.
+
 * afni, brainvoyager, current afni only support python 2, not python 3.
+
 * Pycortex, not sure how it uses, crappy software...

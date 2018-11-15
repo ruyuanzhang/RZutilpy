@@ -1,4 +1,4 @@
-def makedirs(name, mode=None, exist_ok=True):
+def makedirs(name, mode=None, exist_ok=True, wantassert=True):
     '''
     makedirs(name, mode=None, exist_ok=True):
 
@@ -7,26 +7,24 @@ def makedirs(name, mode=None, exist_ok=True):
     does not.We return True or False to indicate the success of creating the folder
 
     Note:
-        1. if name is a dir, please add file sep in the end (i.e., '/home/folder/')
-        2. The user homedir sign '~' is fine.
+        1. a name without suffixes will be treated as a folder
+        2. The user homedir sign '~' is fine, we replace it with
 
     <name> can be either
-        (1) a folder name, like '/User/ruyuan/testpath'
+        (1) a str folder name, like '/User/ruyuan/testpath'
         (2) a filename. like '/User/ruyuan/testpath/test.py'. in this case, we create
             the folder '/User/ruyuan/testpath/'
-        '~/testpath' is OK
-        only a filename 'test.py' is also ok, in this case we do not create any folder
-        since we are already in this folder
+            '~/testpath' is OK
+            only a filename 'test.py' is also ok, in this case we do not create any folder
+            since we are already in this folder
+        (3) a Path or path-like object
+
     <mode>: folder permission, default:None
     <exist_ok>: whether OK if it is exist, if the folder exists, we do nothing
-
-    We use name.suffix=='' to judge foldername of filename
-
+    <wantassert>: raise error if fail
 
     which means we want to save something in the current folder. Then we choose
     to do nothing special.
-
-    The user homedir sign '~' is fine.
 
     Example:
         # make a folder name 'here' if it does not exist
@@ -40,19 +38,22 @@ def makedirs(name, mode=None, exist_ok=True):
         # if not, we create the folder for this file, the usage is below
         makedirs('/home/heihei.png')
 
+    History:
+
+    20180714 <name> now can be a path-like object or a string
     20180622 switch to use pathlib module
 
     '''
-    from pathlib import Path
+    from RZutilpy.system import Path
 
-    name = Path(name)
-    # replace home directory
-    name = name.expanduser()
+    # convert to rzpath object
+    name = Path(name) if not isinstance(name, Path) else name
 
-    if str(name.parent) == '.':  # make a file in the current, no need to make the dir
-        return
-    if name.suffix != '':  # the input is a file, we strip the filename and only keep the folder name
-        name = name.parent
+    # check whether it exist
+    if not name.exists(): # we have to create it
+        # if name has suffixes, means it is a file, we create a parent folder, otherwise
+        # name is a folder we directly create it
+        name = name.parent if name.suffixes != [] else name
 
     # we cannot set the default in the func, so using this...
     # note that we make all parent folder if they do not exist
@@ -61,12 +62,16 @@ def makedirs(name, mode=None, exist_ok=True):
             name.mkdir(parents=True, exist_ok=exist_ok)
             return True  # this is helpful for assert
         except:
-            print('Failed to make the dir %s!' % name)
+            print('Failed to make the dir %s!' % name.str)
+            if wantassert:
+                raise NameError('Failed to make the dir %s!' % name.str)
             return False
     else:
         try:
             name.mkdir(mode=mode, parents=True, exist_ok=exist_ok)
             return True
         except:
-            print('Failed to make the dir %s!' % name)
+            print('Failed to make the dir %s!' % name.str)
+            if wantassert:
+                raise NameError('Failed to make the dir %s!' % name.str)
             return False

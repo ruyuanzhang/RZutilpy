@@ -21,5 +21,8 @@ calccod = calccod.calccod
 from .mathutils import calccorrelation
 calccorrelation = calccorrelation.calccorrelation
 
+from .mathutils import mod2
+mod2 = mod2.mod2
+
 
 

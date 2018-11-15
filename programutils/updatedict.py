@@ -5,13 +5,12 @@ def updatedict(inputdict, targetdict, mode='check'):
     <inputdict>: the input dict to merge from
     <targetdict>: the dict to merge to
     <mode>: a str, can be
-        1. 'check' (default), indicates must check all keys in inputdict. If a
-            key exists in inputdict but not in targetdict, we report an error.
+        1. 'check' (default), indicates must check all keys in <inputdict>. If a
+            key exists in <inputdict> but not in <targetdict>, we raise an error.
         2. 'merge'. Merge all info in <inputdict> to <targetdict>. The keys that only
             exist in <inputdict> become new keys in <targetdict>.
-        3. 'extract', only extract the keys that exist in both inputdict and targetdict.
-            then update them from inputdict to targetdict
-
+        3. 'extract', only extract the keys that exist in both <inputdict> and <targetdict>.
+            then update them from <inputdict> to <targetdict>
 
     we update info in <inputdict> to <targetdict> and return a <updatedict>, depending
     on <mode>. Note that <inputdict> and <targetdict> are not interchangable.

@@ -3,6 +3,7 @@ def regplot(x, y, axes=None, rtrnum=1, **kwargs):
     rz's wrapper for the seaborn.regplot function, we add the output for the regression result.
     We return regression result, like p values
     To obtain the objects of lines, shading, scatters, please use axes.get_children() function
+
     Scatters are PathCollection objects
     Lines are Lines objects
     Shading are PolyCollection objects

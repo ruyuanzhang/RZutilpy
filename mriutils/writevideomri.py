@@ -9,7 +9,7 @@ def writevideomri(mriarr, videoname, axis=2, k=0, stackkwargs={'wantnorm': 1}, v
     Input:
         <mriarr>: is a 3d or 4d array or a nibabel image object, this is for MRI
             so we assume all images are gray scale
-        <videoname>: output video name
+        <videoname>: output video name, can be a string or a rzpath object
         <axis>: int ~ [0, 1, 2], indicate:
             if 3d, from which axis to make the video
             if 4d, from which axis to make imagestack
@@ -44,17 +44,20 @@ def writevideomri(mriarr, videoname, axis=2, k=0, stackkwargs={'wantnorm': 1}, v
     from RZutilpy.imageprocess import imagesequencetovideo, gray2rgb
     from RZutilpy.mri import makeimagestackmri
     from RZutilpy.array import split
+    from RZutilpy.system import rzpath
     import progressbar
     from cv2 import cvtColor, COLOR_GRAY2RGB
     from numba import jit
 
-
+    # check input
     if isinstance(mriarr, nifti):
         mriarr = mriarr.get_data()
     elif isinstance(mriarr, ndarray):
         pass
     else:
         raise ValueError('Wrong input!')
+    #
+    videoname = rzpath(videoname) if ~isinstance(videoname, rzpath) else videoname
 
     pbar = progressbar.progressbar
 

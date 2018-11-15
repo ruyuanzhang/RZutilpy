@@ -21,14 +21,20 @@ def loadmat(filename, **kwargs):
         mat,keys,values = loadmat('data01.mat')
 
     History and Notes:
+        20180720 <filename> can accept Path object
         20170802 RZ add more input
         20170326 RZ created it
 
 
     """
     import scipy.io as spio
-    print('read in' + filename + '...')
-    mat_contend = spio.loadmat(filename, **kwargs)
+    from RZutilpy.system import Path
+
+    # convert str to path-like object
+    filename = Path(filename) if not isinstance(filename, Path) else filename
+
+    print('read in' + filename.str + '...')
+    mat_contend = spio.loadmat(filename.str, **kwargs)
     keys = list(mat_contend.keys())  # we read keys as a list
     values = list(mat_contend.values())
     del keys[0:3]  # remove first 3 information keys.

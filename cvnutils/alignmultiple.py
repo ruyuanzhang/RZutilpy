@@ -52,6 +52,7 @@ def alignmultiple(niifiles, subjectid, outputprefix, mcmask='brainmask', skips=(
     - implement the brain extraction and alignment using afni or fsl
 
     history:
+    20180714 accept the pathlib object for niftitiles
     20180620 RZ created this file based on cvnalignmultiple.m
     '''
 
@@ -63,17 +64,20 @@ def alignmultiple(niifiles, subjectid, outputprefix, mcmask='brainmask', skips=(
     from numpy import isnan, isfinite, percentile, abs, all, stack
     from os.path import dirname, join
     from colormap import Colormap
+    from pathlib import Path
 
 
     # calc
-    dir0 = join(cvnpath('anatomicals'), subjectid)
-    pp0 =  join(cvnpath('ppresults'),  subjectid)
+    dir0 = cvnpath('anatomicals') / subjectid
+    pp0 =  cvnpath('ppresults') /  subjectid
 
     # match files
-    niifiles = matchfiles(niifiles)
+    if all([isinstance(p, Path) for p in niifiles]):
+      niifiles = [str(p) for p in niifiles]
+    niifiles = matchfiles(niifiles) # after matchfiles niifiles become pathlib objects
 
     # load the first volume
-    vol1 = nib.load(niifiles[0])
+    vol1 = nib.load(str(niifiles[0]))
     vol1data = vol1.get_data().astype('f4') # 32 bit floating point
     vol1data[isnan(vol1data)] = 0
 
@@ -84,21 +88,21 @@ def alignmultiple(niifiles, subjectid, outputprefix, mcmask='brainmask', skips=(
     # to align multiple volumes
 
     # let's create a brainmask using afni utility
-    datadir = dirname(niifiles[0])
-    brainmaskfile = join(datadir, 'T1alignbrainmask.nii.gz')
+    datadir = niifiles.parent
+    brainmaskfile = datadir / 'T1alignbrainmask.nii.gz'
 
     # skullstrip to create the mask
-    result = unix_wrapper('3dSkullStrip -input %s -prefix %s -mask_vol' % (niifiles[0], brainmaskfile))
+    result = unix_wrapper('3dSkullStrip -input {} -prefix {} -mask_vol'.format(str(niifiles[0]), str(brainmaskfile)))
     # on stone 3DSkullStrip cannot specify the output directory... afni bug??
     # we manually move the mask file
-    result = unix_wrapper('mv T1alignbrainmask.nii.gz %s/' % datadir)
+    result = unix_wrapper('mv T1alignbrainmask.nii.gz %s/'.format(str(datadir)))
 
     # read the mask vol file
-    brainmask = nib.load(brainmaskfile).get_data()
+    brainmask = nib.load(str(brainmaskfile)).get_data()
 
     # inspect first volume and brainmask
-    makeimagestack3dfiles(vol1data, join(pp0,'%sfigures' % outputprefix, 'vol%03d' % 0), skips,rots, wantnorm=1, addborder=1)
-    makeimagestack3dfiles(brainmask, join(pp0, '%sfigures' % outputprefix, 'brainmask'), skips,rots, wantnorm=1, addborder=1)
+    makeimagestack3dfiles(vol1data, join(str(pp0),'{}figures'.format(outputprefix), 'vol{:03d}'.format(0)), skips,rots, wantnorm=1, addborder=1)
+    makeimagestack3dfiles(brainmask, join(str(pp0), '%sfigures'.format(outputprefix), 'brainmask'), skips,rots, wantnorm=1, addborder=1)
     # ===============================================
 
 
@@ -112,7 +116,8 @@ def alignmultiple(niifiles, subjectid, outputprefix, mcmask='brainmask', skips=(
     #   sd = mcmask{2}
 
     # loop over volumes
-    outputfiles = [p[:-7] + '_aligned' + '.nii.gz' for p in niifiles]
+    outputfiles = [p[:-7] + '_aligned.nii.gz' for p in niifiles]
+
     vols=[]  # note that this list does not contain the 1st volume
     for p in range(1, len(niifiles)):
       # issue the cmd as list. This is the input for unix_wrapper

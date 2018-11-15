@@ -11,14 +11,13 @@ multifilename(pattern, N)
 savepkl(filename, *vars)
 loadpkl(filename)
 '''
+
+
 from .rzioutils import loadmat
 loadmat = loadmat.loadmat
 
 from .rzioutils import loadmath5py
 loadmath5py = loadmath5py.loadmath5py
-
-from .rzioutils import replacehomepath
-replacehomepath = replacehomepath.replacehomepath
 
 from .rzioutils import matchfiles
 matchfiles = matchfiles.matchfiles

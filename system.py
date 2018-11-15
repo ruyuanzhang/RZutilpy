@@ -12,3 +12,6 @@ makedirs = makedirs.makedirs
 
 from .systemutils import gettimestr
 gettimestr = gettimestr.gettimestr
+
+from .systemutils import rzpath
+Path = rzpath.Path

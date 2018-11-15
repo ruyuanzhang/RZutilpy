@@ -23,10 +23,14 @@ source deactivate
 
 ## specific for Ruyuan Zhang on atlas4, atlas10 and stone
 
+
+
 # rz created a python enviroment called 'atlaspythonenv' under the user home directory
 # procedures to activate the environment
+
+# 20181113, RZ change the name to 'rzpyenv'
 cd ~
-source activate ~/atlaspythonenv
+source activate ~/rzpyenv
 
 # MUST USE OBSOLUTE PATH HERE !!!
 #  deactivate ipython

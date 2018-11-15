@@ -12,24 +12,24 @@ def alignT2toT1alt(subjectid, wantmi=True):
 
     See code for assumptions.
     '''
-    from RZutilpy.cvnpy import path
+    from RZutilpy.cvnpy import cvnpath
     from RZutilpy.system import unix_wrapper
     from RZutilpy.imageprocess import makeimagestack3dfiles
+    from RZutilpy.system import Path
 
-    from os import path
 
-    dir0 = path.join(path('anatomicals'), subjectid)
-    fsdir = path.join(path('freesurfer'), subjectid)
-    pp0 = path.join(path('ppresult'), subjectid)
+    dir0 = (Path(cvnpath('anatomicals')) / subjectid).str
+    fsdir = (Path(cvnpath('freesurfer')) / subjectid).str
+    pp0 = (Path(cvnpath('ppresult')) / subjectid).str
 
     # find T2 NIFTI
-    t2nifti = path.join(dir0, 'T2average.nii.gz')
+    t2nifti = (Path(dir0) / 'T2average.nii.gz').str
 
     # find T1 NIFTI
-    t1nifti = path.join(fsdir, 'mri', 'T1.nii.gz')
+    t1nifti = (Path(fsdir) / 'mri' / 'T1.nii.gz').str
 
     # define output file
-    t2tot1nifti = path.join(fsdir, 'mri', 'T2alignedtoT1.nii.gz')
+    t2tot1nifti = (Path(fsdir) / 'mri' / 'T2alignedtoT1.nii.gz').str
 
     # call flirt to perform the alignment
     if wantmi:
@@ -48,8 +48,8 @@ def alignT2toT1alt(subjectid, wantmi=True):
     unix_wrapper(cmd)
 
     # inspect the results
-    makeimagestack3dfiles(t1nifti, os.join(pp0, 'T1T2alinment', 'T1'), skips=(5, 5, 5), k=[1, 1, 0], wantnorm=1, addborder=1)
-    makeimagestack3dfiles(t2tot1nifti, os.join(pp0, 'T1T2alinment', 'T2'), skips=(5, 5, 5), k=[1, 1, 0], wantnorm=1, addborder=1)
+    makeimagestack3dfiles(t1nifti, (Path(pp0) / 'T1T2alinment'/ 'T1').str, skips=(5, 5, 5), k=[1, 1, 0], wantnorm=1, addborder=1)
+    makeimagestack3dfiles(t2tot1nifti, (Path(pp0) / 'T1T2alinment'/'T2').str, skips=(5, 5, 5), k=[1, 1, 0], wantnorm=1, addborder=1)
 
 
 

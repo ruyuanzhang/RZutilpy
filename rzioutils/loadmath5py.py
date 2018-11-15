@@ -3,7 +3,7 @@ def loadmath5py(filename):
     Similar to loadmat function, except that this function import h5py package to read v7.3 mat file
 
 
-    can only supply the <filename> and read in all datas
+    can only supply the <filename>, <filename> can be a string or a Path object
 
     Return, exmaple see loadmat function
 
@@ -13,8 +13,13 @@ def loadmath5py(filename):
     """
     from h5py import File
     import numpy as np
-    print('read the file' + filename)
-    Fileobject = File(filename,'r')
+    from RZutilpy.system import Path
+
+    filename = Path(filename) if ~isinstance(filename, Path) else filename
+
+
+    print('read the file' + filename.str)
+    Fileobject = File(filename.str,'r')
     keys = []
     values = []
     mat_contend = {}

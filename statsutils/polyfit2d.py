@@ -1,4 +1,4 @@
-def polyfit2d(x, y, z, deg=1, grid=True):
+def polyfit2d(x, y, z, deg=1, grid=True, weight=None):
     '''
     polyfit2d(x, y, z, deg=1, grid=True):
 
@@ -11,6 +11,7 @@ def polyfit2d(x, y, z, deg=1, grid=True):
         <grid>: boolean, optional. Whether x, y, z is a grid format. Then we
             convert it to normal array format. This is useful if we fit a polynomial
             to a 2d surface. In this case, z.size = x.size * y.size
+        <weight>: same size with z, weight assigned for each data point
     Output:
         <coef>: 1d array, derived coefficients. See Note note below for the order
                     of coef
@@ -49,6 +50,7 @@ def polyfit2d(x, y, z, deg=1, grid=True):
         plt.imshow(z)
 
     History:
+        20180628 RZ add <weight> input
         20180616 RZ double checked the function, it works very well.
         20180510 RZ created it
 
@@ -59,6 +61,7 @@ def polyfit2d(x, y, z, deg=1, grid=True):
 
     import numpy as np
     import scipy.linalg as linalg
+    import scipy.sparse as sparse
     from numpy.polynomial.polynomial import polyvander2d
 
     # check input
@@ -66,6 +69,9 @@ def polyfit2d(x, y, z, deg=1, grid=True):
     assert isinstance(y, np.ndarray) and y.ndim == 1, 'y is not 1d np.npdarray!'
     assert isinstance(z, np.ndarray), 'z must be an array'
     z = z.flatten()
+
+    if weight is None:
+        weight = np.ones(m.size)
 
     # convert if grid=True
     if grid:
@@ -88,11 +94,16 @@ def polyfit2d(x, y, z, deg=1, grid=True):
     # remove the item that exceeds the order
     V = V[:, mask]
 
-    # now solve the equation
-    # note here we have to remove nan value otherwise linalg.lstsq report error
-    coef, residual, rank, _ = linalg.lstsq(V[valid,:], z[valid])
-
-    predz = np.dot(V, coef)
+    # set the weight matrix
+    if weight:
+        W = sparse.diags(weight[valid])
+        # directly solve the equation
+        coef = linalg.inv(V[valid,:].T @ W @ V[valid,:]) @ V[valid,:].T @ W * m[valid]
+        predz = np.dot(V, coef)
+        residual = (weight[valid] * (predm[valid] - m[valid]) ** 2).sum()
+    else:
+        coef, residual, _, _= linalg.lstsq(V[valid,:], m[valid])
+        predz = np.dot(V, coef)
 
     if grid:   # if grid case, we output a multi array
         predz = predz.reshape(xsize, ysize)

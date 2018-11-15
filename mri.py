@@ -38,6 +38,19 @@ T2data = T2data.T2data
 from .mriutils import getfilenamenii
 getfilenamenii = getfilenamenii.getfilenamenii
 
+from .mriutils import getafniprefix
+getafniprefix = getafniprefix.getafniprefix
+
 # ===================
 from .mriutils import detrendtimeseries
 detrendtimeseries = detrendtimeseries.detrendtimeseries
+
+# ================== freesurfer ===========
+from .mriutils import fstoint
+fstoint = fstoint.fstoint
+
+from .mriutils import inttofs
+inttofs = inttofs.inttofs
+
+from .mriutils import calcsapvael
+calcsapvael = calcsapvael.calcsapvael

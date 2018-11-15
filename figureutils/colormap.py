@@ -33,7 +33,7 @@ def colormap(cmap, nColor=256, vmin=0, vmax=1):
     Output:
         <lcmap>: return a LinearSegmentedColormap or a ListedColormap object
             since in most cases we need linear interpolation.
-            For LinearSegmentedColormap object, we add a color attribute to store all colors
+            For LinearSegmentedColormap object, we add a 'color' attribute to store all colors
 
     Examples:
         # create a colormap from default matplotlib colormaps
