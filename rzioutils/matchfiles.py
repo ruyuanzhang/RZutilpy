@@ -1,6 +1,6 @@
-def matchfiles(pattern, wantsort='name'):
+def matchfiles(pattern, wantsort='numName'):
     '''
-    matchfiles(pattern, wantsort='name'):
+    matchfiles(pattern, wantsort='numName'):
 
     return a list of filename following a wildcard expression pattern. We use
     glob module here. Another option is fnmatch module. The difference is that
@@ -11,10 +11,11 @@ def matchfiles(pattern, wantsort='name'):
         (2) or a list of strings of (1)
         NOTE THAT WE DO NOT ACCEPT PATH OBJECT, ONLY STRING!!!
 
-    <wantsort> indicates the key function (e.g., {'name', 'time'}) input for sorted function.
-        search 'sorted' in python for more information. It can be {'name', 'time'},
-        indicating sorting the files by name and the last-modification time
-        Default: 'name'
+    <wantsort> indicates the key function (e.g., {'numName', 'name', 'time'}) input for sorted function.
+        search 'sorted' in python for more information. It can be {'numName','name', 'time'},
+        indicating sorting the files by name and the last-modification time. 'numName' consider
+        the numerical number in a string
+        Default: 'numName'
 
     If only one match pattern is supplied, we output
     (1) a string, if only one file is matched
@@ -27,6 +28,7 @@ def matchfiles(pattern, wantsort='name'):
     also absolute path
 
     History:
+        20181231 rz add numerical string functionality
         20180930 output list of string
         20180714 now return all paths as path-like objects, but <pattern> still need to be string
         20180626 always output absolute path
@@ -37,6 +39,7 @@ def matchfiles(pattern, wantsort='name'):
             is not sorted.
     '''
     import os
+    import re
     from glob import glob
     from RZutilpy.system import Path
 
@@ -57,6 +60,12 @@ def matchfiles(pattern, wantsort='name'):
         filelist = [sorted(f, key=os.path.basename) for f in filelist]
     elif wantsort == 'time':
         filelist = [sorted(f, key=os.path.getmtime) for f in filelist]
+    elif wantsort == 'numName':
+        def stringSplitByNumbers(x):
+            r = re.compile('(\d+)')
+            l = r.split(x)
+            return [int(y) if y.isdigit() else y for y in l]
+        filelist = [sorted(f, key=stringSplitByNumbers) for f in filelist]
     else:
         print('filenames not sorted')
 

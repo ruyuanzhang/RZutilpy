@@ -8,10 +8,10 @@ def loadpkl(filename,varname=None):
     20180714 <filename> accept path-like obj, use dill replace pickle
     '''
     from dill import load
-    import RZutilpy.system as Path
+    from RZutilpy.system import Path
 
     # convert to path-like object
-    filename = Path(filename) if ~isinstance(filename, Path) else filename
+    filename = Path(filename) if not isinstance(filename, Path) else filename
 
     # open a file
     f = open(filename.str, 'rb')

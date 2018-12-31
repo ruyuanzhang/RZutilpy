@@ -9,13 +9,14 @@ def plot(x, y, yerr=None, xerr=None, axes=None, **kwargs):
 
     Args:
         We keep all args in plt.errorbar, except that:
-        x: a 1D array or 2D array. if 1D, the size should be same as column
+        <x>: a 1D array or 2D array. if 1D, the size should be same as column
             size of y, x.shape[0]= y.shape[0]; if x is 2D, x.shape = y.shape
-        y: a 2D array, with each column is a line e.g., y[:,0] is a line
-        xerr, yerr: should be dot x line or, dot x line x 2 errorbar. the 3rd
+        <y>: a 2D array, with each column is a line e.g., y[:,0] is a line
+        <xerr>, <yerr>: should be dot x line or, dot x line x 2 errorbar. the 3rd
             dimension represent the lower [0] and upper [1] errorbar. when
             x, y is a single line, xerr and yerr can be 1D array
-        axes: axes to plot
+        <axes>: axes to plot
+        <kwargs>: keyword arguments for the plt.errorbar and plt.plot function
 
     Return:
         we combine and return all return values from plt.errorbar with three
@@ -42,9 +43,7 @@ def plot(x, y, yerr=None, xerr=None, axes=None, **kwargs):
 
     History
     20180928 now accept a list for all kwargs for individual lines
-    2017/12/05 rz add color list function to multiple lines.a
-
-    To do: 1. tease apart line properties
+    20171205 rz add color list function to multiple lines.
 
     '''
     import numpy as np

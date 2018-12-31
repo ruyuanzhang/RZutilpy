@@ -76,7 +76,9 @@ b = Path('pathtofile').expanduser().resolve()
 
 ```
 # check environment variable
+
 os.environ['PATH']
+
 ```
 
 * convert hexadecimal numbers to decimal
@@ -149,9 +151,6 @@ conda env update -f rzutilpy.yml
 
 ``` 
 
-
-
-
 # Numpy specific 
 * Some times use map/zip/list together
 * Note the difference between np.stack and np.concatenate
@@ -162,10 +161,10 @@ conda env update -f rzutilpy.yml
 * squeeze = np.squeeze or a.squeeze() 
 * matlab find = np.where
 * np.sum can directly input boolean data type and count how many true
-* sprintf = % but use format or f"" instead
+* sprintf = % but can also use format or f"" instead
 * cell2mat = np.block
 * sort = np.sort (return sorted arr), np.argsort (return index)
-* sprintf in matlab = '%' in python
+
 
 ```
 'xxxx%02dxxx' % a
@@ -322,6 +321,15 @@ can get other cmap
 plt.get_cmap('Set1', 20)
 ```
 
+* switch current figures. Useful when using pure command line tool to perform computation on server
+
+```
+f1 = plt.figure()
+f2 = plt.figure()
+# switch to f1
+plt.figure(f1.number)
+```
+
 
 # String manipulation 
 1. strcmp can use ==
@@ -381,8 +389,8 @@ a = df.loc[2]  # return the second row
 df2 = df.copy()
 ```
 
-* datafrom to ndarrayw
-
+* dataframe to ndarray
+df.values
 
 #  regular expression
 

@@ -3,19 +3,18 @@ def booterrorbar(x, metric='mean', errorFormat='single', prcnt=68, nBoot=1000):
     booterrorbar(x, metric='mean', errorFormat='single', prcnt=68, nBoot=1000)
 
     Use bootstrap to estimate errorbar. We detect nan values and if input contains nan values
-    we use np.nanmean or np.nanmedian
+    we use np.nanmean or np.nanmedian to avoid that
 
     Args:
-        x: a 1d array. If not, we will flatten it a 1d vector
-       metric(opt): a string, specify 'mean'(default),
+        <x>: a 1d array. If not, we will flatten it a 1d vector
+        <metric>(opt): a string, specify 'mean'(default),
             'median','nanmean','nanmedian'
-       errorFormat: a string:
+        <errorFormat>: a string:
            'single': (default) return a single number,half of the range between
                lower/upper bound.
            'bound': return two number, upper and lower bound
-            prcnt: e.g. 95, 95% confidence interval, default:68
-       nBoot: number of bootstrap samples, default:1000
-       returnnum: index in return turple to return. e.g., return rtrtupler[:rtrnum]
+        <prcnt>: e.g. 95, 95% confidence interval, default:68
+        <nBoot>: number of bootstrap samples, default:1000
     return
         <er>:
             1. a scalar, if errorFormat == 'single'
@@ -29,6 +28,7 @@ def booterrorbar(x, metric='mean', errorFormat='single', prcnt=68, nBoot=1000):
     '''
 
     import numpy as np
+    from RZutilpy.stats import bootresamplemulti
 
     assert isinstance(x,np.ndarray), 'Input should be a ndarray'
 
