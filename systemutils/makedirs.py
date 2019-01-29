@@ -2,13 +2,14 @@ def makedirs(name, mode=None, exist_ok=True, wantassert=True):
     '''
     makedirs(name, mode=None, exist_ok=True):
 
-    wrapper of os.makedirs, except that we default exist_ok=True,
+    Wrapper of os.makedirs, except that we default exist_ok=True,
     In other words, do nothing if the folder exists, and create it if it
     does not.We return True or False to indicate the success of creating the folder
 
     Note:
         1. a name without suffixes will be treated as a folder
-        2. The user homedir sign '~' is fine, we replace it with
+        2. a name with suffixes will be treated as a file
+        3. The user homedir sign '~' is fine, we replace it with
 
     <name> can be either
         (1) a str folder name, like '/User/ruyuan/testpath'
@@ -34,12 +35,13 @@ def makedirs(name, mode=None, exist_ok=True, wantassert=True):
         # make a folder name 'home' if it does not exist
         makedirs('/home/heihei.png')
 
-        # this is useful when saving a file but not sure whether the folder exists
+        # This is useful when saving a file but not sure whether the folder exists
         # if not, we create the folder for this file, the usage is below
         makedirs('/home/heihei.png')
 
     History:
 
+    20190117 RZ fixed the bug, create a folder for a existing file
     20180714 <name> now can be a path-like object or a string
     20180622 switch to use pathlib module
 
@@ -49,11 +51,8 @@ def makedirs(name, mode=None, exist_ok=True, wantassert=True):
     # convert to rzpath object
     name = Path(name) if not isinstance(name, Path) else name
 
-    # check whether it exist
-    if not name.exists(): # we have to create it
-        # if name has suffixes, means it is a file, we create a parent folder, otherwise
-        # name is a folder we directly create it
-        name = name.parent if name.suffixes != [] else name
+    # change name to its parent folder if it is a file or have suffixes
+    name = name.parent if name.suffixes != [] or name.is_file() else name
 
     # we cannot set the default in the func, so using this...
     # note that we make all parent folder if they do not exist

@@ -9,10 +9,8 @@ def restart():
     ipython = get_ipython()
     ipython.magic("reset")
 
-    from IPython import get_ipython
-    import socket
-    ipython = get_ipython()
-    if socket.gethostname() == 'RuyuanMPB.cmrr.umn.edu':
+    from socket import gethostname
+    if gethostname() == 'RuyuanMPB.cmrr.umn.edu':
         ipython.magic("run /Users/ruyuan/.ipython/profile_default/scientific_startup.py")
-    elif socket.gethostname() == 'stone' or 'stone.cmrr.umn.edu':  # on stone
+    elif gethostname() == 'stone' or 'stone.cmrr.umn.edu':  # on stone
         ipython.magic("run /home/stone/ruyuan/.ipython/profile_default/scientific_startup.py")

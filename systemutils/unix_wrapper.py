@@ -28,7 +28,7 @@ def unix_wrapper(cmd, verbose=True, wantassert=True, resultfile=None):
         20180508 RZ add list input option
 
     To do:
-        1. how to print shell output in realtime?
+        1. report error and stop but return the output status
     '''
     from subprocess import Popen, PIPE, STDOUT
 
@@ -68,5 +68,7 @@ def unix_wrapper(cmd, verbose=True, wantassert=True, resultfile=None):
         if p.returncode != 0:  # command fails
             print('unix command failed. see result below:\n{}\n'.format(result.decode("utf-8")))
             return p
-    return result.decode("utf-8",'ignore').replace('\n','').replace(' ','')
+            raise Error('Execution fails!')
+
+    return result.decode("utf-8",'ignore').replace('\n','')
 

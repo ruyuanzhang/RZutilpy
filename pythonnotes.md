@@ -16,6 +16,21 @@ nano scientific_startup.py
 ```
 * all relevant configration will be in ~/.ipython/profile_default/ipython_config.py
 * in ipython_config.py, we set the scientific_startup.py as the startup running file for ipython
+* to reload externally import module and function
+
+```
+# from module X import function Y, if you edit Y, ipython will not reload function Y
+import sys
+sys.path.append(r'X.py')
+from X import Y
+
+# can use magic cmd %aimport
+import sys
+sys.path.append(r'X.py')
+%aimport X
+from X import Y
+
+```
 
 # path
 
