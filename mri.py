@@ -20,6 +20,9 @@ loadniftimulti = loadniftimulti.loadniftimulti
 from .mriutils import savenifti
 savenifti = savenifti.savenifti
 
+from .mriutils import savegifti
+savegifti = savegifti.savegifti
+
 
 ## ====== data class =========
 from .mriutils import mridata
@@ -41,9 +44,15 @@ getfilenamenii = getfilenamenii.getfilenamenii
 from .mriutils import getafniprefix
 getafniprefix = getafniprefix.getafniprefix
 
-# ===================
+# =================== analyze ==========
 from .mriutils import detrendtimeseries
 detrendtimeseries = detrendtimeseries.detrendtimeseries
+
+from .mriutils import surfsearchlight
+surfsearchlight = surfsearchlight.surfsearchlight
+
+from .mriutils import findminoutlier
+findminoutlier = findminoutlier.findminoutlier
 
 # ================== freesurfer ===========
 from .mriutils import fstoint

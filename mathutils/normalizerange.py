@@ -33,7 +33,7 @@ def normalizerange(m, targetmin, targetmax, sourcemin=None, sourcemax=None, chop
         normalizerange(np.array([1, 2, NaN]),0,1,0,4)== [1/4 2/4 NaN]
 
     Note:
-        1. note that if <sourcemin> is ever equal to <sourcemax>, then we die with an error.
+        1. note that if <sourcemin> is ever equal to <sourcemax>, then we map all values to target min
         2. note that <chop> has no effect if <sourcemin> and <sourcemax> aren't specified.
         3. we deal with NaNs in <m> gracefully.
         4. if <fast>, skip stuff for speed
@@ -70,7 +70,10 @@ def normalizerange(m, targetmin, targetmax, sourcemin=None, sourcemax=None, chop
         sourcemax = mn - sourcemax * sd
 
     # sanity check
-    assert sourcemin != sourcemax, "sourcemin and sourcemax are the same in at least one case"
+    if sourcemin == sourcemax:
+        print("Warning: sourcemin and sourcemax are the same in at least one case, map all to target min")
+        m[:] = targetmin
+        return m
 
     # go ahead and chop
     if chop and (not skipchop):

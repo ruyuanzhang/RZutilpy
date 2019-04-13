@@ -367,6 +367,9 @@ b'abcde'.decode("utf-8")
 
 * ''.replace(old,new)
 
+* fstring format
+```
+f'{a:.2f}'
 ```
 
 # Pandas
@@ -406,6 +409,7 @@ df2 = df.copy()
 
 * dataframe to ndarray
 df.values
+
 
 #  regular expression
 

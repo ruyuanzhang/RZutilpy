@@ -5,7 +5,7 @@ def loadmath5py(filename):
 
     can only supply the <filename>, <filename> can be a string or a Path object
 
-    Return, exmaple see loadmat function
+    Return, example see loadmat function
 
     To do:
         1. consider to selective read in?

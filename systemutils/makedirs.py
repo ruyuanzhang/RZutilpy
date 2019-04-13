@@ -1,6 +1,6 @@
 def makedirs(name, mode=None, exist_ok=True, wantassert=True):
     '''
-    makedirs(name, mode=None, exist_ok=True):
+    makedirs(name, mode=None, exist_ok=True, wantassert=True):
 
     Wrapper of os.makedirs, except that we default exist_ok=True,
     In other words, do nothing if the folder exists, and create it if it

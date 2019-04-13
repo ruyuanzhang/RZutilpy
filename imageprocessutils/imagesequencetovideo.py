@@ -37,14 +37,14 @@ def imagesequencetovideo(images, videoname, imagepercnt=1, videocodec=None, fps=
         rz.imageprocess.imagesequencetovideo(images, 'video.mp4')
 
     History:
-    20180720 <videoname> can accept an rzpath object
+    20180720 <videoname> can accept an Path object
     20180430 RZ fixed the fps and videocodec input bug
 
     '''
     from RZutilpy.imageprocess import imreadmulti, touint8
     from RZutilpy.array import split
     from RZutilpy.math import normalizerange
-    from RZutilpy.system import rzpath
+    from RZutilpy.system import Path
     from numpy import ndarray, stack, percentile, all
     from moviepy.editor import ImageSequenceClip
     from os.path import splitext
@@ -74,7 +74,7 @@ def imagesequencetovideo(images, videoname, imagepercnt=1, videocodec=None, fps=
     else:
         raise ValueError('Input images format is wrong!')
     #
-    videoname = rzpath(videoname) if ~isinstance(videoname, rzpath) else videoname
+    videoname = Path(videoname) if ~isinstance(videoname, Path) else videoname
 
     # normalize convert all images to uint8
     images = list(map(touint8, images))
