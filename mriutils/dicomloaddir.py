@@ -104,17 +104,16 @@ def dicomloaddir(files, filenamepattern='*.dcm', maxtoread=None, phasemode=None,
         dcmnames = dcmnames[:maxtoread]  # remove last couple of dcm files
 
         # ====== deal with dicom info, save a customized dicominfo dict =======
-        import matplotlib.pyplot as plt;import ipdb;ipdb.set_trace();
         ds = dcmread(dcmnames[0].str)  # read 1st vol for info purpose
         # note current we assume this dicom have all fields below!! And we save
         # the very raw dicom info here
         dcminfothisrun= dict()
-        dcminfothisrun['SliceThickness'] = ds[int('0018', 16), int('0050', 16)].value
-        dcminfothisrun['PixelSpacing'] = ds[int('0028', 16), int('0030', 16)].value
-        dcminfothisrun['AcquisitionMatrixText'] = ds[int('0051', 16), int('100b', 16)].value
-        dcminfothisrun['RepetitionTime'] = ds[int('0018', 16), int('0080', 16)].value
-        dcminfothisrun['EchoTime'] = ds[int('0018', 16), int('0081', 16)].value
-        dcminfothisrun['InplanePhaseEncodingDirection'] = ds[int('0018', 16), int('1312', 16)].value
+        dcminfothisrun['SliceThickness'] = ds.SliceThickness
+        dcminfothisrun['PixelSpacing'] = ds.PixelSpacing
+        dcminfothisrun['AcquisitionMatrixText'] = ds.AcquisitionMatrixText
+        dcminfothisrun['RepetitionTime'] = ds.RepetitionTime
+        dcminfothisrun['EchoTime'] = ds.EchoTime
+        dcminfothisrun['InPlanePhaseEncodingDirection'] = ds.InPlanePhaseEncodingDirection
         dcminfothisrun['FOV'] = ds[int('0051', 16), int('100c', 16)].value
         dcminfothisrun['checkmosaic'] = ds[int('0051', 16), int('1016', 16)].value
 

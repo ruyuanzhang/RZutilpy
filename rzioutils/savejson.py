@@ -2,17 +2,17 @@ def savejson(filename, varsdict):
     '''
     def savejson(filename, varsdict):
 
-    <filename>: a string 'test.pkl', or 'test'
-        with .pkl extension, filename of the pickle file, variable should be saved as 'filename.pkl'
+    <filename>: a string 'test.json', or 'test', can have full path
     <varsdict>: a dict to save
 
-    20180715 RZ switch to use dill
+
     '''
 
     from json import dump
-    from RZutilpy.system import Path
+    from RZutilpy.system import Path, makedirs
 
-    filename = Path(filename) if ~isinstance(filename, Path) else filename
+    filename = Path(filename)
+    makedirs(filename)
 
     # open a file
     f = open('{}.json'.format(filename.strnosuffix), 'w')

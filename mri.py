@@ -23,24 +23,10 @@ savenifti = savenifti.savenifti
 from .mriutils import savegifti
 savegifti = savegifti.savegifti
 
-
-## ====== data class =========
-from .mriutils import mridata
-mridata = mridata.mridata
-
-from .mriutils import epidata
-epidata = epidata.epidata
-
-from .mriutils import T1data
-T1data = T1data.T1data
-
-from .mriutils import T2data
-T2data = T2data.T2data
+from .mriutils import dcminfo2json
+dcminfo2json = dcminfo2json.dcminfo2json
 
 # ===================
-from .mriutils import getfilenamenii
-getfilenamenii = getfilenamenii.getfilenamenii
-
 from .mriutils import getafniprefix
 getafniprefix = getafniprefix.getafniprefix
 
@@ -53,6 +39,9 @@ surfsearchlight = surfsearchlight.surfsearchlight
 
 from .mriutils import findminoutlier
 findminoutlier = findminoutlier.findminoutlier
+
+from .mriutils import t1warp
+t1warp = t1warp.t1warp
 
 # ================== freesurfer ===========
 from .mriutils import fstoint

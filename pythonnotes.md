@@ -32,8 +32,18 @@ from X import Y
 
 ```
 
-# path
+* Run a script but keep varible in name space. You can do in ipython
+```
+run -i test.py
+```
 
+
+# path
+* We know use rzpath object, which is a modified wrapper of path-lib object, you can do like
+* 
+```
+from RZutilpy.system import Path
+```
 
 # python command summary
 * sys.path to show all path
@@ -373,6 +383,10 @@ f'{a:.2f}'
 ```
 
 # Pandas
+* read a file
+```
+pd.read
+```
 
 * delete a column or a
 ```
