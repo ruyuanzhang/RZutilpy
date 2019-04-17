@@ -1,4 +1,4 @@
-def unix_wrapper(cmd, verbose=3, wantassert=True, resultfile=None):
+def unix_wrapper(cmd, verbose=3, wantreturn=False, wantassert=True, resultfile=None):
     '''
     unix_wrapper(cmd, verbose=3, wantassert=True, resultfile=None):
 
@@ -22,12 +22,14 @@ def unix_wrapper(cmd, verbose=3, wantassert=True, resultfile=None):
             2: output auxiliary info, and output and return generate by the command
                 This is useful for debug
             3: only output generate by the command
+        <wantreturn>: boolean(default:False), whether return result or error code
         <wantassert>: is weather to assert that status==0, default:True
         <resultfile>: a string, filename to save the output
     output:
         result: the output result of the unix command
 
     History:
+        20190415 add <wantreturn>, always return the output str
         20190414 change <verbose> to 4 levels, and default no return output
         20181110 add <resultfile> input, change report to realtime
         20180620 add return the unix result
@@ -55,18 +57,16 @@ def unix_wrapper(cmd, verbose=3, wantassert=True, resultfile=None):
     # run the command
     p = Popen(cmd, stdout=PIPE, stderr=STDOUT, shell=shell)
     result=bytes()
-    if verbose>1:
-        while True:
-            line = p.stdout.readline()
-            #import matplotlib.pyplot as plt;import ipdb;ipdb.set_trace();
-            if not line:
-                break
-            else:
-                #import matplotlib.pyplot as plt;import ipdb;ipdb.set_trace();
-                result=result+line
+    while True:
+        line = p.stdout.readline()
+        if not line:
+            break
+        else:
+            result=result+line
+            if verbose==2 or verbose==3:
                 print(line.decode("utf-8",'ignore').replace('\n',''))
-
     p.wait()
+
     if 0<verbose<3:
         print('\nstatus of unix command (0-succeeded otherwise failed):\n{}\n'.format(p.returncode))
 
@@ -77,8 +77,9 @@ def unix_wrapper(cmd, verbose=3, wantassert=True, resultfile=None):
         if p.returncode != 0:  # command fails
             if 0<verbose<3:
                 print('unix command failed. see result below:\n{}\n'.format(result.decode("utf-8")))
-                return p
+                if wantreturn:
+                    return p
                 raise Error('Execution fails!')
-    if verbose==2:
+    if wantreturn:
         return result.decode("utf-8",'ignore').replace('\n','')
 
