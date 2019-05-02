@@ -47,7 +47,9 @@ def drawcolorbarcircular(cmap, nColor=360, mode='angle', imgradius=360):
     fig, ax = plt.subplots()
     if mode == 'angle':
         for i in np.arange(nColor):
-            ax.add_patch(Wedge((0, 0), imgradius, angle[i], angle[i + 1], color=cmapobj(i)))
+            # note that this figure starts from 3 clock, let's make it starts from 0 clock
+            coloridx = i + 90 if i < 270 else i-270
+            ax.add_patch(Wedge((0, 0), imgradius, angle[i], angle[i + 1], color=cmapobj(coloridx)))
     elif mode == 'ecc':
         for i in np.arange(nColor):
             ax.add_patch(Wedge((0, 0), r[i + 1], 0, 360, width=width, color=cmapobj(i)))

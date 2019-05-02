@@ -22,17 +22,17 @@ def default_img_set():
     # axes
     mpl.rcParams['axes.facecolor'] = 'None'
     mpl.rcParams['axes.labelweight'] = 'bold'
-    mpl.rcParams['axes.labelsize'] = 'large'
+    mpl.rcParams['axes.labelsize'] = 'x-large'
     mpl.rcParams['axes.titleweight'] = 'regular'
-    mpl.rcParams['axes.titlesize'] = 'x-large'
+    mpl.rcParams['axes.titlesize'] = 'xx-large'
     mpl.rcParams['axes.linewidth'] = 1
     mpl.rcParams['xtick.major.width'] = 1
     mpl.rcParams['xtick.major.size'] = 5
-    mpl.rcParams['xtick.labelsize'] = 'medium'
+    mpl.rcParams['xtick.labelsize'] = 'large'
     mpl.rcParams['ytick.major.width'] = 1
     mpl.rcParams['ytick.major.size'] = 5
-    mpl.rcParams['ytick.labelsize'] = 'medium'
-    mpl.rcParams['lines.linewidth'] = 1.5
+    mpl.rcParams['ytick.labelsize'] = 'large'
+    mpl.rcParams['lines.linewidth'] = 2
     mpl.rcParams['axes.spines.right'] = False
     mpl.rcParams['axes.spines.top'] = False
     # Character

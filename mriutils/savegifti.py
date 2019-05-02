@@ -1,17 +1,17 @@
-def savegifti(arr, filename, giftiobj=None, intent=2005):
+def savegifti(arr, filename, giftiobj, intent=2005):
     '''
-    savegifti(arr, filename, giftiobj=None, affine=None, header=None):
+    savegifti(arr, filename, giftiobj, intent=2005)::
 
     save 1D or 2D <array> into a full gifti filename using <filename>. We used
     the affine and header information from <giftiobj>.
 
     Note that the file name should have '.gii'. nibabel cannot read '.gii.gz' file
 
-    This is different from savegifit, we must supply an reference <giftiobj> to save the data
+    This is different from readgifti, we must supply an reference <giftiobj> to save the data
 
 
     <intent> is a list of integers with intent numbers for each column of arr. Typically
-    we can treat it as a normal morph data, so default I set it to 2005. For multiple columns
+    we can treat it as a normal morph data, so default is 2005. For multiple columns
     in <arr>, you should input a list such as [2005, 2005, 2005]. For full list intent code.
     check the website below:
 
@@ -26,6 +26,7 @@ def savegifti(arr, filename, giftiobj=None, intent=2005):
     from nibabel.gifti import GiftiDataArray
     from numpy import ndarray
     from RZutilpy.system import makedirs, Path
+    from nibabel.gifti.giftiio import write as giftiwrite
 
     # check input
     assert isinstance(arr, ndarray) and (1<=arr.ndim<=2), 'Please input 1d or 2d an ndarray!'
@@ -39,11 +40,15 @@ def savegifti(arr, filename, giftiobj=None, intent=2005):
 
     # make darrays for each column
     if arr.ndim == 1:
-        giftiobj.darrays = [GiftiDataArray(data=arr, intent=intent)]
+        giftiobj.darrays[0].data = arr
+        giftiobj.darrays[0].intent = intent
     else:
         assert len(intent)==arr.shape[1], 'data column number not equal to intent number!'
-        giftiobj.darrays = [GiftiDataArray(data=arr[:,i], intent=intent[i]) for i in range(arr.shape[1])]
-
+        darray_list = [giftiobj.darrays[0] for _ in range(arr.shape[1])]
+        for i in range(arr.shape[1]):
+            darray_list[i].data = arr[:, i]
+            darray_list[i].intent = intent[i]
+        giftiobj.darrays = darray_list
 
     save(giftiobj, filename.str)
 
