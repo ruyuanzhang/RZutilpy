@@ -19,11 +19,6 @@ nano scientific_startup.py
 * to reload externally import module and function
 
 ```
-# from module X import function Y, if you edit Y, ipython will not reload function Y
-import sys
-sys.path.append(r'X.py')
-from X import Y
-
 # can use magic cmd %aimport
 import sys
 sys.path.append(r'X.py')
@@ -37,6 +32,7 @@ from X import Y
 run -i test.py
 ```
 
+* pip install 
 
 # path
 * We know use rzpath object, which is a modified wrapper of path-lib object, you can do like
@@ -44,6 +40,53 @@ run -i test.py
 ```
 from RZutilpy.system import Path
 ```
+
+# Jupyter
+* Jupyter 远程配置
+
+```
+# First generate configure file
+jupyter notebook --generate-config
+
+# to generate a pasword
+ipython
+from notebook.auth import passwd
+passwd()
+Enter password:
+Verify password:
+
+
+# edit
+nano  ~/.jupyter/jupyter_notebook_config.py
+c.NotebookApp.allow_origin = '*' #allow all origins
+c.NotebookApp.ip = '0.0.0.0' # listen on all IPs
+c.NotebookApp.open_browser = False
+c.NotebookApp.password = u'' # use 
+
+```
+
+
+* Here I documented all configuration and extensions I did for jupyter so it can be easily repeated next time
+
+```
+# add nbextension 
+pip install jupyter_contrib_nbextensions
+jupyter contrib nbextension install --user
+
+pip install jupyter_nbextensions_configurator
+jupyter nbextensions_configurator enable --user
+
+# add themes
+pip install jupyterthemes
+jt -r  # back to default
+jt -t monakai  # use monakai
+
+# 自动整理代码
+pip install yapf
+
+# autopep8 规则
+```
+
 
 # python command summary
 * sys.path to show all path

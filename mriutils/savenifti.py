@@ -28,8 +28,8 @@ def savenifti(arr, filename, niftiobj=None, affine=None, header=None):
         assert isinstance(niftiobj, Nifti1Image), 'affine or header is none, you must supply niftiobj'
 
     # get affine and header information
-    affine = niftiobj.affine if affine is None else affine
-    header = niftiobj.header if header is None else header
+    affine = niftiobj.affine.copy() if affine is None else affine.copy()
+    header = niftiobj.header.copy() if header is None else header.copy()
 
     save(Nifti1Image(arr, affine, header), filename.str)
 
