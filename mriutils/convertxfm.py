@@ -12,7 +12,7 @@ def convertxfm(xfm, prefix=None):
     <prefix>: if not None, save the result xfm to the txt file.
     '''
     from numpy import ndarray, hstack, loadtxt, savetxt
-    from RZuilpy.system import Path
+    from RZutilpy.system import Path
 
     if isinstance(xfm, ndarray):
         assert xfm.size==12 or xfm.size==16, 'xfm matrix should be 12 or 16 elements'
@@ -27,6 +27,7 @@ def convertxfm(xfm, prefix=None):
 
     xfm = xfm.reshape(4,4)
 
-    savetxt(Path(prefix).strnosuffix+'.txt', xfm) if prefix is not none else _
+    if prefix is not None:
+        savetxt(Path(prefix).strnosuffix+'.txt', xfm)
 
     return xfm
