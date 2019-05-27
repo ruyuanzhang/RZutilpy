@@ -43,6 +43,9 @@ findminoutlier = findminoutlier.findminoutlier
 from .mriutils import t1warp
 t1warp = t1warp.t1warp
 
+from .mriutils import convertxfm
+convertxfm = convertxfm.convertxfm
+
 # ================== freesurfer ===========
 from .mriutils import fstoint
 fstoint = fstoint.fstoint
