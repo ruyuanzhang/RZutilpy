@@ -21,7 +21,7 @@ def unix_wrapper(cmd, verbose=3, wantreturn=False, wantassert=True, resultfile=N
             1: only output auxiliary info
             2: output auxiliary info, and output and return generate by the command
                 This is useful for debug
-            3: only output generate by the command
+            3: only output the text generate by the command
         <wantreturn>: boolean(default:False), whether return result or error code
         <wantassert>: is weather to assert that status==0, default:True
         <resultfile>: a string, filename to save the output

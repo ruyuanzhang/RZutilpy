@@ -131,7 +131,16 @@ def bar(x, height, **kwargs):
         bar_container = axes.bar(x[:, i], height[:, i], **kwargs_tmp)
 
         # set errorbar color
-        bar_container.errorbar[2][0].set_color([i.get_edgecolor() for i in bar_container.patches]) if 'ecolor' not in kwargs_tmp else bar_container
+        if yerrtmp is not None or xerrtmp is not None:  # we have errorbar
+            if 'ecolor' in kwargs_tmp:
+                ecolor_tmp = kwargs_tmp['ecolor']
+            else:
+                ec = [i.get_ec() for i in bar_container.patches] # edge color list
+                fc = [i.get_fc() for i in bar_container.patches] # face color list
+                # check the alpha value of each edge color, any non zero indicates we have edge colors
+                # Then we use edge color as the colorbar. otherwise we use face colors
+                ecolor_tmp = ec if np.array([i[3] for i in ec]).any() else fc
+            bar_container.errorbar[2][0].set_color(ecolor_tmp)
 
 
         patch_list.append(bar_container.patches)

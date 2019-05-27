@@ -361,6 +361,8 @@ cmap = LinearSegmentedColormap.from_list(
 
 * when setting the none color, please use like mfc='none', not mfc=None
 
+* For bar figure and log scale in the y axis, use bottom=1 as kwargs otherwise the output path object in pdf are uneditable.
+
 * to get all children in an axes
 ```
 child = axes.get_children()

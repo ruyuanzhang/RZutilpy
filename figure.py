@@ -53,6 +53,10 @@ cmapang = cmapang.cmapang
 from .figureutils import cmapang2
 cmapang2 = cmapang2.cmapang2
 
+# cmapang3
+from .figureutils import cmapret
+cmapret = cmapret.cmapret
+
 # drawcolorbarcircular
 from .figureutils import drawcolorbarcircular
 drawcolorbarcircular = drawcolorbarcircular.drawcolorbarcircular

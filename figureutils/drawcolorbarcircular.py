@@ -30,17 +30,21 @@ def drawcolorbarcircular(cmap, nColor=360, mode='angle', imgradius=360):
 
     # get the colormap
     if isinstance(cmap, str):
-        cmapobj = rz.figure.colormap(cmap, nColor)
+        cmapobj = rz.figure.colormap(cmap, nColor, False)
     elif isinstance(cmap, np.ndarray):
         if cmap.shape[0] != nColor:
-            cmap = rz.figure.colorinterp(cmap, nColor)
+            cmap = rz.figure.colorinterp(cmap, nColor, False)
             # we build an object
         cmapobj = LinearSegmentedColormap.from_list('rzcolormap', cmap, N=nColor)
         cmapobj.colors = cmap
     elif isinstance(cmap, LinearSegmentedColormap) | isinstance(cmap, ListedColormap):
-        cmapobj = rz.figure.colormap(cmap, nColor)  # update color map object
+        cmapobj = rz.figure.colormap(cmap, nColor, False)  # update color map object
 
+    # create angle entry
     angle = np.linspace(0, 360, nColor + 1)
+    anglewidth = angle[1] - angle[0]
+    angle = angle - anglewidth / 2
+
     r = np.linspace(0, imgradius, nColor + 1)
     width = r[1] - r[0]
 
@@ -48,7 +52,8 @@ def drawcolorbarcircular(cmap, nColor=360, mode='angle', imgradius=360):
     if mode == 'angle':
         for i in np.arange(nColor):
             # note that this figure starts from 3 clock, let's make it starts from 0 clock
-            coloridx = i + 90 if i < 270 else i-270
+            #coloridx = i + 90 if i < 270 else i-270
+            coloridx=i
             ax.add_patch(Wedge((0, 0), imgradius, angle[i], angle[i + 1], color=cmapobj(coloridx)))
     elif mode == 'ecc':
         for i in np.arange(nColor):

@@ -8,7 +8,7 @@ def default_img_set():
     mpl.rcParams['figure.titleweight'] = 'regular'
     mpl.rcParams['figure.titlesize'] = 'xx-large'
     mpl.rcParams['figure.autolayout'] = True
-    mpl.rcParams['figure.facecolor'] = 'None'
+    mpl.rcParams['figure.facecolor'] = 'w'
     mpl.rcParams['figure.edgecolor'] = 'None'
     mpl.rcParams['savefig.dpi'] = 300
     mpl.rcParams['savefig.frameon'] = False
