@@ -46,6 +46,9 @@ t1warp = t1warp.t1warp
 from .mriutils import convertxfm
 convertxfm = convertxfm.convertxfm
 
+from .mriutils import transformvols
+transformvols = transformvols.transformvols
+
 # ================== freesurfer ===========
 from .mriutils import fstoint
 fstoint = fstoint.fstoint
