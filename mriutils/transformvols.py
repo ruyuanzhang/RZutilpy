@@ -26,9 +26,9 @@ def transformvols(vols, xfm, postfix='_aff'):
         xfm = loadtxt(xfm)
 
     # judge whether nifti or +orig file
-    if Path(vols[0]).pstem[-5:] in ['+orig', '+tlrc']:
+    if vols[0][-10:-5] in ['+orig', '+tlrc']:
         isafni = True
-    elif Path(vols[0]).suffixesstr in ['.nii', '.nii.gz']:
+    elif vols[0][-4:]=='.nii' or vols[0][-7:]=='.nii.gz':
         isafni = False
     else:
         raise ValueError('Input volumes should be either nifti or AFNI format')
