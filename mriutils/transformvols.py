@@ -30,7 +30,7 @@ def transformvols(vols, xfm, postfix='_aff'):
     # judge whether nifti or +orig file
     if vols[0][-10:-5] in ['+orig', '+tlrc']:
         isafni = True
-    elif splitniftiname(vols[0]) in ['.nii', '.nii.gz']:
+    elif splitniftiname(vols[0])[1] in ['.nii', '.nii.gz']:
         isafni = False
     else:
         raise ValueError('Input volumes should be either NIFTI or AFNI format')
