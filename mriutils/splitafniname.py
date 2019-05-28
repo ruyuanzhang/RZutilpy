@@ -1,4 +1,4 @@
-def getafniprefix(filename):
+def splitafniname(filename):
     '''
     Extract afni dataset prefix. Afni dataset typically contains '+', we extract
     the name before '+' file. Assume only one '+' exists in the filename

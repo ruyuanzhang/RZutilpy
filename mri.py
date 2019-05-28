@@ -27,8 +27,11 @@ from .mriutils import dcminfo2json
 dcminfo2json = dcminfo2json.dcminfo2json
 
 # ===================
-from .mriutils import getafniprefix
-getafniprefix = getafniprefix.getafniprefix
+from .mriutils import splitafniname
+splitafniname = splitafniname.splitafniname
+
+from .mriutils import splitniftiname
+splitniftiname = splitniftiname.splitniftiname
 
 # =================== analyze ==========
 from .mriutils import detrendtimeseries

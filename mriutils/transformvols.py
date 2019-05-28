@@ -16,7 +16,9 @@ def transformvols(vols, xfm, postfix='_aff'):
     '''
     from numpy import ndarray,loadtxt
     from RZutilpy.system import Path, unix_wrapper
+    from RZutilpy.mri import splitniftiname
     from nibabel import load
+
 
     if not isinstance(vols,list):
         vols = [vols]
@@ -28,10 +30,10 @@ def transformvols(vols, xfm, postfix='_aff'):
     # judge whether nifti or +orig file
     if vols[0][-10:-5] in ['+orig', '+tlrc']:
         isafni = True
-    elif vols[0][-4:]=='.nii' or vols[0][-7:]=='.nii.gz':
+    elif splitniftiname(vols[0]) in ['.nii', '.nii.gz']:
         isafni = False
     else:
-        raise ValueError('Input volumes should be either nifti or AFNI format')
+        raise ValueError('Input volumes should be either NIFTI or AFNI format')
 
     for vol in vols:
         if isafni:
@@ -39,11 +41,11 @@ def transformvols(vols, xfm, postfix='_aff'):
             unix_wrapper(f'3dcopy {vol} {vol_tmp}.nii.gz') # convert to nifti
             vol = f'{vol_tmp}.nii.gz'
         # transform volume
-        tmp = load(vol)
+        tmp = load(vol) # here vol must be a nifti file
         affine_tmp = tmp.affine.copy()
         tmp.set_qform(xfm.dot(affine_tmp))
         tmp.set_sform(xfm.dot(affine_tmp))
-        tmp.to_filename(f'{Path(vol).strnosuffix+postfix}.nii.gz') # save to nifti
+        tmp.to_filename(f'{splitniftiname(vol)[0]+postfix}.nii.gz') # save to nifti
 
         if isafni: # further convert nifti to AFNI format
             unix_wrapper(f'3dcopy {Path(vol).strnosuffix+postfix}.nii.gz {Path(vol).strnosuffix+postfix}')
