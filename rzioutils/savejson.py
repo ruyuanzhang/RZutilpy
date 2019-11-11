@@ -12,6 +12,8 @@ def savejson(filename, varsdict):
     from RZutilpy.system import Path, makedirs
 
     filename = Path(filename)
+    if filename.suffix != 'json':
+        filename = Path(filename.str+'.json')
     makedirs(filename)
 
     # open a file

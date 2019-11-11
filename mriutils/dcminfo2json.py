@@ -69,6 +69,12 @@ def dcminfo2json(dcm, filename):
     data.pop('Referenced Image Sequence', None)
     data['SliceTiming'] = data.pop('[MosaicRefAcqTimes]', None)
 
+    try:
+        data.pop('Icon Image Sequence')
+        data.pop('Source Image Sequence')
+    except:
+        pass
+
     # deal with pydicom data type issue... This is stupid
     for i,j in data.items():
         if isinstance(j, pydicom.multival.MultiValue):
@@ -78,6 +84,7 @@ def dcminfo2json(dcm, filename):
         elif isinstance(j, pydicom.uid.UID) or isinstance(j, pydicom.valuerep.PersonName3):
             data[i] = str(j)
 
+    #import ipdb;ipdb.set_trace();import matplotlib.pyplot as plt;
     # save json and return the dict
     savejson(filename, data)
     return data

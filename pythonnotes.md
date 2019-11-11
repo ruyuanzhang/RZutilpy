@@ -91,20 +91,9 @@ pip install yapf
 # python command summary
 * sys.path to show all path
 * subprocess.run(['ls', '-al'])
-* some useful path function
+* We now use pathlib object to manipulate path
 
 ```
-# get absolute path
-os.path.abspath
-# get foldername
-os.path.dirname
-# split the path
-header, base = os.path.split(path)
-# split the file and extension
-file, extension = os.path.splitext(path)
-# replace '~' with home directory, replace environment variable
-os.path.expanduser(path)
-os.path.expandvars
 
 # check time
 os.path.getatime
@@ -241,17 +230,6 @@ conda env update -f rzutilpy.yml
 ```
 * some useful path tool
 
-```
-# get current path
-a = os.path.getcwd()
-# get obsolute path of a file
-a = os.path.get
-# split path to base and the file
-'xx/xx/name.mat' to ('xx/xx', 'name.mat')
-a = os.path.split(filename)
-# split path file and extension
-'xx/xx/name.mat' to ('xx/xx/name', 'mat')
-a = os.path.splitext(filename)
 ```
 
 * (A==B).all()
@@ -496,9 +474,20 @@ flines = int(matchgroup.group(2))  # step in frequency encoding direction
 
 * (last updated 20180618) Psychpy 1.9.0 is now released and this is a major release aiming for supporting python 3. Be careful, current version requires pyglet 1.3.0. It will report error suin pyglet 1.3.2 ()
 
-
 * Pysurfer. Pysurfer requires support from mayavi. Since the new version mayavi was just released, it might take some time for pysurfer people to catch up.
 
 * afni, brainvoyager, current afni only support python 2, not python 3.
 
 * Pycortex, not sure how it uses, crappy software...
+
+# Useful Packages beyond Anaconda
+* RZutilpy (RYZ's personal utility package)  
+* scikit-learn, scikit-image, scipy, seaborn, sympy
+* moviepy (movie processing)
+* cv2 (image process)
+* dill (serial information tool)
+* pathos (multiprocessing tool)
+* you-get (video download tool)
+* Nipy.org. (Nibabel, Nilearn, Nipy, MNE, etc)
+
+

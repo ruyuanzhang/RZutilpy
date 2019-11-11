@@ -5,6 +5,9 @@ def convertxfm(xfm, prefix=None):
     Note that AFNI uses lps+ space, but FSL, Freesurfer, nibabel use ras+ space. This
     function is thus useful to convert and xfm obtained from on space to another
 
+    nibabel team is trying to make an uniform platform for convert xfm obtained from differet
+    software. It seems that
+
 
     <xfm>: can be
         (1). ndarray, 12 or 16 elements, can be (12,),(16,)(3,4)(4,4) format

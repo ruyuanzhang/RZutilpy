@@ -26,11 +26,14 @@ def regplot(x, y, axes=None, rtrnum=1, **kwargs):
         order = kwargs['order']
     else:
         order = 1
+    
+    # deal with Nan value
+    nanind = np.isnan(x) | np.isnan(y)
 
     if order > 1:
-        regressresult = np.polyfit(x=x, y=y, deg=order)
+        regressresult = np.polyfit(x=x[~nanind], y=y[~nanind], deg=order)
     else:
-        regressresult = stats.linregress(x=x, y=y)
+        regressresult = stats.linregress(x=x[~nanind], y=y[~nanind])
 
     if rtrnum == 1:
         return regressresult

@@ -10,20 +10,23 @@ def unix_wrapper(cmd, verbose=3, wantreturn=False, wantassert=True, resultfile=N
     result to the command window.
     finally, return the result.
 
+    Note that in jupyter notebook, you can just use "!" to signal a bash command
+    This function is useful when using 
+
     Args:
         <cmd>: can be two cases:
             1. a string, contains the full unix command, like
                 'flirt -in input.nii.gz -ref output.nii.gz'
             2. a list of strings that decomposite individual parts of the unix
-                command, such as ['firt', '-in', 'input.nii.gz', '-ref', 'output.nii.gz']
+                command, such as ['flirt', '-in', 'input.nii.gz', '-ref', 'output.nii.gz']
         <verbose>: report to command window (default 3),
-            0: no output at all
-            1: only output auxiliary info
-            2: output auxiliary info, and output and return generate by the command
+            0: no verbose output at all
+            1: only verbose auxiliary info
+            2: verbose auxiliary info, and verbose information and return results generate by the command
                 This is useful for debug
-            3: only output the text generate by the command
+            3: only verbose the result generate by the command
         <wantreturn>: boolean(default:False), whether return result or error code
-        <wantassert>: is weather to assert that status==0, default:True
+        <wantassert>: is weather to assert that status==0, stop executation when an error arises, default:True
         <resultfile>: a string, filename to save the output
     output:
         result: the output result of the unix command
@@ -36,25 +39,25 @@ def unix_wrapper(cmd, verbose=3, wantreturn=False, wantassert=True, resultfile=N
         20180508 RZ add list input option
 
     To do:
-        1. report error and stop but return the output status
+        1. switch to Run??
         2. completely block output
     '''
-    from subprocess import Popen, PIPE, STDOUT
+    from subprocess import run, Popen, PIPE, STDOUT
 
     # split the cmd into a word list so that subprocess module can run it
     # split by space
     if isinstance(cmd, str):
         shell=True
         if 0<verbose<3:
-            print('calling unix:\n{}\n'.format(cmd))
+            print(f'calling unix:\n{cmd}\n')
     elif isinstance(cmd, list):
         shell=False
         if 0<verbose<3:
-            print('calling unix:\n{}\n'.format(' '.join(cmd)))
+            print(f'calling unix:\n{' '.join(cmd)}\n')
     else:
         raise ValueError('Wrong input!')
 
-    # run the command
+    # Run the command
     p = Popen(cmd, stdout=PIPE, stderr=STDOUT, shell=shell)
     result=bytes()
     while True:
@@ -63,23 +66,23 @@ def unix_wrapper(cmd, verbose=3, wantreturn=False, wantassert=True, resultfile=N
             break
         else:
             result=result+line
-            if verbose==2 or verbose==3:
+            if verbose > 1:
                 print(line.decode("utf-8",'ignore').replace('\n',''))
-    p.wait()
+    p.wait() # wait the program complete
 
     if 0<verbose<3:
-        print('\nstatus of unix command (0-succeeded otherwise failed):\n{}\n'.format(p.returncode))
+        print(f'\nstatus of unix command (0-succeeded otherwise failed):\n{p.returncode}\n')
 
     if resultfile: # save result to a files
         print(result.decode("utf-8"), file=open(resultfile, 'w'))
 
-    if wantassert:
-        if p.returncode != 0:  # command fails
+    if wantassert: # assert
+        if p.returncode != 0:  # if return code is non-zero, command fails
             if 0<verbose<3:
-                print('unix command failed. see result below:\n{}\n'.format(result.decode("utf-8")))
+                print(f'unix command failed. see result below:\n{result.decode("utf-8")}\n')
+                raise Error('Execution fails!') # stop the
                 if wantreturn:
                     return p
-                raise Error('Execution fails!')
     if wantreturn:
         return result.decode("utf-8",'ignore').replace('\n','')
 

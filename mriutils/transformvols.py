@@ -5,7 +5,10 @@ def transformvols(vols, xfm, postfix='_aff'):
     (1). The volumes must be align to canonical coordinates
     (2). The xfm must be defined in RAS+ space.
 
-    We forced to save transformed volumes to new files
+    We forced to save transformed volumes to new files.
+
+    Note that for afni file, you must supply .HEAD file
+    e.g., xxx+orig.HEAD
 
     Input:
         <vols>: a string or a list of string
