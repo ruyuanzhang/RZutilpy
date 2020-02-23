@@ -1,5 +1,5 @@
 def default_img_set():
-    import matplotlib as mpl
+    import matplotlib as mpl 
 
     mpl.rcParams['interactive'] = True
 
@@ -26,6 +26,7 @@ def default_img_set():
     mpl.rcParams['axes.titleweight'] = 'regular'
     mpl.rcParams['axes.titlesize'] = 'xx-large'
     mpl.rcParams['axes.linewidth'] = 1
+    mpl.rcParams['axes.unicode_minus'] = False
     mpl.rcParams['xtick.major.width'] = 1
     mpl.rcParams['xtick.major.size'] = 5
     mpl.rcParams['xtick.labelsize'] = 'large'
@@ -36,7 +37,8 @@ def default_img_set():
     mpl.rcParams['axes.spines.right'] = False
     mpl.rcParams['axes.spines.top'] = False
     # Character
-    mpl.rcParams['font.family'] = 'Arial'
+    mpl.rcParams['font.family'] = 'sans-serif'
+    mpl.rcParams['font.sans-serif'] = 'Arial'
     mpl.rcParams['font.weight'] = 'bold'
     # legend
     mpl.rcParams['legend.frameon'] = False

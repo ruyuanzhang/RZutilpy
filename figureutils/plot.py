@@ -24,22 +24,23 @@ def plot(x, y, yerr=None, xerr=None, axes=None, **kwargs):
         collections
 
     Example:
+        plt.close('all')
+        x = np.arange(10)
+        y = np.random.rand(10)
+        yerr = np.random.rand(10,1,2) / 10
+        a = rz.figure.plot(x,y,yerr=yerr, fmt='-o')
 
-    plt.close('all')
-    x = np.arange(10)
-    y = np.random.rand(10)
-    yerr = np.random.rand(10,1,2) / 10
-    a = rz.figure.plot(x,y,yerr=yerr, fmt='-o')
-
-    plt.close('all')
-    x = np.arange(10)
-    y = np.random.rand(10, 3)
-    yerr = np.random.rand(10,3,2) / 10
-    a = rz.figure.plot(x,y,yerr=yerr, fmt='-o')
+        plt.close('all')
+        x = np.arange(10)
+        y = np.random.rand(10, 3)
+        yerr = np.random.rand(10,3,2) / 10
+        a = rz.figure.plot(x,y,yerr=yerr, fmt='-o')
 
     Note:
     1. how to check single input data type. Single number should
-        still be an array
+        still be an array        
+    2. Check kw_input
+        https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.pyplot.plot.html
 
     History
     20180928 now accept a list for all kwargs for individual lines

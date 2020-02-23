@@ -42,18 +42,18 @@ def unix_wrapper(cmd, verbose=3, wantreturn=False, wantassert=True, resultfile=N
         1. switch to Run??
         2. completely block output
     '''
-    from subprocess import run, Popen, PIPE, STDOUT
+    from subprocess import Popen, PIPE, STDOUT
 
     # split the cmd into a word list so that subprocess module can run it
-    # split by space
-    if isinstance(cmd, str):
+    # check input
+    if isinstance(cmd, str):       
         shell=True
         if 0<verbose<3:
             print(f'calling unix:\n{cmd}\n')
     elif isinstance(cmd, list):
         shell=False
         if 0<verbose<3:
-            print(f'calling unix:\n{' '.join(cmd)}\n')
+            print(f'calling unix:\n{" ".join(cmd)}\n')
     else:
         raise ValueError('Wrong input!')
 
@@ -80,7 +80,7 @@ def unix_wrapper(cmd, verbose=3, wantreturn=False, wantassert=True, resultfile=N
         if p.returncode != 0:  # if return code is non-zero, command fails
             if 0<verbose<3:
                 print(f'unix command failed. see result below:\n{result.decode("utf-8")}\n')
-                raise Error('Execution fails!') # stop the
+                raise Error('Execution fails!') # stop the command
                 if wantreturn:
                     return p
     if wantreturn:

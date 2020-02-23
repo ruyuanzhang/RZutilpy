@@ -1,5 +1,6 @@
 #  RZ' stats
 
+from .statsutils import localregression3dlocalregression3d = localregression3d.localregression3d
 from .statsutils import booterrorbar
 booterrorbar = booterrorbar.booterrorbar
 
@@ -12,8 +13,11 @@ sem = sem.sem
 from .statsutils import cohend
 cohend = cohend.cohend
 
+from .statsutils import ttest
+ttest = ttest.ttest
 
-# == fit polymial
+
+# == fit polymial ==
 from .statsutils import polyfit1d
 polyfit1d = polyfit1d.polyfit1d
 
@@ -26,6 +30,9 @@ polyfit3d = polyfit3d.polyfit3d
 # == local regression ===
 from .statsutils import localregression3d
 localregression3d = localregression3d.localregression3d
+
+from .statsutils import rzSVC
+rzSVC = rzSVC.rzSVC
 
 # unique model fitting module
 from .statsutils import fitnonlinearmodel
