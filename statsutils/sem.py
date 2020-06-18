@@ -1,4 +1,4 @@
-def sem(x, axis=0, ddof=0, nan_policy='omit'):
+def sem(x, axis=0, ddof=1, nan_policy='omit'):
     '''
     compute standard error of a numpy array, we use scipy.stats.sem, with
     two changes

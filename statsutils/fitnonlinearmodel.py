@@ -75,6 +75,7 @@ class fitnonlinearmodel():
     @property
     def input(self):
         return self._input
+    
     @input.setter
     def input(self, x):
         '''
@@ -100,6 +101,7 @@ class fitnonlinearmodel():
     @property
     def data(self):
         return self._data
+
     @data.setter
     def data(self, x):
         '''

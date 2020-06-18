@@ -16,8 +16,8 @@ def arrayfun(func, *arr):
     from numpy import ndarray, array, empty, shape
     from RZutilpy.array import list2arrayobj
     # check input
-    assert callable(func), 'function input is wrong!'
-    assert all(isinstance(i, ndarray) for i in arr), 'Input may be not arrays!'
+    assert callable(func), '1st input should be a function!'
+    assert all(isinstance(i, ndarray) for i in arr), 'Input should be np arrays!'
     assert len(set([shape(i) for i in arr])) <= 1, 'all input arrays should have the same shape'
 
     # figure out the shape

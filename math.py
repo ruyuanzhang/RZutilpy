@@ -24,5 +24,9 @@ calccorrelation = calccorrelation.calccorrelation
 from .mathutils import mod2
 mod2 = mod2.mod2
 
+from .mathutils import circulardiff
+circulardiff = circulardiff.circulardiff
+
+
 
 

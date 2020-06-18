@@ -11,7 +11,8 @@ def bar(x, height, **kwargs):
             size of height, x.shape[0]= height.shape[0]; if x is 2D, x.shape = height.shape
         height: a 2D array, with each column is a bar group e.g., height[:,0] is a line
 
-        Other kwarges can be supplied as a list to specify properties of individual bar groups
+        Other kwarges can be supplied as a list to specify properties of individual bar groups,
+        see all kwarges in plt.bar and plt.errorbar
 
     Return:
         <patches>: a list of patch groups

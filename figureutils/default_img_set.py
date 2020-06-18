@@ -18,6 +18,7 @@ def default_img_set():
     mpl.rcParams['savefig.bbox'] = 'tight'
     mpl.rcParams['pdf.fonttype'] = 42
     mpl.rcParams['ps.fonttype'] = 42
+    mpl.rcParams['svg.fonttype'] = 'none'
 
     # axes
     mpl.rcParams['axes.facecolor'] = 'None'

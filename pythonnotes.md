@@ -59,14 +59,14 @@ from notebook.auth import passwd
 passwd()
 Enter password:
 Verify password:
-
+# then it will generate a very long string, save it
 
 # edit
 nano  ~/.jupyter/jupyter_notebook_config.py
 c.NotebookApp.allow_origin = '*' #allow all origins
 c.NotebookApp.ip = '0.0.0.0' # listen on all IPs
 c.NotebookApp.open_browser = False
-c.NotebookApp.password = u'' # use 
+c.NotebookApp.password = u'' # use the string generated above step
 
 ```
 
@@ -343,9 +343,31 @@ plt.fill_between(x, y, y-error, y+error)
 
 * use rz.figure.regplot can set scatter=False to remove all marker and only plot the line
 
+* Share axis of two axes after they are created
+
+    ```python
+    # this must be called immediately after the plt.subplots. will not work afterwards. 
+    # fig, ax = plt.subplots(1,2)
+    ax1.get_shared_y_axes().join(ax1, ax2)
+    ```
+
+    
+
 * when setting the none color, please use like mfc='none', not mfc=None
 
 * For bar figure and log scale in the y axis, use bottom=1 as kwargs otherwise the output path object in pdf are uneditable.
+
+* If you set log scale ,probably cannot set the axis ticks location. You can do 
+
+    ```python
+    plt.xticks([10, 20, 30, 40, 50])
+    # do not use below, not sure why...
+    # ax.set_xticks([[10, 20, 30, 40, 50]])
+    # remember to add
+    plt.gca().xaxis.set_major_formatter(mpl.ticker.ScalarFormatter())
+    ```
+
+* 
 
 * to get all children in an axes
 
@@ -434,7 +456,10 @@ f'{a:.2f}'
 * read a file
 
 ```python
-pd.read
+pd.read_csv 可以读取csv和txt数据
+# 读取utf-8数据,间隔是'\t'
+pd.read_csv('test.txt', sep='\t')
+
 ```
 
 * delete a column or a
@@ -498,8 +523,16 @@ flines = int(matchgroup.group(2))  # step in frequency encoding direction
 = [plines, flines]
 ```
 
+# Optimization and probabilistic models
+
+*   The `GenericLikelihoodModel`module can only accept numpy array data 
+
+
+
+
 
 #  compatibility, debug
+
 * (last updated 20180618) Mayavi2 is released on May 27, 2018. This new mayavi toolkit fully support python3. The current release includes mayavi 4.6, vtk 8.1
 
 * (last updated 20180618) Psychpy 1.9.0 is now released and this is a major release aiming for supporting python 3. Be careful, current version requires pyglet 1.3.0. It will report error suin pyglet 1.3.2 ()
@@ -512,12 +545,18 @@ flines = int(matchgroup.group(2))  # step in frequency encoding direction
 
 # Useful Packages beyond Anaconda
 * RZutilpy (RYZ's personal utility package)  
-* scikit-learn, scikit-image, scipy, seaborn, sympy
-* moviepy (movie processing)
-* cv2 (image process)
-* dill (serial information tool)
-* pathos (multiprocessing tool)
-* you-get (video download tool)
-* Nipy.org. (Nibabel, Nilearn, Nipy, MNE, etc)
-* progressbar
+
+* Numpy, scipy, matplotlib, seaborn, pandas, jupyter, jupyterlab
+
+* scikit-learn, scikit-image, scipy, sympy
+
+* moviepy (movie processing), cv2 (image process), pillow, dill (serial information tool), pathos (multiprocessing tool), you-get (video download tool), progressbar
+
+* Nipy.org. (Nibabel, Nilearn, Nipy, MNE,)
+
+* Pystan=2.18.11
+
+* nodejs (for jupyterlab)
+
+    
 

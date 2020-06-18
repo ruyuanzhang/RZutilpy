@@ -3,8 +3,8 @@ def gettimestr(fmt='short', structtime=None):
     Return a time string. This function is useful to obtain time-dependent file names
 
     <fmt> can be
-        'short': Return a str like '20180423150203'
-        'full': return a full str like, '2018-09-25, 16:07:16'
+        'short': Return a str like '20180423150203', to add as file name
+        'full': return a full str like, '2018-09-25, 16:07:16', to print out timing info
     <structtime> can be a struct_time object returned by gmtime. If None, then we use
     the gmtime to get current time.
 

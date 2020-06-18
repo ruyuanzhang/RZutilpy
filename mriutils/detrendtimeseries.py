@@ -50,9 +50,9 @@ def detrendtimeseries(arr, polydeg=1, mode='subtract'):
     # note here we take the transpose, the original polyval flip the dimension, weird..
     # array_polyfit is a T x M array
 
-    if mode is 'subtract':
+    if mode == 'subtract':
         return arr - arr_polyfit, p, arr_polyfit
-    elif mode is 'divide':
+    elif mode == 'divide':
         return arr / arr_polyfit, p, arr_polyfit
 
 

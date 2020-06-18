@@ -16,7 +16,7 @@ def mycd(dir='util'):
 
     """
     import os
-    if dir is 'util':
+    if dir == 'util':
         os.chdir('/Users/ruyuan/Documents/Code_git/CodeRepositories/RZutilpy')
-    elif dir is 'main':
+    elif dir == 'main':
         os.chdir('/Users/ruyuan')

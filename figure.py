@@ -29,6 +29,9 @@ plot = plot.plot
 from .figureutils import bar
 bar = bar.bar
 
+from .figureutils import bar2
+bar2 = bar2.bar2
+
 # regplot
 from .figureutils import regplot
 regplot = regplot.regplot
@@ -67,6 +70,10 @@ drawcolorbarhalfcircular = drawcolorbarhalfcircular.drawcolorbarhalfcircular
 # show_images
 from .figureutils import show_images
 show_images = show_images.show_images
+
+# add more color palettable  
+from .figureutils import colorpalettable
+colorpalettable = colorpalettable.colorpalettable
 
 
 

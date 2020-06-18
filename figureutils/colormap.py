@@ -36,29 +36,40 @@ def colormap(cmap, nColor=256, vmin=0, vmax=1, keeplast=False):
             since in most cases we need linear interpolation.
             For LinearSegmentedColormap object, we add a 'color' attribute to store all colors
 
+
     Examples:
+        from RZutilpy.figure import colormap 
         # create a colormap from default matplotlib colormaps
-        cmap = rz.figure.colormap('jet', 64)
-        cmap = rz.figure.colormap('hot', 64)
+        cmap = colormap('jet', 64)
+        cmap = colormap('hot', 64)
         # update a colormap
-        cmap = rz.figure.colormap('jet', 64)
-        cmap = rz.figure.colormap(cmap, 256)
+        cmap = colormap('jet', 64)
+        cmap = colormap(cmap, 256)
+
 
     '''
     from matplotlib import cm
     from matplotlib import colors
-    from numpy import arange, ndarray
+    from numpy import arange, ndarray, min
     from RZutilpy.figure import colorinterp
 
     if isinstance(cmap, str):
-        lcmap = cm.get_cmap(cmap, 1000)
-        # get all colors
-        allcolors = lcmap(arange(1000))  # obtain a 1000 x 4 color list
-        vmin = round(vmin * 1000)
-        vmax = round(vmax * 1000)
-        # get the color range
-        allcolors = allcolors[vmin:vmax, :]
-        newcolors = colorinterp(allcolors, nColor, keeplast)
+
+        lcmap = cm.get_cmap(cmap)
+        #import ipdb;ipdb.set_trace();import matplotlib.pyplot as plt;
+        if lcmap.N < 256: # qualitative color case, we do not interplate this case
+            lcmap = cm.get_cmap(cmap)
+            nColor = min([nColor, lcmap.N]) # 
+            newcolors = lcmap(arange(nColor))
+        else: # continous case, we interpolate the color
+            # get all colors
+            lcmap = cm.get_cmap(cmap, 1000)
+            allcolors = lcmap(arange(1000))  # obtain a 256 x 4 color list
+            vmin = round(vmin * 1000)
+            vmax = round(vmax * 1000)
+            # get the color range
+            allcolors = allcolors[vmin:vmax, :]
+            newcolors = colorinterp(allcolors, nColor, keeplast) # interpolate the color to fulfill my colorlist
     elif isinstance(cmap, colors.LinearSegmentedColormap) | isinstance(cmap, colors.ListedColormap):
         lcmap = cmap
         allcolors = lcmap(arange(lcmap.N))
@@ -87,5 +98,16 @@ def colormap(cmap, nColor=256, vmin=0, vmax=1, keeplast=False):
         lcmap = colors.ListedColormap(newcolors)
     else:
         raise ValueError('hm...something wrong...')
+    
+    # we add a show color function to this function
+    # such that you can just run lcmap.showcolor() to visual all colors
+    def showcolor():
+        from matplotlib import pyplot as plt
+        from numpy import tile, linspace, max
+        plt.figure()
+        plt.imshow(tile(linspace(0, 1, max([lcmap.N, 256])), [20, 1]), cmap=lcmap)
+    
+    setattr(lcmap, 'showcolor', showcolor)
+    
     # refresh the colormap
     return lcmap
