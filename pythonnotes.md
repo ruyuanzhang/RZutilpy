@@ -1,4 +1,5 @@
 # Other notes
+
 * A good explanation of decorator in python
 [decorator in python](https://www.zhihu.com/question/26930016)
 * [explanation](https://www.liaoxuefeng.com/wiki/001374738125095c955c1e6d8bb493182103fac9270762a000/001386820023084e5263fe54fde4e4e8616597058cc4ba1000) for
@@ -11,6 +12,17 @@ from __future__ import
 * generator explanation?
 
 # configure python and ipython
+
+* Add python path so as to import module, two methods
+
+  * change PYTHONPATH environment variable in .bash_profile file
+
+    ```bash
+    echo PYTHONPATH=/Users/ruyuan/Documentation/Code_git/CodeRepository/:${PYTHONPATH}
+    ```
+
+  * add path information for Jupiter
+
 * Once Anoconda is properly installed, go to user home directory 
 
 ```sh
@@ -520,4 +532,6 @@ flines = int(matchgroup.group(2))  # step in frequency encoding direction
 * you-get (video download tool)
 * Nipy.org. (Nibabel, Nilearn, Nipy, MNE, etc)
 * progressbar
+* mkdocs (generate documentation webpage)
+* Flask (web service)
 

@@ -18,20 +18,19 @@ def rzSVC(data, label, C=1, cv=10, kernel='linear', multiclass=''):
 
     '''
 
-from sklearn.model_selection import cross_val_score
-from sklearn.pipeline import make_pipeline 
-from sklearn.preprocessing import StandardScaler
-from sklearn.svm import SVC, LinearSVC
+    from sklearn.model_selection import cross_val_score
+    from sklearn.pipeline import make_pipeline 
+    from sklearn.preprocessing import StandardScaler
+    from sklearn.svm import SVC, LinearSVC
 
-from numpy import unique
-if unique(label).size = 2: # two-class
-    return cross_val_score(make_pipeline(StandardScaler(), SVC(C=C, kernel=kernel)), data, label, cv=cv).mean()
-
-elif unique(label).size > 2: # multi-class
-    if multiclass == 'one-one':
-        return cross_val_score(make_pipeline(StandardScaler(), SVC(C=C, kernel=kernel)), data, label, cv=cv).mean() 
-    elif multiclass == 'one-other':
-        return cross_val_score(make_pipeline(StandardScaler(), LinearSVC(C=C)), data, label, cv=cv).mean()
+    from numpy import unique
+    if unique(label).size == 2: # two-class
+        return cross_val_score(make_pipeline(StandardScaler(), SVC(C=C, kernel=kernel)), data, label, cv=cv).mean()
+    elif unique(label).size > 2: # multi-class
+        if multiclass == 'one-one':
+            return cross_val_score(make_pipeline(StandardScaler(), SVC(C=C, kernel=kernel)), data, label, cv=cv).mean() 
+        elif multiclass == 'one-other':
+            return cross_val_score(make_pipeline(StandardScaler(), LinearSVC(C=C)), data, label, cv=cv).mean()
        
 
 

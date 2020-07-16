@@ -1,6 +1,8 @@
 #  RZ' stats
 
-from .statsutils import localregression3dlocalregression3d = localregression3d.localregression3d
+from .statsutils import localregression3d
+localregression3d = localregression3d.localregression3d
+
 from .statsutils import booterrorbar
 booterrorbar = booterrorbar.booterrorbar
 
