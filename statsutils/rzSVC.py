@@ -25,7 +25,6 @@ def rzSVC(data, label, cv=10, kernel='linear', multiclass='one-other', **kwargs)
     from sklearn.svm import SVC, LinearSVC
 
     from numpy import unique
-
     if unique(label).size == 2: # two-class
         # return cross_val_score(make_pipeline(StandardScaler(), LinearSVC(**kwargs)), data, label, cv=cv).mean() if kernel == 'linear' else cross_val_score(make_pipeline(StandardScaler(), SVC(kernel=kernel, **kwargs)), data, label, cv=cv).mean()
 

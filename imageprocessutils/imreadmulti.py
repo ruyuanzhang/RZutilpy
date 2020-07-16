@@ -12,17 +12,25 @@ def imreadmulti(pattern, mode='array'):
         'array': concatenate all images into 3rd dimension and return an array. If images have different size, then report error
         'list': return a list containing all images as np.array
         'PIL': return a list containing all PIL.Image object
+
+
+    20200226 RZ fixed the bug if too many images are opened
     '''
     from RZutilpy.rzio import matchfiles
     from PIL import Image
     from numpy import array, stack
+    import copy
 
     # match file names
     filenamelist = matchfiles(pattern)
     assert filenamelist, 'No image is found!'
 
     # load the images
-    img_list = [Image.open(file) for file in filenamelist]
+    img_list = []
+    for file in filenamelist:
+        tmp = Image.open(file)
+        img_list.append(copy.deepcopy(tmp)) # note here, PIL object has no copy funtion, have to do manually
+        tmp.close() # we need close the image otherwise too many open files
 
     # output
     if mode == 'PIL':
