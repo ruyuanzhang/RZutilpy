@@ -18,3 +18,4 @@ from . import array
 from . import mri
 from . import program
 from . import cvnpy
+from . import psychophysics

@@ -15,6 +15,9 @@ sem = sem.sem
 from .statsutils import cohend
 cohend = cohend.cohend
 
+from .statsutils import hedgeg
+hedgeg = hedgeg.hedgeg
+
 from .statsutils import ttest
 ttest = ttest.ttest
 

@@ -1,22 +1,47 @@
 # image processing module by rz
 
 # all functions
-'''
-makegaussian2d(res, r, c, sr, sc, xx=None, yy=None, ang=0, omitexp=False):
-imreadmulti(pattern, mode='array'):
-imsavemulti(images, pattern):
-processmulti(fun, *args):
-'''
+
 
 # ==============================================================================
 # make variours filters
 # =====================
+from .imageprocessutils import linspacepixels
+linspacepixels = linspacepixels.linspacepixels
+
+from .imageprocessutils import makecircleimage
+makecircleimage = makecircleimage.makecircleimage
+
+from .imageprocessutils import makespatialenvelope
+makespatialenvelope = makespatialenvelope.makespatialenvelope
 
 from .imageprocessutils import makegaussian2d
 makegaussian2d = makegaussian2d.makegaussian2d
 
 from .imageprocessutils import makegaussian3d
 makegaussian3d = makegaussian3d.makegaussian3d
+
+from .imageprocessutils import makegabor1d
+makegabor1d = makegabor1d.makegabor1d
+
+from .imageprocessutils import makegabor2d
+makegabor2d = makegabor2d.makegabor2d
+
+from .imageprocessutils import makemultiscalegaborfilters
+makemultiscalegaborfilters = makemultiscalegaborfilters.makemultiscalegaborfilters
+
+from .imageprocessutils import makespatiotemporalfilter
+makespatiotemporalfilter = makespatiotemporalfilter.makespatiotemporalfilter
+
+from .imageprocessutils import makemultiscalespatiotemporalfilters
+makemultiscalespatiotemporalfilters = makemultiscalespatiotemporalfilters.makemultiscalespatiotemporalfilters
+
+from .imageprocessutils import computeorientationenergy
+computeorientationenergy = computeorientationenergy.computeorientationenergy
+
+from .imageprocessutils import computemotionenergy
+computemotionenergy = computemotionenergy.computemotionenergy
+
 
 # ==============================================================================
 # read/save/process multiple images
@@ -54,6 +79,8 @@ gray2rgb = gray2rgb.gray2rgb
 from .imageprocessutils import touint8
 touint8 = touint8.touint8
 
+from .imageprocessutils import getsampleimage
+getsampleimage = getsampleimage.getsampleimage
 # ==============================================================================
 # gui manipulateion
 # ==============================================================================

@@ -1,4 +1,5 @@
 # Other notes
+
 * A good explanation of decorator in python
 [decorator in python](https://www.zhihu.com/question/26930016)
 * [explanation](https://www.liaoxuefeng.com/wiki/001374738125095c955c1e6d8bb493182103fac9270762a000/001386820023084e5263fe54fde4e4e8616597058cc4ba1000) for
@@ -11,14 +12,26 @@ from __future__ import
 * generator explanation?
 
 # configure python and ipython
+
+* First, add RZutilpy folder to python path
+
+  ```bash
+  cd ~
+  code .bash_profile
+  export PATH="/Users/ruyuan/anaconda/bin:$PATH"
+  export PYTHONPATH=$PYTHONPATH:/Users/ruyuan/Documents/Code_git/CodeRepositories/
+  ```
+
+  
+
 * Once Anoconda is properly installed, go to user home directory 
 
 ```sh
-cd ~/.ipython/profile_default
+cd ~/.ipython/profile_default/startup
 nano scientific_startup.py
 ```
 
-* all relevant configration will be in ~/.ipython/profile_default/ipython_config.py
+* all relevant configration will be in ~/.ipython/profile_default/startup
 * in ipython_config.py, we set the scientific_startup.py as the startup running file for ipython
 * to reload externally import module and function
 
@@ -47,6 +60,17 @@ from RZutilpy.system import Path
 ```
 
 # Jupyter
+* Jupyter第一次配置
+
+  ```bash
+  cd ~
+  cd ./jupyter/jupyter_notebook_config.py
+  # 如果没有以上的文件，输入，然后就会产生以上的文件
+  jupyter notebook --generate-config
+  ```
+
+  
+
 * Jupyter 远程配置
 
 ```sh
@@ -70,6 +94,10 @@ c.NotebookApp.password = u'' # use the string generated above step
 
 ```
 
+
+* HTML
+
+    <iframe  width="700" height="700" src="link" frameborder="0" allowfullscreen></iframe>
 
 * Here I documented all configuration and extensions I did for jupyter so it can be easily repeated next time
 
@@ -99,7 +127,6 @@ pip install yapf
 * We now use pathlib object to manipulate path
 
 ```python
-
 # check time
 os.path.getatime
 os.path.getctime
@@ -380,7 +407,7 @@ child = axes.get_children()
 	2. Then use axes.pcolormesh to create a pcm object.
 	3. Use pcm object to plot colorbar 
 	4. see example below
-https://matplotlib.org/gallery/statistics/hist.html#sphx-glr-gallery-statistics-hist-py
+	https://matplotlib.org/gallery/statistics/hist.html#sphx-glr-gallery-statistics-hist-py
 
 * use plt.setp to set propertie to multiple axes
 
@@ -491,6 +518,9 @@ help(df.xs)
 can also use
 
 a = df.loc[2]  # return the second row
+
+# return row and column slice
+data.iloc[:, 3:4]
 ```
 
 * use == just make a inference to original dataframe. to make a new copy, use 
@@ -534,14 +564,11 @@ flines = int(matchgroup.group(2))  # step in frequency encoding direction
 #  compatibility, debug
 
 * (last updated 20180618) Mayavi2 is released on May 27, 2018. This new mayavi toolkit fully support python3. The current release includes mayavi 4.6, vtk 8.1
-
 * (last updated 20180618) Psychpy 1.9.0 is now released and this is a major release aiming for supporting python 3. Be careful, current version requires pyglet 1.3.0. It will report error suin pyglet 1.3.2 ()
-
 * Pysurfer. Pysurfer requires support from mayavi. Since the new version mayavi was just released, it might take some time for pysurfer people to catch up.
-
 * afni, brainvoyager, current afni only support python 2, not python 3.
-
 * Pycortex, not sure how it uses, crappy software...
+* Install cv2 `conda install -c https://conda.anaconda.org/menpo opencv3`
 
 # Useful Packages beyond Anaconda
 * RZutilpy (RYZ's personal utility package)  
