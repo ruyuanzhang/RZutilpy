@@ -28,14 +28,14 @@ def rzSVC(data, label, cv=10, kernel='linear', multiclass='one-other', **kwargs)
     if unique(label).size == 2: # two-class
         # return cross_val_score(make_pipeline(StandardScaler(), LinearSVC(**kwargs)), data, label, cv=cv).mean() if kernel == 'linear' else cross_val_score(make_pipeline(StandardScaler(), SVC(kernel=kernel, **kwargs)), data, label, cv=cv).mean()
 
-        return cross_val_score(make_pipeline(StandardScaler(), SVC(kernel=kernel, **kwargs)), data, label, cv=cv).mean()
+        return cross_val_score(make_pipeline(StandardScaler(), SVC(kernel=kernel, **kwargs)), data, label, cv=cv, verbose=1).mean()
         
 
     elif unique(label).size > 2: # multi-class
         if multiclass == 'one-one':
             return cross_val_score(make_pipeline(StandardScaler(), SVC(kernel=kernel, **kwargs)), data, label, cv=cv).mean()
         elif multiclass == 'one-other':
-            return cross_val_score(make_pipeline(StandardScaler(), LinearSVC(**kwargs)), data, label, cv=cv).mean()
+            return cross_val_score(make_pipeline(StandardScaler(), LinearSVC(**kwargs)), data, label, cv=cv, verbose=1).mean()
        
 
 

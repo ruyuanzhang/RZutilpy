@@ -40,14 +40,12 @@ def polyfit1d(x, y, deg=1):
     # check input
     assert isinstance(x, ndarray) and x.ndim == 1, 'x should be 1d ndarray!'
     assert isinstance(y, ndarray) and y.ndim == 1, 'y should be 1d ndarray!'
-    if weight is None:
-        weight = ones()
-
+    
     # isfinite can check both nan and inf values
-    valid = isfinite(x) & isfinite(y)
+    #valid = isfinite(x) & isfinite(y)
 
     # now solve the equation
-    coef, result = polyfit(x, y, deg=deg, full=True, w=weight)
+    coef, result = polyfit(x, y, deg=deg, full=True)
     # result is a list [residuals, rank, singular_values, rcond]
     residual = result[0]
 

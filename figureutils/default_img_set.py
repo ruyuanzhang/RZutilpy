@@ -11,7 +11,6 @@ def default_img_set():
     mpl.rcParams['figure.facecolor'] = 'w'
     mpl.rcParams['figure.edgecolor'] = 'None'
     mpl.rcParams['savefig.dpi'] = 300
-    mpl.rcParams['savefig.frameon'] = False
     mpl.rcParams['savefig.format'] = 'pdf'
     mpl.rcParams['savefig.facecolor'] = 'None'
     mpl.rcParams['savefig.edgecolor'] = 'None'

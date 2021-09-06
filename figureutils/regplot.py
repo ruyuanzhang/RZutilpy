@@ -9,17 +9,17 @@ def regplot(x, y, axes=None, rtrnum=1, **kwargs):
     Shading are PolyCollection objects
 
     '''
-    import seaborn.apionly as sns
+    import seaborn as sns
     import matplotlib.pyplot as plt
     import numpy as np
     from scipy import stats
 
-    sns.reset_orig()
+    sns.reset_orig() #
 
     if axes is None:
         axes = plt.gca()
     # do it
-    p = sns.regplot(x, y, ax=axes, **kwargs)
+    p = sns.regplot(x=x, y=y, ax=axes, **kwargs)
 
     # figure out the statistical model
     if 'order' in kwargs:
