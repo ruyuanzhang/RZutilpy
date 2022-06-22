@@ -10,6 +10,7 @@ def default_img_set():
     mpl.rcParams['figure.autolayout'] = True
     mpl.rcParams['figure.facecolor'] = 'w'
     mpl.rcParams['figure.edgecolor'] = 'None'
+    mpl.rcParams['figure.constrained_layout.use'] = False
     mpl.rcParams['savefig.dpi'] = 300
     mpl.rcParams['savefig.format'] = 'pdf'
     mpl.rcParams['savefig.facecolor'] = 'None'

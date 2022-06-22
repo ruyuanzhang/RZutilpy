@@ -85,12 +85,23 @@ def bar(x, height, **kwargs):
 
     nBars = height.shape[1]
     # deal with the x position and height
-    groupWidth = min(0.8, nBars/(nBars+1.5));
-    barWidth = groupWidth / nBars
-    xLoc_tmp = np.arange(-groupWidth / 2 + barWidth / 2, groupWidth / 2, barWidth)
-    xLoc_tmp = np.tile(xLoc_tmp[np.newaxis, :],(height.shape[0],1))
-    x = x + xLoc_tmp;
-    barWidth = barWidth * 0.8
+    #groupWidth = min(1, nBars/(nBars+1.5))    
+    groupWidth = 1
+    barWidth = kwargs['width'] if 'width' in kwargs else groupWidth/nBars
+    barWidth = np.min((barWidth, groupWidth/nBars))
+    print(nBars)
+    if nBars % 2==0: # even numer bars
+        xLoc_tmp = np.arange(barWidth/2, barWidth*nBars/2, barWidth)
+        xLoc_tmp = np.hstack((-xLoc_tmp[::-1], xLoc_tmp))
+    else: # odd number bars
+        xLoc_tmp = np.arange(0, barWidth*nBars/2, barWidth)
+        xLoc_tmp = np.hstack((-xLoc_tmp[::-1][:-1], xLoc_tmp))
+
+    #xLoc_tmp = np.arange(-groupWidth / 2 + groupWidth/nBars / 2, groupWidth / 2, groupWidth/nBars)
+    
+    xLoc_tmp = np.tile(xLoc_tmp[np.newaxis, :],(height.shape[0], 1))
+    x = x + xLoc_tmp
+    #barWidth = barWidth * 0.8
 
     # now check the x, height shape
     assert x.shape == height.shape, ValueError('incompatible dimension of x,height')

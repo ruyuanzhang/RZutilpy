@@ -218,6 +218,15 @@ b = parent[1]('~')
 ```
 
 # conda skills
+```bash
+# create new environment
+conda create -n envname python=3.8
+# check env infor
+conda info --envs
+```
+
+
+
 * save conda environment file
 
 ```sh

@@ -75,6 +75,8 @@ show_images = show_images.show_images
 from .figureutils import colorpalettable
 colorpalettable = colorpalettable.colorpalettable
 
+from .figureutils import scatterboxplot
+scatterboxplot = scatterboxplot.scatterboxplot
 
 
 
