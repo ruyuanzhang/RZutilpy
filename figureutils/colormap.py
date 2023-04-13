@@ -1,4 +1,4 @@
-def colormap(cmap, nColor=256, vmin=0, vmax=1, keeplast=False):
+def colormap(cmap, nColor=256, vmin=0, vmax=1, keeplast=True):
     '''
     colormap(cmap, nColor=256, vmin=0, vmax=1):
 
@@ -30,7 +30,7 @@ def colormap(cmap, nColor=256, vmin=0, vmax=1, keeplast=False):
             max of the range of the color. e.g., if the original colormap range
             is between [0, 1] and have n colors. We proportionally truncate color
             range to [vmin, vmax], e.g. [0.2, 0.8]
-        <keeplast>:whether to keep last entry when interpolate color, default:False
+        <keeplast>:whether to keep last entry when interpolate color, default:True
     Output:
         <lcmap>: return a LinearSegmentedColormap or a ListedColormap object
             since in most cases we need linear interpolation.

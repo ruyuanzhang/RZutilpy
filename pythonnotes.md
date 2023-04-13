@@ -68,7 +68,29 @@ run -i test.py
 from RZutilpy.system import Path
 ```
 
+# vscode
+
+配置startup commands
+
+去 preference—搜索 “jupyter startup”—然后打开settings.json，填入
+
+```json
+ "jupyter.runStartupCommands": [
+
+  "import sys", 
+  "sys.path.append('/Users/ruyuan/Documents/Code_git/CodeRepositories')",
+  "import RZutilpy as rz",
+  "rz.figure.default_img_set()",
+  "#%reload_ext autoreload",
+  "%autoreload 2"
+```
+
+
+
+
+
 # Jupyter
+
 * Jupyter第一次配置
 
   ```bash
@@ -357,6 +379,7 @@ print(0.3 == 3 * 0.1)  # False
 
 
 # Figure related (matplotlib)
+
 * remove extra axes,
      fig.delaxes(ax[-1])
 

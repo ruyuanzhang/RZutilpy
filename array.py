@@ -21,3 +21,6 @@ arrayfun = arrayfun.arrayfun
 from .arrayutils import list2arrayobj
 list2arrayobj = list2arrayobj.list2arrayobj
 
+from .arrayutils import list2dataframe
+list2dataframe = list2dataframe.list2dataframe
+

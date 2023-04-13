@@ -36,6 +36,10 @@ bar2 = bar2.bar2
 from .figureutils import regplot
 regplot = regplot.regplot
 
+# regplot
+from .figureutils import rzboxplot
+rzboxplot = rzboxplot.rzboxplot
+
 # colormap
 from .figureutils import colormap
 colormap = colormap.colormap
@@ -77,6 +81,9 @@ colorpalettable = colorpalettable.colorpalettable
 
 from .figureutils import scatterboxplot
 scatterboxplot = scatterboxplot.scatterboxplot
+
+from .figureutils import setcolorcycle
+setcolorcycle = setcolorcycle.setcolorcycle
 
 
 

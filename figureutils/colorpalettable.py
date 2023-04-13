@@ -2,7 +2,8 @@ def colorpalettable(name='morandi'):
     '''
     <name>: color
         'morandi': (default) morandi color list
-        'macaron':
+        'macaron': macaron color list
+        'binary1': binary color 1
     '''
     from RZutilpy.figure import colormap
 
@@ -18,11 +19,15 @@ def colorpalettable(name='morandi'):
         '#3e1f16', '#940214', '#dd395a', '#e8c001', '#015c7a',
         '#98b7ac', '#cde0d7', '#fffcf1', '#f0e7da', '#d0c9c9',
         '#983b45', '#f7daae', '#f3eee4', '#86929f', '#222021']
+    
+    ryz1 = ['#4B58AA', '#EE2A7B', '#CC9933', '#0099CC','#660066']
 
     if name == 'morandi':
         return colormap(morandi_list, nColor=len(morandi_list))
     elif name == 'macaron':
         return colormap(macaron_list, nColor=len(macaron_list))
+    elif name == 'ryz1':
+        return colormap(ryz1, nColor=len(ryz1))
     else:
-        raise ValueError('Only accept argument morandi and macaron')
+        raise ValueError('wrong colormap name !')
 

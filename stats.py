@@ -42,3 +42,7 @@ rzSVC = rzSVC.rzSVC
 # unique model fitting module
 from .statsutils import fitnonlinearmodel
 fitnonlinearmodel = fitnonlinearmodel.fitnonlinearmodel
+
+# probablistic modeling
+from .statsutils import rzprobmodel
+rzmodelfit = rzprobmodel.rzmodelfit
