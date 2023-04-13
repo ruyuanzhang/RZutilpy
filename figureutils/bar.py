@@ -1,4 +1,4 @@
-def bar(x, height, **kwargs):
+def bar(x, height, bargap=0,**kwargs):
     '''
     Wrapper of plt.bar. Plot multiple bar groups and errrobars together.
 
@@ -10,6 +10,7 @@ def bar(x, height, **kwargs):
         x: a 1D array or 2D array. if 1D, the size should be same as column
             size of height, x.shape[0]= height.shape[0]; if x is 2D, x.shape = height.shape
         height: a 2D array, with each column is a bar group e.g., height[:,0] is a line
+        <bargap>:spacegap between bar
 
         Other kwarges can be supplied as a list to specify properties of individual bar groups,
         see all kwarges in plt.bar and plt.errorbar
@@ -91,7 +92,7 @@ def bar(x, height, **kwargs):
     barWidth = np.min((barWidth, groupWidth/nBars))
     print(nBars)
     if nBars % 2==0: # even numer bars
-        xLoc_tmp = np.arange(barWidth/2, barWidth*nBars/2, barWidth)
+        xLoc_tmp = np.arange(barWidth/2+bargap/2, barWidth*nBars/2, barWidth+bargap)
         xLoc_tmp = np.hstack((-xLoc_tmp[::-1], xLoc_tmp))
     else: # odd number bars
         xLoc_tmp = np.arange(0, barWidth*nBars/2, barWidth)
