@@ -20,7 +20,7 @@ def colorpalettable(name='morandi'):
         '#98b7ac', '#cde0d7', '#fffcf1', '#f0e7da', '#d0c9c9',
         '#983b45', '#f7daae', '#f3eee4', '#86929f', '#222021']
     
-    ryz1 = ['#4B58AA', '#EE2A7B', '#CC9933', '#0099CC','#660066']
+    ryz1 = ['#4B58AA', '#EE2A7B', '#CC9933', '#0099CC','#660066', '#1f9a3a']
 
     if name == 'morandi':
         return colormap(morandi_list, nColor=len(morandi_list))

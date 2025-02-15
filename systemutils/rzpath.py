@@ -1,4 +1,4 @@
-import pathlib
+import pathlib2 as pathlib
 # we use the subclass to redefine the Path, and provide several useful utilities
 
 class Path(type(pathlib.Path())):
@@ -22,7 +22,7 @@ class Path(type(pathlib.Path())):
         return self.name.replace(''.join(self.suffixes), '')
 
     @property
-    def str(self): # property only-read
+    def str(self): # 
         # full path string
         return self.__str__()
 

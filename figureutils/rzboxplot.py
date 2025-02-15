@@ -7,6 +7,10 @@ def rzboxplot(data:list, x:list=None, boxWidth:float=0.5, colors:list=None, **bo
     <boxWidht>: default(0.5). Note that dot jitter range also correspond to <boxWidth>
     <color>: a list of colors for each category
     <boxkwargs>: TBD
+
+    return:
+    <box>: handle of boxes
+    <scatter>: handles of scatter points
     '''
 
     import matplotlib.pyplot as plt

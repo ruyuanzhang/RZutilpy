@@ -90,7 +90,6 @@ def bar(x, height, bargap=0,**kwargs):
     groupWidth = 1
     barWidth = kwargs['width'] if 'width' in kwargs else groupWidth/nBars
     barWidth = np.min((barWidth, groupWidth/nBars))
-    print(nBars)
     if nBars % 2==0: # even numer bars
         xLoc_tmp = np.arange(barWidth/2+bargap/2, barWidth*nBars/2, barWidth+bargap)
         xLoc_tmp = np.hstack((-xLoc_tmp[::-1], xLoc_tmp))
@@ -102,6 +101,8 @@ def bar(x, height, bargap=0,**kwargs):
     
     xLoc_tmp = np.tile(xLoc_tmp[np.newaxis, :],(height.shape[0], 1))
     x = x + xLoc_tmp
+    print(x)
+    print(barWidth)
     #barWidth = barWidth * 0.8
 
     # now check the x, height shape
